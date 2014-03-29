@@ -1,0 +1,192 @@
+/*couleurs :
+jaune rgb(255,236,108)
+vert fonc�� rgb(98,160,77)
+vert clair rgb(174,227,157)
+marron rgb(194,123,71)
+*/
+
+@font-face {
+   font-family: 'cantarell';
+   src: url('police/Cantarell-Regular.ttf') format('truetype');
+}
+
+body
+{
+font-family: 'cantarell', 'Arial';
+margin:0px;
+padding:0px;
+background-image: url("../img/dessins/texture_page.png");
+}
+
+header
+{
+height: 200px;
+background-image: url("../img/dessins/texture_header.png");
+}
+
+#fond
+{
+width:100%;
+min-width:1020px;
+
+margin:0px;
+padding-top:10px;
+
+}
+
+#page
+{
+width:1000px;
+min-width:1000px;
+margin:0px;
+margin-left:auto;
+margin-right:auto;
+padding:10px;
+position: relative;
+text-align: center;
+
+}
+
+h2
+{
+color: rgb(98,160,77);
+}
+
+#banniere
+{
+width:1000px;
+min-width:1000px;
+margin:0px;
+margin-left:auto;
+margin-right:auto;
+padding:10px;
+position: relative;
+text-align: center;
+
+}
+
+#logo
+{
+display: inline-block;
+}
+
+#wall
+{
+color: rgb(98,160,77);
+font-weight: bold;
+display: inline-block;
+width : 130px;
+height: 150px;
+text-align: center;
+border: 1px dotted rgb(174,227,157);
+vertical-align: top;
+margin-top: 18px;
+background-image: url("../img/dessins/mur.png");
+   background-repeat: no-repeat;
+background-position: 25px 50px;
+}
+
+#wall:hover
+{
+color: rgb(174,227,157);
+height: 146px;
+border: 1px solid rgb(174,227,157);
+border-bottom: 5px solid rgb(255,236,108);
+background-image: url("../img/dessins/mur_j.png");
+background-position: 21px 50px;
+}
+
+#proposer
+{
+color: rgb(98,160,77);
+font-weight: bold;
+display: inline-block;
+width : 130px;
+height: 150px;
+text-align: center;
+border: 1px dotted rgb(174,227,157);
+vertical-align: top;
+margin-top: 18px;
+margin-left: 15px;
+background-image: url("../img/dessins/proposer.png");
+   background-repeat: no-repeat;
+background-position: 20px 45px;
+}
+
+#proposer:hover
+{
+color: rgb(174,227,157);
+height: 146px;
+border: 1px solid rgb(174,227,157);
+border-bottom: 5px solid rgb(255,236,108);
+background-image: url("../img/dessins/proposer_j.png");
+background-position: 22px 49px;
+}
+
+#demander
+{
+color: rgb(98,160,77);
+font-weight: bold;
+display: inline-block;
+width : 130px;
+height: 150px;
+text-align: center;
+border: 1px dotted rgb(174,227,157);
+vertical-align: top;
+margin-top: 18px;
+margin-left: 15px;
+background-image: url("../img/dessins/demander.png");
+   background-repeat: no-repeat;
+background-position: 9px 45px;
+}
+
+#demander:hover
+{
+color: rgb(174,227,157);
+height: 146px;
+border: 1px solid rgb(174,227,157);
+border-bottom: 5px solid rgb(255,236,108);
+background-image: url("../img/dessins/demander_j.png");
+background-position: 5px 40px;
+}
+
+#monCompte
+{
+color: rgb(98,160,77);
+font-weight: bold;
+display: inline-block;
+width : 130px;
+height: 150px;
+text-align: center;
+border: 1px dotted rgb(174,227,157);
+vertical-align: top;
+margin-top: 18px;
+margin-left: 15px;
+background-image: url("../img/dessins/molette.png");
+   background-repeat: no-repeat;
+background-position: 30px 52px;
+}
+
+#monCompte:hover
+{
+color: rgb(174,227,157);
+height: 146px;
+border: 1px solid rgb(174,227,157);
+border-bottom: 5px solid rgb(255,236,108);
+background-image: url("../img/dessins/molette_j.png");
+background-position: 34px 51px;
+}
+
+#dessin
+{
+display: inline-block;
+vertical-align: top;
+width: 400px;
+}
+
+#presentation
+{
+display: inline-block;
+vertical-align: top;
+width: 400px;
+}
