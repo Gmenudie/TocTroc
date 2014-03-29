@@ -22,6 +22,7 @@
 	<div id="monCompte">
 	<p>Mon compte</p>
 	</div>
+	<div> <?php echo $this->Html->link("Se déconnecter", array('controller' => 'users', 'action' => 'logout')); ?> </div>
 	</div>
 </header>
 

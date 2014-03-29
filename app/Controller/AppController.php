@@ -50,7 +50,7 @@ class AppController extends Controller {
         ),
             
         'logoutRedirect' => array(
-            'controller' => 'acceuil',
+            'controller' => 'acceuils',
             'action' => 'index'
         ),
         'authorize' => array('Controller') 

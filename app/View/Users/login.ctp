@@ -5,8 +5,8 @@
         <legend>
             <?php echo __('Entrez votre identifiant et votre mot de passe'); ?>
         </legend>
-        <?php echo $this->Form->input('username');
-        echo $this->Form->input('password');
+        <?php echo $this->Form->input('email', array('label'=>'Email'));
+        	  echo $this->Form->input('password', array('label'=>'Mot de passe'));
     ?>
     </fieldset>
 <?php echo $this->Form->end(__('Login')); ?>
