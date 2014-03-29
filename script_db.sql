@@ -123,12 +123,12 @@ CREATE TABLE users (
                 email VARCHAR(50) NOT NULL,
                 password VARCHAR(50) NOT NULL,
                 image_profil VARCHAR(50),
+                telephone_1 INT,
                 telephone_2 INT,
-                telephone_2_1 INT,
                 telephone_3 INT,
                 date DATETIME NOT NULL,
-                id_adresse INT NOT NULL,
-                id_profil INT NOT NULL,
+                id_adresse INT,
+                id_profil INT,
                 PRIMARY KEY (id_user)
 );
 

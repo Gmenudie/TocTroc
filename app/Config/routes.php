@@ -32,7 +32,7 @@
 
 
 
-	Router::connect('/', array('controller'=> 'posts', 'action'=>'index'));
+	Router::connect('/', array('controller'=> 'acceuils', 'action'=>'index'));
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
