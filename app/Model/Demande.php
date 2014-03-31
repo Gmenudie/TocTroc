@@ -1,18 +1,19 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Post Model
+ * Demande Model
  *
- * @property Canal $Canal
+ * @property Appartenance $Appartenance
+ * @property Offre $Offre
  */
-class Post extends AppModel {
+class Demande extends AppModel {
 
 /**
  * Primary key field
  *
  * @var string
  */
-	public $primaryKey = 'post_id';
+	public $primaryKey = 'id_demande';
 
 /**
  * Validation rules
@@ -20,27 +21,27 @@ class Post extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'titre' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Ce champ ne doit pas être vide',
+		'appartenance_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'contenu' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Vous devez écrire quelque chose',
+		'offre_id' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'date' => array(
+		'date_emprunt' => array(
 			'datetime' => array(
 				'rule' => array('datetime'),
 				//'message' => 'Your custom message here',
@@ -50,7 +51,27 @@ class Post extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'canal_id' => array(
+		'date_retour' => array(
+			'datetime' => array(
+				'rule' => array('datetime'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'date_demande' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'etat' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -70,37 +91,19 @@ class Post extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Canal' => array(
-			'className' => 'Canal',
-			'foreignKey' => 'canal_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
 		'Appartenance' => array(
 			'className' => 'Appartenance',
 			'foreignKey' => 'appartenance_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		)
-	);
-	public $hasMany = array(
-		'Commentaires' => array(
-			'className' => 'Commentaire',
-			'foreignKey' => 'post_id',
-			'dependent' => false,
+		),
+		'Offre' => array(
+			'className' => 'Offre',
+			'foreignKey' => 'offre_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
+			'order' => ''
 		)
 	);
-
-
-
 }

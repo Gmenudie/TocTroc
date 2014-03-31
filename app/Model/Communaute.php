@@ -1,18 +1,18 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Post Model
+ * Communaute Model
  *
- * @property Canal $Canal
+ * @property Adresse $Adresse
  */
-class Post extends AppModel {
+class Communaute extends AppModel {
 
 /**
  * Primary key field
  *
  * @var string
  */
-	public $primaryKey = 'post_id';
+	public $primaryKey = 'communaute_id';
 
 /**
  * Validation rules
@@ -20,7 +20,7 @@ class Post extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'titre' => array(
+		'nom' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
 				'message' => 'Ce champ ne doit pas être vide',
@@ -30,10 +30,10 @@ class Post extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'contenu' => array(
+		'parametres' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
-				'message' => 'Vous devez écrire quelque chose',
+				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -50,7 +50,7 @@ class Post extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'canal_id' => array(
+		'adresse_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
@@ -70,37 +70,12 @@ class Post extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Canal' => array(
-			'className' => 'Canal',
-			'foreignKey' => 'canal_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'Appartenance' => array(
-			'className' => 'Appartenance',
-			'foreignKey' => 'appartenance_id',
+		'Adresse' => array(
+			'className' => 'Adresse',
+			'foreignKey' => 'adresse_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		)
 	);
-	public $hasMany = array(
-		'Commentaires' => array(
-			'className' => 'Commentaire',
-			'foreignKey' => 'post_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-	);
-
-
-
 }

@@ -1,18 +1,18 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * Post Model
+ * Offre Model
  *
- * @property Canal $Canal
+ * @property Category $Category
  */
-class Post extends AppModel {
+class Offre extends AppModel {
 
 /**
  * Primary key field
  *
  * @var string
  */
-	public $primaryKey = 'post_id';
+	public $primaryKey = 'offre_id';
 
 /**
  * Validation rules
@@ -23,17 +23,17 @@ class Post extends AppModel {
 		'titre' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
-				'message' => 'Ce champ ne doit pas être vide',
+				'message' => 'Votre offre doit avoir un titre',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'contenu' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Vous devez écrire quelque chose',
+		'etat' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -50,33 +50,32 @@ class Post extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'canal_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
- * belongsTo associations
+ * hasAndBelongsToMany associations
  *
  * @var array
  */
-	public $belongsTo = array(
-		'Canal' => array(
-			'className' => 'Canal',
-			'foreignKey' => 'canal_id',
+	public $hasAndBelongsToMany = array(
+		'Category' => array(
+			'className' => 'Category',
+			'joinTable' => 'categories_offres',
+			'foreignKey' => 'offre_id',
+			'associationForeignKey' => 'categorie_id',
+			'unique' => 'keepExisting',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
-		),
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'finderQuery' => '',
+		)
+	);
+
+	public $belongsTo = array(
 		'Appartenance' => array(
 			'className' => 'Appartenance',
 			'foreignKey' => 'appartenance_id',
@@ -85,22 +84,5 @@ class Post extends AppModel {
 			'order' => ''
 		)
 	);
-	public $hasMany = array(
-		'Commentaires' => array(
-			'className' => 'Commentaire',
-			'foreignKey' => 'post_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-	);
-
-
 
 }
