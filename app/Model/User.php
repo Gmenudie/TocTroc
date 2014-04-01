@@ -1,5 +1,7 @@
 <?php
 App::uses('AppModel', 'Model');
+App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
+
 /**
  * User Model
  *
@@ -10,12 +12,23 @@ App::uses('AppModel', 'Model');
  */
 class User extends AppModel {
 
+
+	public function beforeSave($options = array()) {
+    if (isset($this->data[$this->alias]['password'])) {
+        $passwordHasher = new SimplePasswordHasher();
+        $this->data[$this->alias]['password'] = $passwordHasher->hash(
+            $this->data[$this->alias]['password']
+        );
+    }
+    return true;
+	}
+
 /**
  * Primary key field
  *
  * @var string
  */
-	public $primaryKey = 'uder_id';
+	public $primaryKey = 'user_id';
 
 /**
  * Validation rules
@@ -104,7 +117,7 @@ class User extends AppModel {
  */
 	public $belongsTo = array(
 		'Adresse' => array(
-			'className' => 'Adresse',
+			'className' => 'Adress',
 			'foreignKey' => 'adresse_id',
 			'conditions' => '',
 			'fields' => '',

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 31, 2014 at 04:43 
+-- Generation Time: Apr 01, 2014 at 08:33 
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -35,7 +35,16 @@ CREATE TABLE IF NOT EXISTS `adresses` (
   `numero_appartement` int(11) DEFAULT NULL,
   `etage` int(11) DEFAULT NULL,
   PRIMARY KEY (`adresse_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `adresses`
+--
+
+INSERT INTO `adresses` (`adresse_id`, `numero`, `rue`, `code_postal`, `ville`, `numero_appartement`, `etage`) VALUES
+(1, 321, 'Pascal', NULL, '', NULL, NULL),
+(2, 26, 'Pascal', NULL, '', NULL, NULL),
+(3, 486, 'Alain', 44000, 'Nantes', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -79,10 +88,18 @@ CREATE TABLE IF NOT EXISTS `appartenances` (
   `communaute_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `valide` int(11) NOT NULL,
+  `role` int(11) NOT NULL,
   PRIMARY KEY (`appartenance_id`),
   KEY `communaute_appartient_fk` (`communaute_id`),
   KEY `user_appartient_fk` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `appartenances`
+--
+
+INSERT INTO `appartenances` (`appartenance_id`, `communaute_id`, `user_id`, `valide`, `role`) VALUES
+(2, 27, 4, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -154,7 +171,15 @@ CREATE TABLE IF NOT EXISTS `communautes` (
   `adresse_id` int(11) NOT NULL,
   PRIMARY KEY (`communaute_id`),
   KEY `adresse_communaute_fk` (`adresse_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=28 ;
+
+--
+-- Dumping data for table `communautes`
+--
+
+INSERT INTO `communautes` (`communaute_id`, `nom`, `description`, `parametres`, `date`, `adresse_id`) VALUES
+(16, 'Communauté Test', '', '0', '0000-00-00 00:00:00', 2),
+(27, 'Test2', 'Nouveau test', '0', '0000-00-00 00:00:00', 3);
 
 -- --------------------------------------------------------
 
@@ -241,7 +266,16 @@ CREATE TABLE IF NOT EXISTS `roles` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`role_id`, `nom`) VALUES
+(1, 'Administrateur'),
+(2, 'Modérateur'),
+(3, 'Utilisateur');
 
 -- --------------------------------------------------------
 
@@ -263,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `titres` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `uder_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `prenom` varchar(50) COLLATE utf8_bin NOT NULL,
   `nom` varchar(50) COLLATE utf8_bin NOT NULL,
   `email` varchar(50) COLLATE utf8_bin NOT NULL,
@@ -273,12 +307,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `telephone_2_1` int(11) DEFAULT NULL,
   `telephone_3` int(11) DEFAULT NULL,
   `date` datetime NOT NULL,
-  `adresse_id` int(11) NOT NULL,
+  `adresse_id` int(11) DEFAULT NULL,
   `role_id` int(11) NOT NULL,
-  PRIMARY KEY (`uder_id`),
+  PRIMARY KEY (`user_id`),
   KEY `profil_user_fk` (`role_id`),
   KEY `adresse_user_fk` (`adresse_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `prenom`, `nom`, `email`, `password`, `image_profil`, `telephone_2`, `telephone_2_1`, `telephone_3`, `date`, `adresse_id`, `role_id`) VALUES
+(4, 'Geoffray', 'Menudier', 'menu@hotmail.fr', '451dd656bc353a7e36ef6df5b63751c0865dc945', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -314,22 +355,22 @@ ALTER TABLE `annonces_categories`
 -- Constraints for table `appartenances`
 --
 ALTER TABLE `appartenances`
-  ADD CONSTRAINT `user_appartient_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`uder_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `communaute_appartient_fk` FOREIGN KEY (`communaute_id`) REFERENCES `communautes` (`communaute_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `communaute_appartient_fk` FOREIGN KEY (`communaute_id`) REFERENCES `communautes` (`communaute_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `user_appartient_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `categories_offres`
 --
 ALTER TABLE `categories_offres`
-  ADD CONSTRAINT `offre_offre_possede_categorie_fk` FOREIGN KEY (`offre_id`) REFERENCES `offres` (`offre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `categorie_offre_possede_categorie_fk` FOREIGN KEY (`categorie_id`) REFERENCES `categories` (`categorie_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `categorie_offre_possede_categorie_fk` FOREIGN KEY (`categorie_id`) REFERENCES `categories` (`categorie_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `offre_offre_possede_categorie_fk` FOREIGN KEY (`offre_id`) REFERENCES `offres` (`offre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `commentaires`
 --
 ALTER TABLE `commentaires`
-  ADD CONSTRAINT `posts_commentaires_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `appartenances_commentaires_fk` FOREIGN KEY (`appartenance_id`) REFERENCES `appartenances` (`appartenance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `appartenances_commentaires_fk` FOREIGN KEY (`appartenance_id`) REFERENCES `appartenances` (`appartenance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `posts_commentaires_fk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `communautes`
@@ -341,15 +382,15 @@ ALTER TABLE `communautes`
 -- Constraints for table `demandes`
 --
 ALTER TABLE `demandes`
-  ADD CONSTRAINT `offre_demande_fk` FOREIGN KEY (`offre_id`) REFERENCES `offres` (`offre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `appartient_demande_fk` FOREIGN KEY (`appartenance_id`) REFERENCES `appartenances` (`appartenance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `appartient_demande_fk` FOREIGN KEY (`appartenance_id`) REFERENCES `appartenances` (`appartenance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `offre_demande_fk` FOREIGN KEY (`offre_id`) REFERENCES `offres` (`offre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `emprunts`
 --
 ALTER TABLE `emprunts`
-  ADD CONSTRAINT `offre_emprunt_fk` FOREIGN KEY (`offre_id`) REFERENCES `offres` (`offre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `appartient_emprunt_fk` FOREIGN KEY (`appartenance_id`) REFERENCES `appartenances` (`appartenance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `appartient_emprunt_fk` FOREIGN KEY (`appartenance_id`) REFERENCES `appartenances` (`appartenance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `offre_emprunt_fk` FOREIGN KEY (`offre_id`) REFERENCES `offres` (`offre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `offres`
@@ -375,8 +416,8 @@ ALTER TABLE `users`
 -- Constraints for table `users_titres`
 --
 ALTER TABLE `users_titres`
-  ADD CONSTRAINT `user_possede_titre_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`uder_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `titre_possede_titre_fk` FOREIGN KEY (`titre_id`) REFERENCES `titres` (`titre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `titre_possede_titre_fk` FOREIGN KEY (`titre_id`) REFERENCES `titres` (`titre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `user_possede_titre_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

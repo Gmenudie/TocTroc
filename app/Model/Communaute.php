@@ -70,8 +70,8 @@ class Communaute extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Adresse' => array(
-			'className' => 'Adresse',
+		'Adress' => array(
+			'className' => 'Adress',
 			'foreignKey' => 'adresse_id',
 			'conditions' => '',
 			'fields' => '',

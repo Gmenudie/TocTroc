@@ -10,6 +10,7 @@ class UsersController extends AppController {
 
 
 	public function login() {
+		$this->layout='unauthentified';
 	    if ($this->request->is('post')) {
 	        if ($this->Auth->login()) {
 	            return $this->redirect($this->Auth->redirect());
@@ -28,7 +29,12 @@ class UsersController extends AppController {
 
         if ($this->request->is('post')) {
             $this->User->create();
-            if ($this->User->save($this->request->data)) {
+            $temporaryUser=array();
+            $temporaryUser=$this->request->data;
+            $temporaryUser["User"]["role_id"]='3';
+
+            if ($this->User->save($temporaryUser)) {   	
+				unset($temporaryUser);
                 $this->Session->setFlash(__('Bienvenue sur TocTroc !'));
                 return $this->redirect( array('controller' => 'acceuils', 'action' => 'index'));
             }
