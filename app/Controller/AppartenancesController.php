@@ -3,7 +3,8 @@
 class AppartenancesController extends AppController {
 
 	public function index(){
-		$this->set('appartenances',$this->Appartenance->find('all', array('conditions' => array('Appartenance.user_id' => $this->Auth->User("user_id")))));
+		$this->set('appartenances',$this->Appartenance->find('all', array('conditions' => array('Appartenance.user_id' => $this->Auth->User("user_id")), 'recursive'=> 2)));
+
 	}
 
 		public function add() {

@@ -1,21 +1,62 @@
-<h1>Blog posts</h1>
-<table>
-    <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Content</th>
-        <th>Created</th>
-    </tr>
+<h1>Le mur</h1>
 
-    <!-- Here is where we loop through our $posts array, printing out post info -->
 
     <?php foreach ($posts as $post): ?>
-    <tr>
-        <td><?php echo $post['Post']['id_post']; ?></td>
-        <td><?php echo $post['Post']['titre']; ?></td>
-        <td><?php echo $post['Post']['contenu']; ?></td>
-        <td><?php echo $post['Post']['date']; ?></td>
-    </tr>
-    <?php endforeach; ?>
+
+
+
+        <div class='Post'>
+        <h2><?php echo $post['Post']['titre']; ?></h2>
+        <?php 
+        echo ($post['Post']['User']['prenom']." ".$post['Post']['User']['nom']."\n");
+        echo ($post['Post']['contenu']."\n"); 
+        echo ($post['Post']['created']."\n");
+        ?>
+        
+        
+        <?php if(array_key_exists("Commentaires", $post)){?>
+
+            <div class='Commentaires'>
+            <?php foreach ($post["Commentaires"] as $com){?>
+                <p class"commentaire">
+                <?php                
+                echo $com['contenu'];
+                echo ($com['User']['prenom']." ".$com['User']['nom']);
+                echo $com['created'];
+                ?> </p>
+                <?php }?>
+            </div>
+            <?php 
+        }
+        ?>
+
+        <?php 
+        echo $this->Form->create("Commentaire",array('url'=> array('controller'=>'commentaires','action'=>'add')));
+        
+        echo $this->Form->input('contenu');
+        echo $this->Form->hidden('appartenance_id',array('default'=>$post["Post"]["communaute_id"]));
+        echo $this->Form->hidden('post_id',array('default'=>$post["Post"]["post_id"]));        
+        echo $this->Form->end("Commenter");
+        ?>
+        </div>       
+        
+    
+    <?php endforeach;?>
+
+
+    <div class="Poster">
+        <?php 
+        echo $this->Form->create("Post",array('url'=>array('controller'=>'posts','action'=>'add')));
+        echo $this->Form->input('titre');
+        echo $this->Form->input('contenu');
+        echo $this->Form->hidden("appartenance_id",array('default'=>$posts[0]["Post"]["Userwatching"]));
+        echo $this->Form->hidden("canal_id",array('default'=>1));
+        echo $this->Form->end("Poster");
+        ?>
+    </div>
+
+    <?php echo $this->Html->link('Voir plus', array('controller'=>'posts','action'=>'index', $posts[0]["Post"]["Userwatching"], sizeof($posts)+10));?>
     <?php unset($post); ?>
-</table>
+
+
+

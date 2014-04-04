@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 01, 2014 at 08:33 
+-- Generation Time: Apr 04, 2014 at 04:04 
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `adresses` (
   `numero_appartement` int(11) DEFAULT NULL,
   `etage` int(11) DEFAULT NULL,
   PRIMARY KEY (`adresse_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `adresses`
@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS `adresses` (
 INSERT INTO `adresses` (`adresse_id`, `numero`, `rue`, `code_postal`, `ville`, `numero_appartement`, `etage`) VALUES
 (1, 321, 'Pascal', NULL, '', NULL, NULL),
 (2, 26, 'Pascal', NULL, '', NULL, NULL),
-(3, 486, 'Alain', 44000, 'Nantes', NULL, NULL);
+(3, 486, 'Alain', 44000, 'Nantes', NULL, NULL),
+(4, 265, 'bob', 4458028, 'bob', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -92,14 +93,16 @@ CREATE TABLE IF NOT EXISTS `appartenances` (
   PRIMARY KEY (`appartenance_id`),
   KEY `communaute_appartient_fk` (`communaute_id`),
   KEY `user_appartient_fk` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `appartenances`
 --
 
 INSERT INTO `appartenances` (`appartenance_id`, `communaute_id`, `user_id`, `valide`, `role`) VALUES
-(2, 27, 4, 1, 2);
+(2, 27, 4, 1, 2),
+(3, 28, 5, 1, 2),
+(5, 27, 5, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -112,7 +115,14 @@ CREATE TABLE IF NOT EXISTS `canals` (
   `nom` varchar(50) COLLATE utf8_bin NOT NULL,
   `description` text COLLATE utf8_bin,
   PRIMARY KEY (`canal_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `canals`
+--
+
+INSERT INTO `canals` (`canal_id`, `nom`, `description`) VALUES
+(1, 'Tous', NULL);
 
 -- --------------------------------------------------------
 
@@ -148,13 +158,23 @@ CREATE TABLE IF NOT EXISTS `categories_offres` (
 CREATE TABLE IF NOT EXISTS `commentaires` (
   `commentaire_id` int(11) NOT NULL AUTO_INCREMENT,
   `contenu` text COLLATE utf8_bin NOT NULL,
-  `date` datetime NOT NULL,
+  `created` datetime NOT NULL,
   `appartenance_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   PRIMARY KEY (`commentaire_id`),
   KEY `appartenances_commentaires_fk` (`appartenance_id`),
   KEY `posts_commentaires_fk` (`post_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `commentaires`
+--
+
+INSERT INTO `commentaires` (`commentaire_id`, `contenu`, `created`, `appartenance_id`, `post_id`) VALUES
+(1, 'Si les commentaires marchent, c''est clairement parce que Geoffray Menudier est une torche !', '2014-04-03 08:00:00', 2, 5),
+(2, 'Oui la je dois bien dire que j''ai fait fort', '2014-04-04 00:00:00', 2, 5),
+(3, 'Ok, Geoffray est clairement une torche', '2014-04-03 11:19:17', 5, 5),
+(4, 'Je peux même écrire un commentaire sur le site !', '2014-04-04 06:00:00', 2, 5);
 
 -- --------------------------------------------------------
 
@@ -167,19 +187,20 @@ CREATE TABLE IF NOT EXISTS `communautes` (
   `nom` varchar(50) COLLATE utf8_bin NOT NULL,
   `description` text COLLATE utf8_bin,
   `parametres` varchar(20) COLLATE utf8_bin NOT NULL,
-  `date` datetime NOT NULL,
+  `created` datetime NOT NULL,
   `adresse_id` int(11) NOT NULL,
   PRIMARY KEY (`communaute_id`),
   KEY `adresse_communaute_fk` (`adresse_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `communautes`
 --
 
-INSERT INTO `communautes` (`communaute_id`, `nom`, `description`, `parametres`, `date`, `adresse_id`) VALUES
+INSERT INTO `communautes` (`communaute_id`, `nom`, `description`, `parametres`, `created`, `adresse_id`) VALUES
 (16, 'Communauté Test', '', '0', '0000-00-00 00:00:00', 2),
-(27, 'Test2', 'Nouveau test', '0', '0000-00-00 00:00:00', 3);
+(27, 'Test2', 'Nouveau test', '0', '0000-00-00 00:00:00', 3),
+(28, 'bobtest', 'bob', '0', '0000-00-00 00:00:00', 4);
 
 -- --------------------------------------------------------
 
@@ -248,13 +269,22 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `titre` varchar(50) COLLATE utf8_bin NOT NULL,
   `contenu` text COLLATE utf8_bin NOT NULL,
   `document_joint` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-  `date` datetime NOT NULL,
+  `created` datetime NOT NULL,
   `canal_id` int(11) NOT NULL,
   `appartenance_id` int(11) NOT NULL,
   PRIMARY KEY (`post_id`),
   KEY `canal_post_fk` (`canal_id`),
   KEY `appartanances_posts_fk` (`appartenance_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`post_id`, `titre`, `contenu`, `document_joint`, `created`, `canal_id`, `appartenance_id`) VALUES
+(3, 'Test n°1', 'Post de geoffray', NULL, '2014-04-03 00:00:00', 1, 2),
+(4, 'Test n°2', 'post de Bob', NULL, '2014-04-05 00:00:00', 1, 5),
+(5, 'this is a test 3', 'testest', NULL, '2014-04-05 11:14:15', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -306,20 +336,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `telephone_2` int(11) DEFAULT NULL,
   `telephone_2_1` int(11) DEFAULT NULL,
   `telephone_3` int(11) DEFAULT NULL,
-  `date` datetime NOT NULL,
+  `created` datetime NOT NULL,
   `adresse_id` int(11) DEFAULT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`),
   KEY `profil_user_fk` (`role_id`),
   KEY `adresse_user_fk` (`adresse_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `prenom`, `nom`, `email`, `password`, `image_profil`, `telephone_2`, `telephone_2_1`, `telephone_3`, `date`, `adresse_id`, `role_id`) VALUES
-(4, 'Geoffray', 'Menudier', 'menu@hotmail.fr', '451dd656bc353a7e36ef6df5b63751c0865dc945', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3);
+INSERT INTO `users` (`user_id`, `prenom`, `nom`, `email`, `password`, `image_profil`, `telephone_2`, `telephone_2_1`, `telephone_3`, `created`, `adresse_id`, `role_id`) VALUES
+(4, 'Geoffray', 'Menudier', 'menu@hotmail.fr', '451dd656bc353a7e36ef6df5b63751c0865dc945', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3),
+(5, 'Bob', 'Joséphine', 'bob@hmiail.com', '211fb15019df6a5b278499f83ea70e37a04bf1ee', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3),
+(6, 'Victor', 'Enaud', 'vic@enaud.fr', 'db5718c4f3e3dcdc184bd06a9803eb6f18c4daa9', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3);
 
 -- --------------------------------------------------------
 
