@@ -8,11 +8,7 @@ class PostsController extends AppController {
 	    $this->Auth->allow('index','add', 'logout');
 	}
 
-<<<<<<< HEAD
-	public function index($id=null,$size=10) {
-=======
 	public function index($id=null,$size=1) {
->>>>>>> origin/bob
 
 		$appartient=$this->Post->Appartenance->find('all', array('conditions' => array('appartenance_id' => $id)));
 
@@ -73,15 +69,7 @@ class PostsController extends AppController {
 							foreach($post["Commentaires"] as $key=>$row){
 								$rang[$key]=$row['created'];								
 							}
-<<<<<<< HEAD
-							array_multisort($rang, SORT_ASC, $post["Commentaires"]);
-
-							unset($key);
-							unset($rang);
-							unset($row);
-=======
 							array_multisort($rang,SORT_ASC, $post["Commentaires"]);
->>>>>>> origin/bob
 							
 						}
 					}/*
@@ -128,25 +116,6 @@ class PostsController extends AppController {
 			}
 	}
 
-<<<<<<< HEAD
-
-	public function add(){
-
-		if ($this->request->is('post')) {
-			$appartient=$this->Post->Appartenance->find('first',array('conditions'=>array("Appartenance.appartenance_id"=>$this->request->data["Post"]["appartenance_id"])));
-			if($appartient!=null && $appartient["Appartenance"]["user_id"]===$this->Auth->user('user_id')){	            
-
-	            $this->Post->create();
-	            if ($this->Post->save($this->request->data)) {
-					
-	                $this->Session->setFlash(__('Votre post a bien été enregistré'));
-	                return $this->redirect( array('controller' => 'posts', 'action' => 'index', $appartient["Appartenance"]["appartenance_id"]));
-	            }
-	            $this->Session->setFlash(__('Erreur'));
-	        }
-
-	        }
-=======
 /*
 	public function add(){
 
@@ -156,15 +125,10 @@ class PostsController extends AppController {
 	            
 
 	            $this->Post->create();
->>>>>>> origin/bob
 
 
 
 	}
 		
-<<<<<<< HEAD
-	
-=======
 	*/
->>>>>>> origin/bob
 }

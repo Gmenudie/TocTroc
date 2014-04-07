@@ -46,11 +46,7 @@
 
     <div class="Poster">
         <?php 
-<<<<<<< HEAD
-        echo $this->Form->create("Post",array('url'=>array('controller'=>'posts','action'=>'add')));
-=======
         echo $this->Form->create("Post");
->>>>>>> origin/bob
         echo $this->Form->input('titre');
         echo $this->Form->input('contenu');
         echo $this->Form->hidden("appartenance_id",array('default'=>$posts[0]["Post"]["Userwatching"]));
@@ -59,11 +55,7 @@
         ?>
     </div>
 
-<<<<<<< HEAD
-    <?php echo $this->Html->link('Voir plus', array('controller'=>'posts','action'=>'index', $posts[0]["Post"]["Userwatching"], sizeof($posts)+10));?>
-=======
     <?php echo $this->Html->link('Voir plus', array('controller'=>'posts','action'=>'index', $posts[0]["Post"]["Userwatching"], sizeof($posts)+1));?>
->>>>>>> origin/bob
     <?php unset($post); ?>
 
 
