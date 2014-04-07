@@ -3,7 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
+<<<<<<< HEAD
 -- Generation Time: Apr 04, 2014 at 04:04 
+=======
+-- Generation Time: Apr 01, 2014 at 03:11 
+>>>>>>> origin/bob
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -336,22 +340,35 @@ CREATE TABLE IF NOT EXISTS `users` (
   `telephone_2` int(11) DEFAULT NULL,
   `telephone_2_1` int(11) DEFAULT NULL,
   `telephone_3` int(11) DEFAULT NULL,
+<<<<<<< HEAD
   `created` datetime NOT NULL,
+=======
+  `date` datetime NOT NULL,
+>>>>>>> origin/bob
   `adresse_id` int(11) DEFAULT NULL,
   `role_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`),
   KEY `profil_user_fk` (`role_id`),
   KEY `adresse_user_fk` (`adresse_id`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=7 ;
+=======
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+>>>>>>> origin/bob
 
 --
 -- Dumping data for table `users`
 --
 
+<<<<<<< HEAD
 INSERT INTO `users` (`user_id`, `prenom`, `nom`, `email`, `password`, `image_profil`, `telephone_2`, `telephone_2_1`, `telephone_3`, `created`, `adresse_id`, `role_id`) VALUES
 (4, 'Geoffray', 'Menudier', 'menu@hotmail.fr', '451dd656bc353a7e36ef6df5b63751c0865dc945', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3),
 (5, 'Bob', 'Joséphine', 'bob@hmiail.com', '211fb15019df6a5b278499f83ea70e37a04bf1ee', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3),
 (6, 'Victor', 'Enaud', 'vic@enaud.fr', 'db5718c4f3e3dcdc184bd06a9803eb6f18c4daa9', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3);
+=======
+INSERT INTO `users` (`user_id`, `prenom`, `nom`, `email`, `password`, `image_profil`, `telephone_2`, `telephone_2_1`, `telephone_3`, `date`, `adresse_id`, `role_id`) VALUES
+(4, 'Geoffray', 'Menudier', 'menu@hotmail.fr', '451dd656bc353a7e36ef6df5b63751c0865dc945', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3);
+>>>>>>> origin/bob
 
 -- --------------------------------------------------------
 
