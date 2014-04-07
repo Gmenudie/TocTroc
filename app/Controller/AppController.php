@@ -45,7 +45,7 @@ class AppController extends Controller {
         ),
             
         'loginRedirect' => array(
-            'controller' => 'posts',
+           'controller' => 'appartenances',
             'action' => 'index'
         ),
             
@@ -66,6 +66,12 @@ class AppController extends Controller {
 
         // Default deny
         return false;
+    }
+
+    public function beforeFilter() {
+        parent::beforeFilter();
+        // Allow users to register and logout.
+        $this->Auth->allow();
     }
 
 

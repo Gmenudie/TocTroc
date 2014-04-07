@@ -1,0 +1,10 @@
+#formAdd input
+{
+	margin: 10px;
+	width: 300px;
+}
+
+#formAdd input[type=submit]
+{
+	width: 100px;
+}

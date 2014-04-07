@@ -40,7 +40,7 @@ class Communaute extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'date' => array(
+		'created' => array(
 			'datetime' => array(
 				'rule' => array('datetime'),
 				//'message' => 'Your custom message here',
@@ -70,8 +70,8 @@ class Communaute extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Adresse' => array(
-			'className' => 'Adresse',
+		'Adress' => array(
+			'className' => 'Adress',
 			'foreignKey' => 'adresse_id',
 			'conditions' => '',
 			'fields' => '',
