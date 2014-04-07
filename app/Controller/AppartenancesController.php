@@ -25,6 +25,7 @@ class AppartenancesController extends AppController {
 	                return $this->redirect( array('controller' => 'appartenances', 'action' => 'index'));
 	            }
 	            $this->Session->setFlash(__('Erreur'));
+	            return $this->redirect( array('controller' => 'appartenances', 'action' => 'index'));
 	        }
 	    }
 

@@ -29,9 +29,33 @@
         else echo "Vous n'avez pas encore de communauté";
     ?>
 
-    <?php echo $this->html->link('Créer une communauté', array('controller' => 'appartenances','action' => 'add')); ?>
+
     
 
 
     <?php unset($appartenances); ?>
 </table>
+
+<div id='créer'>
+
+    <?php echo $this->Form->create('Appartenance',(array('url'=>array('controller'=>'appartenances','action'=>'add'))));
+?>
+
+<fieldset><legend> Créer une communauté </legend>
+<?php   
+    
+    echo $this->Form->input('Communaute.nom', array('label' => 'Nom'));
+    echo $this->Form->input('Communaute.description' , array('label' => 'Description'));
+?>
+</fieldset>
+<fieldset><legend>Adresse de la communauté</legend>
+<?php
+    echo $this->Form->input('Adress.numero' , array('label' => 'N°'));
+    echo $this->Form->input('Adress.rue' , array('label' => 'Rue'));
+    echo $this->Form->input('Adress.code_postal' , array('label' => 'Code Postal'));
+    echo $this->Form->input('Adress.ville' , array('label' => 'Ville'));
+?>
+</fieldset> 
+<?php
+    echo $this->Form->end("Créer"); ?>
+</div>

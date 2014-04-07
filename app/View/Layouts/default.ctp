@@ -34,6 +34,8 @@
         </div>
 	</div>
 	<div id="user">
+		<?php echo("Bonjour ".AuthComponent::user('prenom')." ".AuthComponent::user('nom')); ?>
+		<?php echo $this->Html->link(_('Se déconnecter'),array("controller"=>"users","action"=>"logout"));?>
 		
 	</div>
 </header>

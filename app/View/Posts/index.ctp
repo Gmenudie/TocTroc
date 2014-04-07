@@ -47,13 +47,13 @@
         echo $this->Form->create("Post",array('url'=>array('controller'=>'posts','action'=>'add')));
         echo $this->Form->input('titre');
         echo $this->Form->input('contenu');
-        echo $this->Form->hidden("appartenance_id",array('default'=>$posts[0]["Post"]["Userwatching"]));
+        echo $this->Form->hidden("appartenance_id",array('default'=>$user));
         echo $this->Form->hidden("canal_id",array('default'=>1));
         echo $this->Form->end("Poster");
         ?>
     </div>
 
-    <?php echo $this->Html->link('Voir plus', array('controller'=>'posts','action'=>'index', $posts[0]["Post"]["Userwatching"], sizeof($posts)+10));?>
+    <?php echo $this->Html->link('Voir plus', array('controller'=>'posts','action'=>'index', $user, sizeof($posts)+10));?>
     <?php unset($post); ?>
 
 

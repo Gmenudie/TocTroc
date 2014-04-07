@@ -19,6 +19,7 @@ class PostsController extends AppController {
 				$j=0;
 				$posts=array();
 				$coms=array();
+
 				foreach($personnes as $personne){
 
 					
@@ -34,7 +35,7 @@ class PostsController extends AppController {
 						$posts[$j]["Post"]["titre"]=$postsinter["Post"]["titre"];
 						$posts[$j]["Post"]["contenu"]=$postsinter["Post"]["contenu"];
 						$posts[$j]["Post"]["canal_id"]=$postsinter["Post"]["canal_id"];
-						$posts[$j]["Post"]["Userwatching"]=$appartient[0]["Appartenance"]["appartenance_id"];
+						
 
 						if(array_key_exists("Commentaires", $postsinter)){
 							foreach ($postsinter["Commentaires"] as $com) {
@@ -101,16 +102,21 @@ class PostsController extends AppController {
 
 					
 					//Tri des posts du plus récent au plus vieux
+
+					if($posts!=null){
 					foreach ($posts as $key2 => $row2) {
 					    $rang2[$key2]  = $row2["Post"]['created'];
 					} 
 					
 					array_multisort($rang2, SORT_DESC, $posts);	
+				}
+
+
+
 
 				
-				
 
-
+				$this->set('user',$appartient[0]["Appartenance"]["appartenance_id"]);
 
 				$this->set('posts', array_slice($posts, 0,$size));
 				unset($personnes);

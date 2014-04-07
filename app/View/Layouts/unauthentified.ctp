@@ -35,7 +35,7 @@
 	</div>
 	<div id="user">
 		<?php echo $this->Session->flash('auth'); ?>
-		<?php echo $this->Form->create('User'); ?>
+		<?php echo $this->Form->create('User',array('url'=>array('controller'=>'users','action'=>'login'))); ?>
         <?php 
 			echo $this->Form->input('email', array('label'=>'', 'placeholder'=>'Email'));
         	echo $this->Form->input('password', array('label'=>'', 'placeholder'=>'Mot de passe'));
