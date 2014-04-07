@@ -20,7 +20,7 @@ background-image: url("../img/dessins/texture_page.png");
 
 header
 {
-height: 200px;
+height: 234px;
 background-image: url("../img/dessins/texture_header.png");
 }
 
@@ -47,9 +47,15 @@ text-align: center;
 
 }
 
-h2
+h1, h2, h3, h4
 {
 color: rgb(98,160,77);
+}
+
+a
+{
+	text-decoration: none;
+	color: rgb(98,160,77);
 }
 
 #banniere
@@ -59,7 +65,7 @@ min-width:1000px;
 margin:0px;
 margin-left:auto;
 margin-right:auto;
-padding:10px;
+padding:7px;
 position: relative;
 text-align: center;
 
@@ -70,33 +76,7 @@ text-align: center;
 display: inline-block;
 }
 
-#wall
-{
-color: rgb(98,160,77);
-font-weight: bold;
-display: inline-block;
-width : 130px;
-height: 150px;
-text-align: center;
-border: 1px dotted rgb(174,227,157);
-vertical-align: top;
-margin-top: 18px;
-background-image: url("../img/dessins/mur.png");
-   background-repeat: no-repeat;
-background-position: 25px 50px;
-}
-
-#wall:hover
-{
-color: rgb(174,227,157);
-height: 146px;
-border: 1px solid rgb(174,227,157);
-border-bottom: 5px solid rgb(255,236,108);
-background-image: url("../img/dessins/mur_j.png");
-background-position: 21px 50px;
-}
-
-#proposer
+.carre_menu
 {
 color: rgb(98,160,77);
 font-weight: bold;
@@ -108,85 +88,91 @@ border: 1px dotted rgb(174,227,157);
 vertical-align: top;
 margin-top: 18px;
 margin-left: 15px;
-background-image: url("../img/dessins/proposer.png");
-   background-repeat: no-repeat;
-background-position: 20px 45px;
+padding: 0px;
 }
 
-#proposer:hover
+.carre_menu:hover
 {
 color: rgb(174,227,157);
 height: 146px;
 border: 1px solid rgb(174,227,157);
-border-bottom: 5px solid rgb(255,236,108);
-background-image: url("../img/dessins/proposer_j.png");
-background-position: 22px 49px;
+border-bottom: 5px solid rgb(174,227,157);
 }
 
-#demander
+.titre_carre_menu
 {
-color: rgb(98,160,77);
-font-weight: bold;
-display: inline-block;
-width : 130px;
-height: 150px;
-text-align: center;
-border: 1px dotted rgb(174,227,157);
-vertical-align: top;
-margin-top: 18px;
-margin-left: 15px;
-background-image: url("../img/dessins/demander.png");
-   background-repeat: no-repeat;
-background-position: 9px 45px;
+	margin-top: 20px;
+	font-size: 18px;
 }
 
-#demander:hover
+#menu1
 {
-color: rgb(174,227,157);
-height: 146px;
-border: 1px solid rgb(174,227,157);
-border-bottom: 5px solid rgb(255,236,108);
-background-image: url("../img/dessins/demander_j.png");
-background-position: 5px 40px;
+	background-image: url("../img/dessins/mur.png");
 }
 
-#monCompte
+#menu1:hover
 {
-color: rgb(98,160,77);
-font-weight: bold;
-display: inline-block;
-width : 130px;
-height: 150px;
-text-align: center;
-border: 1px dotted rgb(174,227,157);
-vertical-align: top;
-margin-top: 18px;
-margin-left: 15px;
-background-image: url("../img/dessins/molette.png");
-   background-repeat: no-repeat;
-background-position: 30px 52px;
+	background-image: url("../img/dessins/mur_j.png");
 }
 
-#monCompte:hover
+#menu2
 {
-color: rgb(174,227,157);
-height: 146px;
-border: 1px solid rgb(174,227,157);
-border-bottom: 5px solid rgb(255,236,108);
-background-image: url("../img/dessins/molette_j.png");
-background-position: 34px 51px;
+	background-image: url("../img/dessins/proposer.png");
 }
 
-#dessin
+#menu2:hover
 {
-display: inline-block;
-vertical-align: top;
-width: 400px;
+	background-image: url("../img/dessins/proposer_j.png");
 }
 
-#presentation
+#menu3
 {
-display: inline-block;
-vertical-align: top;
-width: 400px;
+	background-image: url("../img/dessins/demander.png");
 }
+
+#menu3:hover
+{
+	background-image: url("../img/dessins/demander_j.png");
+}
+
+#menu4
+{
+	background-image: url("../img/dessins/molette.png");
+}
+
+#menu4:hover
+{
+	background-image: url("../img/dessins/molette_j.png");
+}
+
+#user
+{
+	height: 35px;
+	background-color: rgb(98,160,77);
+	margin-top: 0px;
+	padding-left: 20px;
+}
+
+#user .input
+{
+	display: inline-block;
+	margin: 5px;
+}
+
+#user .submit
+{
+	display: inline-block;
+}
+
+input[type=submit]
+		{
+				background-color:white;
+				border:2px solid rgb(174,227,157);
+
+				color:black;
+
+				text-align:center;
+
+				cursor:pointer;
+		}
+

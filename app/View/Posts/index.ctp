@@ -1,9 +1,7 @@
 <h1>Le mur</h1>
 
-
+   
     <?php foreach ($posts as $post): ?>
-
-
 
         <div class='Post'>
         <h2><?php echo $post['Post']['titre']; ?></h2>
