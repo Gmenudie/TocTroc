@@ -4,7 +4,6 @@
     <?php foreach ($posts as $post): ?>
 
         <div class='Post'>
-        <h2><?php echo $post['Post']['titre']; ?></h2>
         <?php 
         echo ($post['Post']['User']['prenom']." ".$post['Post']['User']['nom']."\n");
         echo ($post['Post']['contenu']."\n"); 
@@ -45,7 +44,6 @@
     <div class="Poster">
         <?php 
         echo $this->Form->create("Post",array('url'=>array('controller'=>'posts','action'=>'add')));
-        echo $this->Form->input('titre');
         echo $this->Form->input('contenu');
         echo $this->Form->hidden("appartenance_id",array('default'=>$user));
         echo $this->Form->hidden("canal_id",array('default'=>1));

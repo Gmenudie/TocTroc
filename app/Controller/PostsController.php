@@ -32,7 +32,6 @@ class PostsController extends AppController {
 						$posts[$j]["Post"]["User"]["user_id"]=$personne["Appartenance"]["user_id"];
 						$posts[$j]["Post"]["User"]["prenom"]=$personne["User"]["prenom"];
 						$posts[$j]["Post"]["User"]["nom"]=$personne["User"]["nom"];
-						$posts[$j]["Post"]["titre"]=$postsinter["Post"]["titre"];
 						$posts[$j]["Post"]["contenu"]=$postsinter["Post"]["contenu"];
 						$posts[$j]["Post"]["canal_id"]=$postsinter["Post"]["canal_id"];
 						

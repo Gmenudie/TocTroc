@@ -20,16 +20,7 @@ class Post extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'titre' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Ce champ ne doit pas être vide',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
+		
 		'contenu' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
