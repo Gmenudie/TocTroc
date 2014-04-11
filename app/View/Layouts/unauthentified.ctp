@@ -10,7 +10,7 @@
 <header>
 	<div id="banniere">
 	<div id="logo">
-	<?php echo $this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')); ?>
+	<?php echo $this->Html->link($this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')), array('controller'=>'acceuils','action'=>'index'),array('escape'=>false)); ?>
 	</div>
 		<div class="carre_menu" id="menu1" href="emprunter.html">
             <div class="titre_carre_menu">Mur</div>
