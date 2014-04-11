@@ -17,6 +17,7 @@ class OffresController extends AppController {
 	 * 4. edit($id = null)
 	 * 5. delete($id = null)
 	 *
+	 * Remarque: controller en partie scaffoldé pour avoir le matériau de base, je ferai une meilleure doc quand il sera prêt!
 	 */
 
 

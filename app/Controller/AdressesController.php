@@ -20,6 +20,12 @@ class AdressesController extends AppController {
 	 */
 
 
+	/* Remarque: ce controlleur a totalement été crée par scaffolding, en utilisant la commande de console cake bake.
+	 * Je l'ai fait parce que j'avais des problèmes dans la prise en charge du modèle, ça m'a aidé à les résoudre.
+	 * Je garde ce fichier parce qu'il m'aide à structurer certaines fonctions et à utiliser Paginator,
+	 * mais aucune de ces fonctions ni des vue n'est utilisée par notre appli. Vous pouvez donc sauter cette page!
+
+
 /**
  * Components
  *

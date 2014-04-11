@@ -9,13 +9,13 @@ class UsersController extends AppController {
 	 * 3. logout()
 	 * 4. add()
 	 *
+	 * Assez logiquement, ce controller gère l'authentification et l'inscription. Rien de bien sorcier.
 	 */
 
 	 /* ------------------------------------------
-	 * espacePerso
+	 * beforeFilter()
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Parce qu'un utilisateur non authentifié a quand même le droit de s'inscrire, se login ou se logout!
 	 * ------------------------------------------ */
 	 
 	public function beforeFilter() {
@@ -26,10 +26,9 @@ class UsersController extends AppController {
 
 
 	/* ------------------------------------------
-	 * espacePerso
+	 * login
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Fonction standard de Cake
 	 * ------------------------------------------ */
 	 
 	public function login() {
@@ -44,10 +43,9 @@ class UsersController extends AppController {
 
 	
 	/* ------------------------------------------
-	 * espacePerso
+	 * logout
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Fonction standard de Cake
 	 * ------------------------------------------ */
 	
 	public function logout() {
@@ -56,29 +54,33 @@ class UsersController extends AppController {
 
 	
 	/* ------------------------------------------
-	 * espacePerso
+	 * add
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Gestion d'inscription basique
 	 * ------------------------------------------ */
 	
 	public function add() {
 
-		$this->layout='unauthentified';
-
-        if ($this->request->is('post')) {
-            $this->User->create();
-            $temporaryUser=array();
-            $temporaryUser=$this->request->data;
-            $temporaryUser["User"]["role_id"]='3';
-
-            if ($this->User->save($temporaryUser)) {   	
-				unset($temporaryUser);
-                $this->Session->setFlash(__('Bienvenue sur TocTroc !'));
-                return $this->redirect( array('controller' => 'acceuils', 'action' => 'index'));
-            }
-            $this->Session->setFlash(__('Erreur'));
+		if ($this->Auth->user("user_id") != null){
+        	return $this->redirect(array('controller'=>'appartenances', 'action'=>'index'));
         }
+        
+			$this->layout='unauthentified';
+
+	        if ($this->request->is('post')) {
+	            $this->User->create();
+	            $temporaryUser=array();
+	            $temporaryUser=$this->request->data;
+	            $temporaryUser["User"]["role_id"]='3';
+
+	            if ($this->User->save($temporaryUser)) {   	
+					unset($temporaryUser);
+	                $this->Session->setFlash(__('Bienvenue sur TocTroc !'));
+	                return $this->redirect( array('controller' => 'acceuils', 'action' => 'index'));
+	            }
+	            $this->Session->setFlash(__('Erreur'));
+	        }
+
     }
 
 

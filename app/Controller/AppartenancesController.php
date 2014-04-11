@@ -7,14 +7,17 @@ class AppartenancesController extends AppController {
 	 * 1. index()
 	 * 2. add()
 	 *
+	 * Remarque: ce controller est central car c'est lui qui permet de représenter l'action d'un utilisateur donné dans une communauté donnée.
+	 *
 	 */
 
 
 	/* ------------------------------------------
-	 * espacePerso
+	 * index
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * C'est la page sur laquelle tombe un utilisateur lorsqu'il est authentifié.
+	 * On trouve toutes ses communautés (= appartenances) et on lui propose de choisir dans laquelle il veut aller.
+	 * Par défaut, on renvoie au wall de la communauté (PostsController -> index()), il peut gérér les offres via le menu de navigation.
 	 * ------------------------------------------ */
 
 	public function index(){
@@ -24,10 +27,10 @@ class AppartenancesController extends AppController {
 
 	
 	/* ------------------------------------------
-	 * espacePerso
+	 * add
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Permet de créer une nouvelle communauté. L'utilisateur peut en même temps entrer l'adresse de sa communauté, elle sera enregistrée.
+	 * L'utilisateur est directement ajouté comme Modérateur de sa communauté.
 	 * ------------------------------------------ */
 	
 	public function add() {

@@ -32,6 +32,10 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
+    /* Remarque: c'est de cette classe qu'héritent tous nos controlleurs, c'est donc là qu'on renseigne les méthodes, composantes, helpers, plugins
+     * qu'on veut utiliser dans toute l'appli!
+     */
+
 
     public $helpers = array('Html', 'Form', 'Session');
 
@@ -71,7 +75,7 @@ class AppController extends Controller {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        // Allow users to register and logout.
+        // Autorise l'accès à toute les pages sans authentification, plus simple pour le moment!
         $this->Auth->allow();
     }
 

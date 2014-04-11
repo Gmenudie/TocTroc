@@ -30,6 +30,10 @@ App::uses('AppController', 'Controller');
  */
 class PagesController extends AppController {
 
+
+		// Remarque: controller de base de Cake, je n'ose pas le supprimer. On ne s'en sert pas directement.	
+
+
 /**
  * This controller does not use a model
  *

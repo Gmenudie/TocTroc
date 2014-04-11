@@ -10,10 +10,11 @@ class CommentairesController extends AppController {
 
 	 
 	 /* ------------------------------------------
-	 * espacePerso
+	 * add
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Fonction extrêmement classique, qui permet d'enregistrer un commentaire pour un post.
+	 * Les premières lignes sont des vérifications que l'utilisateur a bien le droit de commenter.
+	 * Une fois le commentaire enregistré, on renvoie vers le mur.
 	 * ------------------------------------------ */
 	 
 	public function add(){

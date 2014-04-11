@@ -8,6 +8,7 @@ class OffresController extends AppController {
 	 * 2. index()
 	 * 3. add()
 	 *
+	 * Code perso que je garde pour m'aider à modifier le controller scaffoldé.
 	 */
 
 	/* ------------------------------------------

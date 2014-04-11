@@ -8,35 +8,36 @@ class PostsController extends AppController {
 	 * 2. index()
 	 * 3. add()
 	 *
+	 * Le controller du mur! Mon bébé :D
 	 */
 
 	 
-	 /* ------------------------------------------
-	 * espacePerso
-	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
-	 * ------------------------------------------ */
 	 
-	public function beforeFilter() {
-	    parent::beforeFilter();
-	    // Allow users to register and logout.
-	    $this->Auth->allow('index','add', 'logout');
-	}
 
 	
 	/* ------------------------------------------
-	 * espacePerso
+	 * index
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Algorithme très complexe :P, qui
+	 * 1) Vérifie que l'utilisateur a bien le droit d'accéder au mur
+	 * 2) Récupère de façon très brute des posts, identité des posteurs, commentaires, etc...
+	 * 3) Restructure tout ça pour qu'à chaque post soit associé les bons commentaires et bonnes personnes
+	 * 4) Trie posts et commentaires par date
+	 * 5) Envoie tout ça à la vue pour affichage :)
+	 * 6) Comprend une fonction pour limiter le nombre de posts affichés,
+	 * l'utilisateur dispose d'un bouton ("plus") comme sur 9gag :P
+	 * 
 	 * ------------------------------------------ */
 	
 	public function index($id=null,$size=10) {
 
+		// Vérification: l'utilisateur appartient-il à la communauté dont il essaie de voir le mur ?
+
 		$appartient=$this->Post->Appartenance->find('all', array('conditions' => array('appartenance_id' => $id)));
 
 			if($appartient[0]["Appartenance"]["user_id"]===$this->Auth->user('user_id')){
+
+				// On récupère les identités de toutes les personnes de la communautés, pour pouvoir récupérer leurs posts et commentaires
 
 				$personnes=$this->Post->Appartenance->find('all',array('conditions'=>array('Appartenance.communaute_id'=>$appartient[0]["Appartenance"]["communaute_id"])));
 				$i=0;
@@ -45,6 +46,8 @@ class PostsController extends AppController {
 				$coms=array();
 
 				foreach($personnes as $personne){
+
+					// Pour chaque membre de la communauté, on récupère leurs posts/commentaires. On arrange tout ça dans une structure cohérente
 
 					
 					$postsintermediate=$this->Post->find('all',array('conditions'=>array('Post.appartenance_id'=>$personne["Appartenance"]["appartenance_id"]),'recursive'=>3));
@@ -71,10 +74,6 @@ class PostsController extends AppController {
 								$posts[$j]["Commentaires"][$i]["contenu"]=$com["contenu"];
 								$i=$i+1;
 							}
-							
-							
-							//Tri des commentaires du plus récent au plus vieux
-							
 						}
 
 						$j=$j+1;
@@ -82,10 +81,7 @@ class PostsController extends AppController {
 
 					}
 				}
-
-				
-					
-
+					//Tri des commentaires du plus récent au plus vieux
 					foreach ($posts as &$post) {
 						
 						if(array_key_exists("Commentaires", $post)){
@@ -100,7 +96,7 @@ class PostsController extends AppController {
 							unset($row);
 							
 						}
-					}/*
+					}/* Version manuelle en cas de problème
 
 					foreach ($posts as &$post) {
 						
@@ -152,10 +148,9 @@ class PostsController extends AppController {
 
 	
 	/* ------------------------------------------
-	 * espacePerso
+	 * add
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Fonction basique qui vérifie que l'utilisateur a bien le droit de poster sur ce mur et enregistre son post.
 	 * ------------------------------------------ */
 	
 	public function add(){
