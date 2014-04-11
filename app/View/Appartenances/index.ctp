@@ -35,7 +35,7 @@
 
     <?php unset($appartenances); ?>
 </table>
-
+<br/>
 <div id='créer'>
 
     <?php echo $this->Form->create('Appartenance',(array('url'=>array('controller'=>'appartenances','action'=>'add'))));
@@ -48,6 +48,8 @@
     echo $this->Form->input('Communaute.description' , array('label' => 'Description'));
 ?>
 </fieldset>
+
+<br/>
 <fieldset><legend>Adresse de la communauté</legend>
 <?php
     echo $this->Form->input('Adress.numero' , array('label' => 'N°'));
@@ -56,6 +58,7 @@
     echo $this->Form->input('Adress.ville' , array('label' => 'Ville'));
 ?>
 </fieldset> 
+<br/>
 <?php
     echo $this->Form->end("Créer"); ?>
 </div>
