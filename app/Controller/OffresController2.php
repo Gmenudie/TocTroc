@@ -2,12 +2,35 @@
 
 class OffresController extends AppController {
 
+	/* Liste des actions du controller
+	 * 
+	 * 1. beforeFilter()
+	 * 2. index()
+	 * 3. add()
+	 *
+	 */
+
+	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+
 	public function beforeFilter() {
 	    parent::beforeFilter();
 	    // Allow users to register and logout.
 	    $this->Auth->allow('index','add', 'logout');
 	}
 
+	
+	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+	
 	public function index() {
 
 
@@ -51,6 +74,14 @@ class OffresController extends AppController {
 	}
 
 
+	
+	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+	
 	public function add(){
 
 		if ($this->request->is('post')) {

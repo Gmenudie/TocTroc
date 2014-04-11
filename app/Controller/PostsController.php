@@ -2,12 +2,36 @@
 
 class PostsController extends AppController {
 
+	/* Liste des actions du controller
+	 * 
+	 * 1. beforeFilter()
+	 * 2. index()
+	 * 3. add()
+	 *
+	 */
+
+	 
+	 /* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+	 
 	public function beforeFilter() {
 	    parent::beforeFilter();
 	    // Allow users to register and logout.
 	    $this->Auth->allow('index','add', 'logout');
 	}
 
+	
+	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+	
 	public function index($id=null,$size=10) {
 
 		$appartient=$this->Post->Appartenance->find('all', array('conditions' => array('appartenance_id' => $id)));
@@ -126,6 +150,14 @@ class PostsController extends AppController {
 	}
 
 
+	
+	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+	
 	public function add(){
 
 		if ($this->request->is('post')) {

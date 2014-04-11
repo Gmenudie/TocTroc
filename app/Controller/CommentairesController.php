@@ -2,6 +2,20 @@
 
 class CommentairesController extends AppController {
 
+	/* Liste des actions du controller
+	 * 
+	 * 1. add()
+	 *
+	 */
+
+	 
+	 /* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+	 
 	public function add(){
 
 		if ($this->request->is("post")){
@@ -31,11 +45,11 @@ class CommentairesController extends AppController {
 	        
 	    }
 
-	    return $this->redirect( array('controller' => 'posts', 'action' => 'index', $appartenance["Appartenance"]["appartenance_id"]));
+		return $this->redirect( array('controller' => 'posts', 'action' => 'index', $appartenance["Appartenance"]["appartenance_id"]));
 
 
 
-		}
+	}
 
 
 

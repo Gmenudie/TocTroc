@@ -9,12 +9,30 @@ App::uses('AppController', 'Controller');
  */
 class OffresController extends AppController {
 
+	/* Liste des actions du controller
+	 * 
+	 * 1. index()
+	 * 2. view($id = null)
+	 * 3. add()
+	 * 4. edit($id = null)
+	 * 5. delete($id = null)
+	 *
+	 */
+
 
 /**
  * index method
  *
  * @return void
  */
+ 
+ 	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+ 
 	public function index() {
 		
 
@@ -36,6 +54,14 @@ class OffresController extends AppController {
  * @param string $id
  * @return void
  */
+ 
+ 	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+ 
 	public function view($id = null) {
 		if (!$this->Offre->exists($id)) {
 			throw new NotFoundException(__('Invalid offre'));
@@ -53,6 +79,14 @@ class OffresController extends AppController {
  *
  * @return void
  */
+ 
+ 	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+ 
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Offre->create();
@@ -75,6 +109,14 @@ class OffresController extends AppController {
  * @param string $id
  * @return void
  */
+ 
+ 	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+ 
 	public function edit($id = null) {
 		if (!$this->Offre->exists($id)) {
 			throw new NotFoundException(__('Invalid offre'));
@@ -102,6 +144,14 @@ class OffresController extends AppController {
  * @param string $id
  * @return void
  */
+ 
+ 	/* ------------------------------------------
+	 * espacePerso
+	 * ------------------------------------------
+	 * Page d'accueil pour l'espace perso d'une entreprise
+	 *   -> Accès : groupe entreprises
+	 * ------------------------------------------ */
+ 
 	public function delete($id = null) {
 		$this->Offre->id = $id;
 		if (!$this->Offre->exists()) {
