@@ -29,7 +29,7 @@
 	</tr>
 </table>
 
-<table class="compte-adresse">
+<!-- <table class="compte-adresse">
 	<tr>
 		<td>Num&eacute;ro</td>
 		<td><?php echo($user[0]['Adresse']['numero']); ?></td>
@@ -54,4 +54,14 @@
 		<td>Num&eacute;ro appartement</td>
 		<td><?php echo($user[0]['Adresse']['numero_appartement']); ?></td>
 	</tr>
-</table>
+</table> -->
+<?php
+	$id = $user[0]['User']['user_id'];
+	echo $this->Html->link('
+
+			<div>Modifier</div>',
+          
+          array('controller' => 'Users', 'action' => 'add', $id),
+          array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
+     );
+?>

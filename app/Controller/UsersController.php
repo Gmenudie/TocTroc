@@ -60,27 +60,98 @@ class UsersController extends AppController {
 	 * Gestion d'inscription basique
 	 * ------------------------------------------ */
 	
-	public function add() {
+	public function add($id = null) {
 
-		if ($this->Auth->user("user_id") != null){
-        	return $this->redirect(array('controller'=>'appartenances', 'action'=>'index'));
-        }
-        
+		
+		
+		/* On envoie une variable à la vue s'il s'agit d'un ajout de membre (= s'il n'y a pas de paramètres $id) */
+		if(isset($id) == false)
+		{
 			$this->layout='unauthentified';
+			$this->set('ajout', 1);
+		}
+		else
+		{
+			/* Il s'agit d'une modification*/
+			$this->layout='default';
+		}
+				
+		/* On regarde si le formulaire a été validé */
+		if (empty($this->data) == false)
+		{
+			
+			if(isset($this->data['User']['user_id']))
+			{
+				/* Il s'agit d'une modification , on vérifie si le mail n'est pas déjà utilisé s'il a été modifié*/
+				$email = $this->User->findByUserId($id)['User']['email'];
+				$newEmail = $this->data['User']['email'];
+				
+				if($email == $newEmail)
+				{
+					/* L'email n'a pas changé */
+					$this->User->save($this->data);
+					$this->Session->setFlash('Vos données ont été modifiées', 'success');
+					$this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
+				}
+				else
+				{
+					$requete = $this->User->find('count', array('conditions' => array('email' => $newEmail)));
+					
+					if($requete == 0)
+					{
+						/* L'email n'est pas déjà utilisé */
+						$this->User->save($this->data);
+						$this->Session->setFlash('Vos données ont été modifiées', 'success');
+						$this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
+					}
+					else
+					{
+					/* L'email est déjà pris */
+					$this->Session->setFlash('Cet email est déjà utilisé, désolé', 'error');
+					}
+				}
+			}
+			
+			else
+			{
+				/*Il s'agit d'un ajout, on vérifie si le mail n'est pas déjà utilisé */
+				$email = $this->data['User']['email'];
+				$requete = $this->User->find('count', array('conditions' => array('email' => $email)));
+				
+				if($requete == 0)
+				{
+					$this->User->create();
+					$temporaryUser=array();
+					$temporaryUser=$this->request->data;
+					$temporaryUser["User"]["role_id"]='3';
+				
 
-	        if ($this->request->is('post')) {
-	            $this->User->create();
-	            $temporaryUser=array();
-	            $temporaryUser=$this->request->data;
-	            $temporaryUser["User"]["role_id"]='3';
-
-	            if ($this->User->save($temporaryUser)) {   	
-					unset($temporaryUser);
-	                $this->Session->setFlash(__('Bienvenue sur TocTroc !'));
-	                return $this->redirect( array('controller' => 'acceuils', 'action' => 'index'));
-	            }
-	            $this->Session->setFlash(__('Erreur'));
-	        }
+					if ($this->User->save($temporaryUser))
+					{   	
+						unset($temporaryUser);
+						$this->Session->setFlash(__('Bienvenue sur TocTroc !'));
+						return $this->redirect( array('controller' => 'acceuils', 'action' => 'index'));
+					}
+				}
+				
+				else
+				{
+					/* L'email est déjà pris */
+					$this->Session->setFlash('Cet email est déjà utilisé, désolé', 'error');
+				}
+			}
+			
+		}
+		elseif($id != null)
+		{
+			/* Formulaire vide, mais il y a un paramètre (c'est une modification, on charge ce qui est déjà écrit)*/
+			$this->User->user_id;
+			$this->request->data = $this->User->findByUserId($id);
+		}
+		else
+		{
+			$this->Session->setFlash(__('Erreur'));
+		}
 
     }
 
