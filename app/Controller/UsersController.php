@@ -8,6 +8,7 @@ class UsersController extends AppController {
 	 * 2. login()
 	 * 3. logout()
 	 * 4. add()
+	 * 5. monCompte()
 	 *
 	 * Assez logiquement, ce controller gère l'authentification et l'inscription. Rien de bien sorcier.
 	 */
@@ -37,7 +38,7 @@ class UsersController extends AppController {
 	        if ($this->Auth->login()) {
 	            return $this->redirect($this->Auth->redirect());
 	        }
-	        $this->Session->setFlash(__('Indentifiant ou mot de passe invalide'));
+	        $this->Session->setFlash(__('Identifiant ou mot de passe invalide'));
 	    }
 	}
 
@@ -83,5 +84,16 @@ class UsersController extends AppController {
 
     }
 
+	
+	/* ------------------------------------------
+	 * monCompte
+	 * ------------------------------------------
+	 * Accès à son compte et possibilité de le modifier
+	 * ------------------------------------------ */
+	 
+	 public function monCompte() {
+		$this->set('user',$this->User->find('all', array('conditions' => array('user_id' => $this->Auth->User("user_id")), 'recursive'=> 1)));
+	 }
+	
 
 }
