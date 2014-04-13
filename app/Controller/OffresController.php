@@ -34,17 +34,28 @@ class OffresController extends AppController {
 	 *   -> Accès : groupe entreprises
 	 * ------------------------------------------ */
  
-	public function index() {
+	public function mesOffres() {
 		
-
+		// On récupère toutes les appartenances de l'auteur
 		$conditions=array('Appartenance.user_id'=>$this->Auth->user('user_id'));
-		$appartenances=$this->Offre->Appartenance->find('all',array('fields'=>'appartenance_id','conditions'=>$conditions,'recursive'=>0));
+		$appartenances=$this->Offre->PublieOffre->Appartenance->find('all',array('fields'=>'appartenance_id','conditions'=>$conditions,'recursive'=>0));
+		
+		// On récupère tous ses publieOffre, toutes appartenances confondues
 		$conditions1=array();
 		foreach ($appartenances as $appartenance) {
 			array_push($conditions1, $appartenance["Appartenance"]["appartenance_id"]);
 		}
-		
-		$this->Paginator->settings = array('conditions' => array('Offre.appartenance_id'=> $conditions1));
+		$publieoffres=$this->Offre->PublieOffre->find('all',array('conditions'=>array('PublieOffre.appartenance_id'=>$conditions1),'recursive'=>0));
+
+		//On récupère toutes les offres, tous publieOffres confondus
+		$conditions2=array();
+		foreach	($publieoffres as $publieoffre)
+		{
+			array_push($conditions2,$publieoffre["PublieOffre"]["offre_id"]);
+		}
+
+		//On les envoie à la vue		
+		$this->Paginator->settings = array('conditions' => array('Offre.offre_id'=> $conditions2));
 		$this->set('offres',$this->Paginator->paginate('Offre',array(),array('Category.nom','titre','created')));
 	}
 
@@ -59,20 +70,57 @@ class OffresController extends AppController {
  	/* ------------------------------------------
 	 * espacePerso
 	 * ------------------------------------------
-	 * Page d'accueil pour l'espace perso d'une entreprise
-	 *   -> Accès : groupe entreprises
+	 * Permet de voir une offre complète. Deux cas: 
+	 * 1) L'utilisateur est l'auteur de l'offre, il veut voir comment elle apparaît. On lui permet dans ce cas de modifier/supprimer l'offre.
+	 * Correspond à l'option statut = 2
+	 * 2) L'utilisateur est un membre de la communauté dans laquelle l'offre est publiée. Il peut voir l'offre et vouloir emprunter l'objet.
+	 * Correspond à l'option statut = 1
+	 *
+	 * Statut = 0 => utilisateur non autorisé à voir l'annonce.
 	 * ------------------------------------------ */
- 
+
 	public function view($id = null) {
+
+		//On vérifie déjà que l'offre demandée existe
 		if (!$this->Offre->exists($id)) {
 			throw new NotFoundException(__('Invalid offre'));
 		}
-		$options = array('conditions' => array('Offre.' . $this->Offre->primaryKey => $id));
-		$offre=$this->Offre->find('first', $options);
-		$appartient=$this->Offre->Appartenance->find('first', array('conditions'=>array('Appartenance.communaute_id'=>$offre["Appartenance"]["communaute_id"], 'Appartenance.user_id'=>$this->Auth->user('user_id'))));
-		if($appartient!=null){		
+
+		//On récupère l'offre en question (on détache certains modèles pour plus de simplicité)
+		$this->Offre->PublieOffre->unbindModel(
+        array('belongsTo' => array('Offre'))
+    	);
+		$options = array('conditions' => array('Offre.' . $this->Offre->primaryKey => $id),'recursive'=>2);
+		$offre=$this->Offre->find('all', $options);
+
+		$statut=0;
+		$communautes=array();
+
+		//On regarde si l'utilisateur appartient a une communauté où l'offre est publiée
+		foreach ($offre[0]["PublieOffre"] as $publieoffre)
+		{
+			if($this->Offre->PublieOffre->Appartenance->find('count',array('conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'),'Appartenance.communaute_id'=>$publieoffre["Appartenance"]["communaute_id"]))))
+			{
+				$statut=1;
+			}
+
+			//On en profite pour lister les communautés dans lesquelles l'offre est publiée
+			array_push($communautes, $publieoffre["Appartenance"]["communaute_id"]);
+		}
+
+		//On regarde si l'offre appartient à l'utilisateur qui veut la visualiser (pour lui ajouter des boutons modifier/supprimer)
+		if($offre[0]["PublieOffre"][0]["Appartenance"]["user_id"]===$this->Auth->user('user_id'))
+		{		
+			$statut=2;
+		}
+
+		$options2=array('fields'=>'nom','conditions'=>array('communaute_id'=>$communautes));
+
+		$this->set('statut',$statut);		
 		$this->set('offre', $offre);
-	}
+		$this->set('communautes',$this->Offre->PublieOffre->Appartenance->Communaute->find('list',$options2));
+		$this->set('auteur',$this->Offre->PublieOffre->Appartenance->User->findByUserId($offre[0]["PublieOffre"][0]["Appartenance"]["user_id"]));
+		
 	}
 
 /**
@@ -89,17 +137,61 @@ class OffresController extends AppController {
 	 * ------------------------------------------ */
  
 	public function add() {
+
+		// Si formulaire rempli et envoyé
 		if ($this->request->is('post')) {
-			$this->Offre->create();
-			if ($this->Offre->saveAll($this->request->data)) {
-				$this->Session->setFlash(__('The offre has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The offre could not be saved. Please, try again.'));
+
+			//Vérifications d'autorisation
+			//On vérifie que l'utilisateur a le droit de poster sous ce nom/ dans cette communauté (appartenances).
+			$verif=true;
+			foreach($this->request->data["PublieOffre"]["appartenance_id"] as $appartenanceid)
+			{
+				if($this->Offre->PublieOffre->Appartenance->find('count',array('conditions'=>array('Appartenance.appartenance_id'=>$appartenanceid,'Appartenance.user_id'=>$this->Auth->user("user_id"))))!=1)
+				{
+					$verif=false;
+				}
+			}
+
+			if($verif)
+			{
+				//On sauve l'offre
+				$this->Offre->create();
+				$offre=array();
+				$offre["Offre"]=$this->request->data["Offre"];
+				$offre["Offre"]["etat"]=1;
+				$offre["Category"]=$this->request->data["Category"];
+
+				if ($this->Offre->saveAll($offre)) 
+				{
+					//On sauve les publieOffre associées
+					$publieoffre=array();
+
+					foreach($this->request->data["PublieOffre"]["appartenance_id"] as $appid)
+					{
+						$this->Offre->PublieOffre->create();
+						$publieoffre["PublieOffre"]["appartenance_id"]=$appid;
+						$publieoffre["PublieOffre"]["offre_id"]=$this->Offre->id;
+						if($this->Offre->PublieOffre->save($publieoffre))
+						{
+							$this->Session->setFlash(__("Votre offre a bien été enregistrée"));
+						}
+						else
+						{
+							$this->Session->setFlash("Ca n'a pas marché ...");
+						}
+					}
+					
+					return $this->redirect(array('action' => 'mesOffres'));
+				} 
+				else 
+				{
+					$this->Session->setFlash(__('The offre could not be saved. Please, try again.'));
+				}
 			}
 		}
-		$appartenances = $this->Offre->Appartenance->find('list');
-		$categories = $this->Offre->Category->find('list');
+		// Sinon, on récupère les informations et on les passe à la vue
+		$appartenances = $this->Offre->PublieOffre->Appartenance->find('list',array('recursive'=>1,'fields'=>'Communaute.nom','conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'))));
+		$categories = $this->Offre->Category->find('list',array('fields'=>'nom'));
 		$this->set(compact('appartenances', 'categories'));
 	}
 
@@ -119,24 +211,90 @@ class OffresController extends AppController {
 	 * ------------------------------------------ */
  
 	public function edit($id = null) {
+		
+		// On vérifie que l'offre en question existe
 		if (!$this->Offre->exists($id)) {
 			throw new NotFoundException(__('Invalid offre'));
 		}
-		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Offre->save($this->request->data)) {
-				$this->Session->setFlash(__('The offre has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The offre could not be saved. Please, try again.'));
+
+		//On ne modifie pas encore, on recupère juste les données à modifier
+		$options = array('conditions' => array('Offre.' . $this->Offre->primaryKey => $id));
+		$offre= $this->Offre->find('first', $options);
+
+		//On vérifie qu'il s'agit bien de l'auteur de l'offre
+		if($this->Offre->PublieOffre->Appartenance->find('count',array(
+			'conditions'=>array(
+				'Appartenance.appartenance_id'=>$offre["PublieOffre"][0]["appartenance_id"],
+				'Appartenance.user_id'=>$this->Auth->user("user_id"))))==1)
+		{
+
+			// Si on envoie une requête de modification
+			if ($this->request->is(array('post', 'put'))) 
+			{
+
+				//On vérifie que l'utilisateur a le droit de poster sous ce nom/ dans cette communauté (appartenances).
+				$verif=true;
+				foreach($this->request->data["PublieOffre"]["appartenance_id"] as $appartenanceid)
+				{
+					if($this->Offre->PublieOffre->Appartenance->find('count',array('conditions'=>array('Appartenance.appartenance_id'=>$appartenanceid,'Appartenance.user_id'=>$this->Auth->user("user_id"))))!=1)
+					{
+						$verif=false;
+					}
+				}
+
+				if($verif)
+				{
+					//On sauve l'offre
+					$offre["Offre"]=$this->request->data["Offre"];
+					$offre["Category"]=$this->request->data["Category"];
+
+					if ($this->Offre->saveAll($offre)) 
+					{
+						//On supprime les anciens publieOffre
+						foreach($offre["PublieOffre"] as $publioffre)
+						$this->Offre->PublieOffre->id = $publioffre["publieOffre_id"];						
+						$this->Offre->PublieOffre->delete();	
+
+
+						//On sauve les nouveaux publieOffre
+						$publieoffre=array();
+
+						foreach($this->request->data["PublieOffre"]["appartenance_id"] as $appid)
+						{
+							$this->Offre->PublieOffre->create();
+							$publieoffre["PublieOffre"]["appartenance_id"]=$appid;
+							$publieoffre["PublieOffre"]["offre_id"]=$this->Offre->id;
+							if($this->Offre->PublieOffre->save($publieoffre))
+							{
+								$this->Session->setFlash(__("Votre offre a bien été enregistrée"));
+							}
+							else
+							{
+								$this->Session->setFlash("Ca n'a pas marché ...");
+							}
+						}
+						
+						return $this->redirect(array('action' => 'mesOffres'));
+					} 
+					else 
+					{
+						$this->Session->setFlash(__('The offre could not be saved. Please, try again.'));
+					}
+				}
+			} else{
+				$this->request->data = $offre;
 			}
-		} else {
-			$options = array('conditions' => array('Offre.' . $this->Offre->primaryKey => $id));
-			$this->request->data = $this->Offre->find('first', $options);
+			
+			
+			$this->set('data',$this->request->data);
+			$appartenances = $this->Offre->PublieOffre->Appartenance->find('list',array('recursive'=>1,'fields'=>'Communaute.nom','conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'))));
+			$categories = $this->Offre->Category->find('list',array('fields'=>'nom'));
+			$this->set(compact('appartenances', 'categories'));
 		}
-		$appartenances = $this->Offre->Appartenance->find('list');
-		$categories = $this->Offre->Category->find('list');
-		$this->set(compact('appartenances', 'categories'));
+		
 	}
+
+
 
 /**
  * delete method
@@ -164,5 +322,8 @@ class OffresController extends AppController {
 		} else {
 			$this->Session->setFlash(__('The offre could not be deleted. Please, try again.'));
 		}
-		return $this->redirect(array('action' => 'index'));
-	}}
+		return $this->redirect(array('action' => 'mesOffres'));
+	}
+}
+
+

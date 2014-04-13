@@ -28,7 +28,7 @@
 	<p>
 	<?php
 	echo $this->Paginator->counter(array(
-	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+	'format' => __('Page {:page} sur {:pages}')
 	));
 	?>	</p>
 	<div class="paging">
@@ -40,20 +40,6 @@
 	</div>
 	<?php } 
 	else{echo("Vous n'avez pas encore publié d'offre");}?>
-</div>
-<div class="add">
 
-<?php echo $this->Form->create('Offre',array('url'=>array('controller'=>'offres','action'=>'add'))); ?>
-	<fieldset>
-		<legend><?php echo __('Publier une nouvelle offre'); ?></legend>
-	<?php
-		echo $this->Form->input('titre');
-		echo $this->Form->input('description');
-		echo ("Publier l'annonce dans les communautés:");
-		echo $this->Form->select('appartenance_id', $communautes, array('multiple'=>'checkbox'));
-		echo ("Choisir les categories");
-		echo $this->Form->select('categorie_id',$categories,array('multiple'=>true));
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Publier offre')); ?>
+	<p><?php echo $this->Html->link(__('Nouvelle offre'), array('action' => 'add')); ?></p>
 </div>

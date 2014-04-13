@@ -16,9 +16,11 @@ class OffreFixture extends CakeTestFixture {
 		'description' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_bin', 'charset' => 'utf8'),
 		'image' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_bin', 'charset' => 'utf8'),
 		'etat' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'date' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'appartenance_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'offre_id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'offre_id', 'unique' => 1),
+			'appartanances_offres_fk' => array('column' => 'appartenance_id', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_bin', 'engine' => 'InnoDB')
 	);
@@ -35,7 +37,8 @@ class OffreFixture extends CakeTestFixture {
 			'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'image' => 'Lorem ipsum dolor sit amet',
 			'etat' => 1,
-			'date' => '2014-03-31 10:33:05'
+			'created' => '2014-04-12 16:09:44',
+			'appartenance_id' => 1
 		),
 	);
 

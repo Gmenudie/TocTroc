@@ -14,10 +14,23 @@ class OffreTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.offre',
-		'app.category',
+		'app.demande',
+		'app.appartenance',
+		'app.communaute',
+		'app.adress',
+		'app.user',
+		'app.role',
+		'app.titre',
+		'app.users_titre',
+		'app.commentaire',
+		'app.post',
+		'app.canal',
 		'app.annonce',
+		'app.category',
 		'app.annonces_category',
-		'app.categories_offre'
+		'app.categories_offre',
+		'app.emprunt',
+		'app.appartenances_offre'
 	);
 
 /**

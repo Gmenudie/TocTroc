@@ -32,7 +32,7 @@
             </div>
             </div>',
            
-          array('controller' => 'offres', 'action' => "index"),
+          array('controller' => 'offres', 'action' => "mesOffres"),
           array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
      );
 

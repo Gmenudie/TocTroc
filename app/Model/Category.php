@@ -44,7 +44,7 @@ class Category extends AppModel {
 		'Annonce' => array(
 			'className' => 'Annonce',
 			'joinTable' => 'annonces_categories',
-			'foreignKey' => 'category_id',
+			'foreignKey' => 'categorie_id',
 			'associationForeignKey' => 'annonce_id',
 			'unique' => 'keepExisting',
 			'conditions' => '',
@@ -57,7 +57,7 @@ class Category extends AppModel {
 		'Offre' => array(
 			'className' => 'Offre',
 			'joinTable' => 'categories_offres',
-			'foreignKey' => 'category_id',
+			'foreignKey' => 'categorie_id',
 			'associationForeignKey' => 'offre_id',
 			'unique' => 'keepExisting',
 			'conditions' => '',

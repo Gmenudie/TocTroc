@@ -127,8 +127,8 @@ class Appartenance extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Offres' => array(
-			'className' => 'Offre',
+		'PublieOffres' => array(
+			'className' => 'PublieOffre',
 			'foreignKey' => 'appartenance_id',
 			'dependent' => false,
 			'conditions' => '',

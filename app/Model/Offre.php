@@ -3,6 +3,9 @@ App::uses('AppModel', 'Model');
 /**
  * Offre Model
  *
+ * @property Demande $Demande
+ * @property Emprunt $Emprunt
+ * @property Appartenance $Appartenance
  * @property Category $Category
  */
 class Offre extends AppModel {
@@ -14,45 +17,56 @@ class Offre extends AppModel {
  */
 	public $primaryKey = 'offre_id';
 
+
+	//The Associations below have been created with all possible keys, those that are not needed can be removed
+
 /**
- * Validation rules
+ * hasMany associations
  *
  * @var array
  */
-	public $validate = array(
-		'titre' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Votre offre doit avoir un titre',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
+	public $hasMany = array(
+		'Demande' => array(
+			'className' => 'Demande',
+			'foreignKey' => 'offre_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		),
-		'etat' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
+		'Emprunt' => array(
+			'className' => 'Emprunt',
+			'foreignKey' => 'offre_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		),
-		'created' => array(
-			'datetime' => array(
-				'rule' => array('datetime'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-	);
+		'PublieOffre' => array(
+			'className' => 'PublieOffre',
+			'foreignKey' => 'offre_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+	));
+
 
 /**
  * hasAndBelongsToMany associations
@@ -72,16 +86,6 @@ class Offre extends AppModel {
 			'limit' => '',
 			'offset' => '',
 			'finderQuery' => '',
-		)
-	);
-
-	public $belongsTo = array(
-		'Appartenance' => array(
-			'className' => 'Appartenance',
-			'foreignKey' => 'appartenance_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
 		)
 	);
 
