@@ -232,7 +232,7 @@ class OffresController extends AppController {
 			if ($this->request->is(array('post', 'put'))) 
 			{
 
-				//On vérifie que l'utilisateur a le droit de poster sous ce nom/ dans cette communauté (appartenances).
+				//On vérifie que l'utilisateur a le droit de poster sous ce nom / dans cette communauté (appartenances).
 				$verif=true;
 				foreach($this->request->data["PublieOffre"]["appartenance_id"] as $appartenanceid)
 				{
@@ -251,9 +251,9 @@ class OffresController extends AppController {
 					if ($this->Offre->saveAll($offre)) 
 					{
 						//On supprime les anciens publieOffre
-						foreach($offre["PublieOffre"] as $publioffre)
-						$this->Offre->PublieOffre->id = $publioffre["publieOffre_id"];						
-						$this->Offre->PublieOffre->delete();	
+						foreach($offre["PublieOffre"] as $publioffre){										
+						$this->Offre->PublieOffre->delete($publioffre["publieOffre_id"]);
+						}	
 
 
 						//On sauve les nouveaux publieOffre
@@ -281,15 +281,30 @@ class OffresController extends AppController {
 						$this->Session->setFlash(__('The offre could not be saved. Please, try again.'));
 					}
 				}
-			} else{
+				else
+				{
+					$this->return->redirect(array('controller'=>'acceuil','action'=>'index'));
+				}
+			} 
+			else
+			{
+				//On enregistre les communautés des publieOffre pour présélectionner les cases :)
+				$selected=array();
+				foreach ($offre["PublieOffre"] as $puboffre)
+				{
+					array_push($selected,$puboffre["appartenance_id"]);
+
+				}
+
 				$this->request->data = $offre;
+				$this->set('selected',$selected);
+				$appartenances = $this->Offre->PublieOffre->Appartenance->find('list',array('recursive'=>1,'fields'=>'Communaute.nom','conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'))));
+				$categories = $this->Offre->Category->find('list',array('fields'=>'nom'));
+				$this->set(compact('appartenances', 'categories'));
 			}
 			
 			
-			$this->set('data',$this->request->data);
-			$appartenances = $this->Offre->PublieOffre->Appartenance->find('list',array('recursive'=>1,'fields'=>'Communaute.nom','conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'))));
-			$categories = $this->Offre->Category->find('list',array('fields'=>'nom'));
-			$this->set(compact('appartenances', 'categories'));
+			
 		}
 		
 	}
@@ -325,5 +340,4 @@ class OffresController extends AppController {
 		return $this->redirect(array('action' => 'mesOffres'));
 	}
 }
-
 

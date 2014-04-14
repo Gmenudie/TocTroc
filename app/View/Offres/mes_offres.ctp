@@ -19,7 +19,7 @@
 		<td><?php echo h($offre['Offre']['created']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Voir'), array('action' => 'view', $offre['Offre']['offre_id'])); ?>
-			<?php echo $this->Html->link(__('Modifer'), array('action' => 'edit', $offre['Offre']['offre_id'])); ?>
+			<?php echo $this->Html->link(__('Modifier'), array('action' => 'edit', $offre['Offre']['offre_id'])); ?>
 			<?php echo $this->Form->postLink(__('Supprimer'), array('action' => 'delete', $offre['Offre']['offre_id']), null, __("Voulez-vous vraiment supprimer l'offre '%c?", $offre['Offre']['titre'])); ?>
 		</td>
 	</tr>
