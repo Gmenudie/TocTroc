@@ -57,10 +57,11 @@ class UsersController extends AppController {
 	/* ------------------------------------------
 	 * add
 	 * ------------------------------------------
-	 * Gestion d'inscription basique
+	 * Gestion d'inscription et d'édition des informations d'un utilisateur
 	 * ------------------------------------------ */
 	
-	public function add($id = null) {
+	public function add($id = null)
+	{
 
 		
 		
@@ -75,12 +76,82 @@ class UsersController extends AppController {
 			/* Il s'agit d'une modification*/
 			$this->layout='default';
 		}
-				
+		
 		/* On regarde si le formulaire a été validé */
 		if (empty($this->data) == false)
 		{
+			/* On liste les formats de fichiers acceptés pour les photos de profil. */
+			$formats = array('jpg', 'jpeg', 'png', 'gif');
 			
-			if(isset($this->data['User']['user_id']))
+			/* On regarde si une photo de profil a été soumise, si oui on met tout en forme */
+			if ($this->data['User']['upload_profil']['name'] != null)
+			{
+				$go =0;
+				if(isset($this->data['User']['user_id']))
+				{
+					/* Il s'agit d'une modification */
+					$photo = $this->User->findByUserId($id)['User']['image_profil'];
+					$newphoto = $this->data['User']['upload_profil']['name'];
+					
+					if($photo != $newphoto)
+					{
+						/* La photo de profil a changée, on modifie la base de données. (Si la photo de profil ne change pas, on ne fait rien) */
+						$go = 1;
+					}
+				}
+				else
+				{
+					$go = 1;
+				}
+				
+				if($go == 1)
+				{
+					$format = strtolower(substr(strrchr($this->data['User']['upload_profil']['name'],'.'),1));
+						
+					/* On vérifie si le format du fichier est valide */
+					if(in_array($format, $formats))
+					{
+						/* On défini le nom du fichier PRENOM-NOM.FORMAT*/
+						$nom = $this->data['User']['prenom'].'-'.$this->data['User']['nom'].'.'.$format;
+						
+						/* On préfixe le nom du fichier */
+						if($this->User->findByUserId($id)['User']['image_profil'] != null || !isset($id))
+						{
+							$nom = 'profil-' . (substr($this->User->findByUserId($id)['User']['image_profil'], 7, 1) + 1) . '-' . $nom;
+						}
+						else
+						{
+							$nom = 'profil-1-' . $nom;
+						}
+						
+						$cheminFichier = 'img/profil/'.$nom;
+						/* On regarde si l'upload s'est bien passé */
+						if(move_uploaded_file($this->data['User']['upload_profil']['tmp_name'],$cheminFichier))
+						{
+							$upload = 1;
+						}
+						else
+						{
+							$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
+							$this->redirect($this->referer());
+						}
+					}
+					else
+					{
+						$this->Session->setFlash('Le format du fichier n\'est pas valide','error');
+						if(isset($this->data['User']['user_id']))
+						{
+							$this->redirect(array('controller' => 'users', 'action' => 'add', $id));
+						}
+						else
+						{
+							$this->redirect(array('controller' => 'users', 'action' => 'add'));
+						}
+					}
+				}
+			}
+				
+			if(isset($id))
 			{
 				/* Il s'agit d'une modification , on vérifie si le mail n'est pas déjà utilisé s'il a été modifié*/
 				$email = $this->User->findByUserId($id)['User']['email'];
@@ -90,6 +161,10 @@ class UsersController extends AppController {
 				{
 					/* L'email n'a pas changé */
 					$this->User->save($this->data);
+					if($upload=1)
+					{
+						$this->User->saveField('image_profil',$nom);
+					}
 					$this->Session->setFlash('Vos données ont été modifiées', 'success');
 					$this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
 				}
@@ -101,6 +176,10 @@ class UsersController extends AppController {
 					{
 						/* L'email n'est pas déjà utilisé */
 						$this->User->save($this->data);
+						if($upload=1)
+						{
+							$this->User->saveField('image_profil',$nom);
+						}
 						$this->Session->setFlash('Vos données ont été modifiées', 'success');
 						$this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
 					}
@@ -128,6 +207,11 @@ class UsersController extends AppController {
 
 					if ($this->User->save($temporaryUser))
 					{   	
+						if($upload=1)
+						{
+							$this->User->saveField('image_profil',$nom);
+						}
+						
 						unset($temporaryUser);
 						$this->Session->setFlash(__('Bienvenue sur TocTroc !'));
 						return $this->redirect( array('controller' => 'acceuils', 'action' => 'index'));

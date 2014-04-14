@@ -18,7 +18,8 @@
 
 <div id="formAdd">
 <?php
-	echo $this->Form->create('User');
+	echo $this->Form->create('User', array('type' => 'file'));
+	echo $this->Form->input('upload_profil', array('label' => '', 'type' => 'file'));
 	echo $this->Form->input('prenom', array('label' => '', 'placeholder'=>'Prénom'));
 	echo $this->Form->input('nom' , array('label' => '', 'placeholder'=>'Nom'));
 	echo $this->Form->input('email' , array('label' => '', 'placeholder'=>'Email'));
