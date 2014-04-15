@@ -10,37 +10,31 @@
 <header>
 	<div id="banniere">
 	<div id="logo">
-	<?php echo $this->Html->link($this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')), array('controller'=>'acceuils','action'=>'index'),array('escape'=>false)); ?>
+	<?php echo $this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')); ?>
 	</div>
 		<div class="carre_menu" id="menu1" href="emprunter.html">
             <div class="titre_carre_menu">Mur</div>
-            <div class="symbole_carre_menu">
-			</div>
         </div>
         <div class="carre_menu" id="menu2" href="proposer.html">
             <div class="titre_carre_menu">Proposer</div>
-            <div class="symbole_carre_menu">
-			</div>
         </div>
         <div class="carre_menu" id="menu3" href="demander.html">
             <div class="titre_carre_menu">Demander</div>
-            <div class="symbole_carre_menu">
-			</div>
         </div>
 		<div class="carre_menu" id="menu4" href="moncompte.html">
             <div class="titre_carre_menu">Mon Compte</div>
-            <div class="symbole_carre_menu">
-			</div>
         </div>
 	</div>
-	<div id="user">
-		<?php echo $this->Session->flash('auth'); ?>
-		<?php echo $this->Form->create('User',array('url'=>array('controller'=>'users','action'=>'login'))); ?>
-        <?php 
-			echo $this->Form->input('email', array('label'=>'', 'placeholder'=>'Email'));
-        	echo $this->Form->input('password', array('label'=>'', 'placeholder'=>'Mot de passe'));
-			echo $this->Form->end(__('Se connecter')); 
-		?>
+	<div id="barre_connexion">
+		<div id="barre_connexion_contenu">
+			<?php echo $this->Session->flash('auth'); ?>
+			<?php echo $this->Form->create('User',array('url'=>array('controller'=>'users','action'=>'login'))); ?>
+			<?php 
+				echo $this->Form->input('email', array('label'=>'', 'placeholder'=>'Email'));
+				echo $this->Form->input('password', array('label'=>'', 'placeholder'=>'Mot de passe'));
+				echo $this->Form->end(__('Mes communautés')); 
+			?>
+		</div>
 	</div>
 </header>
 

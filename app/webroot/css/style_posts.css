@@ -1,0 +1,133 @@
+#menu1
+{
+	background-image: url("../img/dessins/mur_j.png");
+	color: rgb(174,227,157);
+	height: 146px;
+	border: 1px solid rgb(174,227,157);
+	border-bottom: 5px solid rgb(174,227,157);
+}
+
+
+#poster_message
+{
+	display:inline-block;
+	vertical-align:top;
+	
+	width:250px;
+	
+	margin:0px;
+	margin-right:50px;
+	padding:0px;
+}
+
+#messages
+{
+	display:inline-block;
+	vertical-align:top;
+	
+	width:680px;
+	
+	margin:0px;
+	padding:0px;
+}
+
+	.message_ensemble
+	{
+		margin:0px;
+		margin-bottom:40px;
+		margin-top:10px;
+		padding:0px;
+		
+		text-align:left;
+		
+		font-size:15px;
+		
+	}
+
+		.message
+		{
+			width:680px;
+			
+			padding:0px;
+			padding-left:6px;
+			margin:0px;
+			margin-bottom:20px;
+			
+			background-color:rgba(30,30,30,0.05);
+		}
+					.message:hover
+					{	
+						padding-left:0px;
+						border-left:solid rgb(98,160,77) 6px;
+					}
+			.message_ensemble .colonne_gauche
+			{
+				display:inline-block;
+				vertical-align:top;
+				
+				width:150px;
+				
+				padding:10px;
+				margin:0px;
+				
+				background-color:rgba(30,30,30,0.05);
+				
+				text-align:center;
+			}
+			.message_ensemble .colonne_droite
+			{
+				display:inline-block;
+				vertical-align:top;
+				
+				max-width:470px;
+				
+				padding:10px;
+				margin:0px;
+				
+				text-align:justify;
+			}
+				.message_date, .commentaire_date
+				{
+					margin-bottom:10px;
+					
+					font-size:13px;
+				}
+			
+
+
+		.commentaire_message
+		{
+			width:640px;
+			
+			padding:0px;
+			padding-left:6px;
+			margin:0px;
+			margin-left:40px;
+			margin-bottom:20px;
+			
+			background-color:rgba(30,30,30,0.02);
+		}				
+		
+				.commentaire_message:hover
+				{	
+					padding-left:0px;
+					border-left:solid rgb(174,227,157) 6px;
+				}
+				
+			.commentaire_message .colonne_droite
+			{
+				max-width:430px;
+			}
+				
+		.formulaire_commentaire
+		{
+			width:646px;
+			
+			padding:0px;
+			margin:0px;
+			margin-left:40px;
+			margin-bottom:20px;
+			
+		}
+			
+
