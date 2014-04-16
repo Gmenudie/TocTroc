@@ -12,7 +12,12 @@ class PostsController extends AppController {
 	 */
 
 	 
-	 
+	 public function beforeFilter() {
+	    parent::beforeFilter();
+		$this->layout ='dans_communaute';
+	    // Allow users to register and logout.
+	    $this->Auth->allow('index','add', 'logout');
+	}
 
 	
 	/* ------------------------------------------

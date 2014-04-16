@@ -22,20 +22,10 @@
         <div class="carre_menu" id="menu3" href="demander.html">
             <div class="titre_carre_menu">Demander</div>
         </div>
-		<?php 
-			echo $this->Html->link('
-
-            <div class="carre_menu" id="menu4">
+        <div class="carre_menu" id="menu4">
             <div class="titre_carre_menu">Mon Compte</div>
-            <div class="symbole_carre_menu">
-            </div>
-            </div>
-            </div>',
-          
-          array('controller' => 'users', 'action' => "monCompte"),
-          array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
-		);
-		?>
+        </div>
+
 	 
 	</div>
 	<div id="barre_connexion">
