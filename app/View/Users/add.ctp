@@ -22,21 +22,18 @@
 	echo $this->Form->input('upload_profil', array('label' => '', 'type' => 'file'));
 	echo $this->Form->input('prenom', array('label' => '', 'placeholder'=>'Prénom'));
 	echo $this->Form->input('nom' , array('label' => '', 'placeholder'=>'Nom'));
-	echo $this->Form->input('email' , array('label' => '', 'placeholder'=>'Email'));
+	echo $this->Form->input('email' , array('label' => '', 'placeholder'=>'Email'));	
+	echo $this->Form->input('telephone_1' , array('label' => '', 'placeholder'=>'Téléphone'));
+	echo $this->Form->input('telephone_2' , array('label' => '', 'placeholder'=>'Autre téléphone'));
+	
+	echo '<br/>';
 	
 	if(isset($ajout))
 	{
 		echo $this->Form->input('password' , array('label' => '', 'placeholder'=>'Mot de passe'));
 	}
 	
-	echo $this->Form->input('telephone_1' , array('label' => '', 'placeholder'=>'Téléphone'));
-	echo $this->Form->input('telephone_2' , array('label' => '', 'placeholder'=>'Autre téléphone'));
-	
-	/* Champ caché contenant l'id s'il s'agit d'une modification */
-	if(isset($ajout) == false)
-	{
-		echo $this->Form->input('user_id', array('type' => 'hidden'));
-	}
+	echo '<br/>';
 	
 	if(isset($ajout))
 	{

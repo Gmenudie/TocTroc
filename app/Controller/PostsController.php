@@ -12,7 +12,12 @@ class PostsController extends AppController {
 	 */
 
 	 
-	 
+	 public function beforeFilter() {
+	    parent::beforeFilter();
+		$this->layout ='dans_communaute';
+	    // Allow users to register and logout.
+	    $this->Auth->allow('index','add', 'logout');
+	}
 
 	
 	/* ------------------------------------------
@@ -35,10 +40,12 @@ class PostsController extends AppController {
 
 		$appartient=$this->Post->Appartenance->find('all', array('conditions' => array('appartenance_id' => $id)));
 
-			if($appartient[0]["Appartenance"]["user_id"]===$this->Auth->user('user_id')){
-
+			if($appartient[0]["Appartenance"]["user_id"]===$this->Auth->user('user_id'))
+			{
+				// On récupère le nom de la communauté
+				$this->set('nomCommunaute',$this->requestAction('/Communautes/getNom/'.$appartient[0]["Appartenance"]["communaute_id"]));
+			
 				// On récupère les identités de toutes les personnes de la communautés, pour pouvoir récupérer leurs posts et commentaires
-
 				$personnes=$this->Post->Appartenance->find('all',array('conditions'=>array('Appartenance.communaute_id'=>$appartient[0]["Appartenance"]["communaute_id"])));
 				$i=0;
 				$j=0;
@@ -59,6 +66,7 @@ class PostsController extends AppController {
 						$posts[$j]["Post"]["User"]["user_id"]=$personne["Appartenance"]["user_id"];
 						$posts[$j]["Post"]["User"]["prenom"]=$personne["User"]["prenom"];
 						$posts[$j]["Post"]["User"]["nom"]=$personne["User"]["nom"];
+						$posts[$j]["Post"]["User"]["image_profil"]=$personne["User"]["image_profil"];
 						$posts[$j]["Post"]["contenu"]=$postsinter["Post"]["contenu"];
 						$posts[$j]["Post"]["canal_id"]=$postsinter["Post"]["canal_id"];
 						

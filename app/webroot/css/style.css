@@ -13,6 +13,7 @@ marron rgb(194,123,71)
 body
 {
 font-family: 'cantarell', 'Arial';
+color: rgb(30,30,30);
 margin:0px;
 padding:0px;
 background-image: url("../img/dessins/texture_page.png");
@@ -91,14 +92,6 @@ margin-left: 15px;
 padding: 0px;
 }
 
-.carre_menu:hover
-{
-color: rgb(174,227,157);
-height: 146px;
-border: 1px solid rgb(174,227,157);
-border-bottom: 5px solid rgb(174,227,157);
-}
-
 .titre_carre_menu
 {
 	margin-top: 20px;
@@ -110,19 +103,9 @@ border-bottom: 5px solid rgb(174,227,157);
 	background-image: url("../img/dessins/mur.png");
 }
 
-#menu1:hover
-{
-	background-image: url("../img/dessins/mur_j.png");
-}
-
 #menu2
 {
 	background-image: url("../img/dessins/proposer.png");
-}
-
-#menu2:hover
-{
-	background-image: url("../img/dessins/proposer_j.png");
 }
 
 #menu3
@@ -130,49 +113,123 @@ border-bottom: 5px solid rgb(174,227,157);
 	background-image: url("../img/dessins/demander.png");
 }
 
-#menu3:hover
-{
-	background-image: url("../img/dessins/demander_j.png");
-}
-
 #menu4
 {
 	background-image: url("../img/dessins/molette.png");
 }
 
-#menu4:hover
-{
-	background-image: url("../img/dessins/molette_j.png");
-}
 
-#user
+#barre_connexion
 {
-	height: 35px;
-	background-color: rgb(98,160,77);
+	height: 50px;
+	width:100%;
+	min-width:1020px;
+		
+	margin:auto;	
 	margin-top: 0px;
-	padding-left: 20px;
+		
+	background-color: rgb(98,160,77);
+	text-align:center;
 }
 
-#user .input
+#barre_connexion #barre_connexion_contenu
+{
+	width:1000px;
+	
+	margin:0px;
+	margin-left:auto;
+	margin-right:auto;
+	padding:0px;
+	padding-right:12px;
+	
+	text-align: right;
+}
+	
+#barre_connexion .input
 {
 	display: inline-block;
-	margin: 5px;
+	
+	width:208px;
+	
+	padding:0px;
+	margin:12px;
+	margin-left:0px;
+	margin-right:20px;
+}
+#barre_connexion .submit, #barre_connexion #informations_connexion
+{
+	display: inline-block;
+	
+	min-width:132px;
+	
+	padding:0px;
+	margin:12px;
+	margin-left:0px;
+	margin-right:7px;
+}
+#barre_connexion #informations_connexion
+{
+	line-height:30px;
 }
 
-#user .submit
+#barre_connexion #informations_connexion a
 {
-	display: inline-block;
+	color: white;
+}
+
+
+#barre_connexion .input input, #barre_connexion input[type=submit]
+{	
+	padding:3px;
+	margin:0px;
+	
+	font-size:12px;
+	line-height:15px;
+	
+	border-top:solid rgb(255,236,108) 4px;
+	border-radius:0px 0px 0px 0px;
+}
+#barre_connexion input[type=submit]
+{
+	border-top:solid rgb(255,236,108) 4px;
+}
+	
+input, textarea, input[type=submit]
+{
+		-webkit-appearance: none;
+		-moz-appearance: none;
+
+		display:block;
+		box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+
+		width:100%;
+		
+		padding:10px;
+		margin:10px;
+		margin-left:0px;
+		margin-right:0px;
+
+		border:none;
+		border-top:solid rgb(255,236,108) 6px;
+		background-color:white;
+		border-radius:10px 10px 0px 0px;
+		outline-width:0px;
+
+		font-size:14px;
+		line-height:20px;
+		text-align:left;
 }
 
 input[type=submit]
-		{
-				background-color:white;
-				border:2px solid rgb(174,227,157);
-
-				color:black;
-
-				text-align:center;
-
-				cursor:pointer;
-		}
-
+{
+		border-top:solid rgb(255,236,108) 6px;
+		
+		background-color:rgb(255,236,108);
+		border-radius:10px 10px 10px 10px;
+		
+		text-align:center;
+		
+		cursor: pointer;
+}

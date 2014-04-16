@@ -2,7 +2,7 @@
 
 <?php 
 	if(isset($user[0]['User']['image_profil'])) {
-		echo $this->Html->image('profil/'.$user[0]['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'));
+		echo $this->Html->image('user/'.$user[0]['User']['user_id'].'/profil.'.$user[0]['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'));
 	}
 ?>
 	
@@ -59,9 +59,18 @@
 	$id = $user[0]['User']['user_id'];
 	echo $this->Html->link('
 
-			<div>Modifier</div>',
+			<div>Modifier mes informations</div>',
           
-          array('controller' => 'Users', 'action' => 'add', $id),
+          array('controller' => 'Users', 'action' => 'add'),
           array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
      );
+	 
+	echo $this->Html->link('
+
+			<div>Modifier mon mot de passe</div>',
+          
+          array('controller' => 'Users', 'action' => 'changerMotDePasse'),
+          array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
+     );
+	 
 ?>

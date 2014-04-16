@@ -1,0 +1,87 @@
+#boite_communautes
+{
+
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	
+	width: 100%;
+	padding: 40px;
+	
+	cursor:pointer;
+	text-align:left;
+}
+
+		#boite_communautes:hover
+		{
+			background-color:rgba(30,30,30,0.1);
+		}
+	
+	.case_communaute_titre
+	{
+		display:inline-block;
+		vertical-align:middle;
+		
+		font-size:24px;
+		color:rgb(98,160,77);
+		width:300px;
+	}
+	.case_communaute_description
+	{
+		display:inline-block;
+		vertical-align:middle;
+		
+		font-size:14px;
+		width:600px;
+		
+		color:rgb(30,30,30);
+		
+		text-align: justify;
+	}
+	
+	
+
+#boite_creer
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 400px;
+	margin: 20px;
+}
+
+table
+{
+	border: 3px solid rgb(194,123,71);
+	border-collapse: collapse;
+}
+
+
+td
+{
+	padding: 10px;
+	border-bottom: 3px solid rgb(194,123,71);
+}
+
+th
+{
+	padding: 10px;
+	border: 3px solid rgb(194,123,71);
+}
+
+#creer_communaute 
+{
+	width:400px;
+}
+
+#ajouter
+{
+	cursor: pointer;
+	font-weight: bold;
+	user-select: none;
+	-o-user-select:none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+}
+
+
