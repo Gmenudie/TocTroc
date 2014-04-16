@@ -339,5 +339,61 @@ class OffresController extends AppController {
 		}
 		return $this->redirect(array('action' => 'mesOffres'));
 	}
+
+	public function search(){
+
+		if ($this->request->is('post'))
+		{
+			//Vérifications
+			//A	 faire
+
+
+		//On commence par traiter les communautés voulues pour les mettre sous une forme exploitable
+		/*$communautes=array();
+		foreach ($this->request->data["appartenance_id"] as $appid) 
+		{
+			array_push($communautes,$appid);
+		}*/
+
+
+		// On récupère toutes les utilisateurs dans les communautés voulues par l'utilisateur
+		$conditions=array('Appartenance.communaute_id'=>$this->request->data["appartenance_id"]);
+		$appartenances=$this->Offre->PublieOffre->Appartenance->find('all',array('fields'=>'appartenance_id','conditions'=>$conditions,'recursive'=>0));
+		
+		// On récupère tous les publieOffre, toutes appartenances confondues
+		$conditions1=array();
+		foreach ($appartenances as $appartenance) {
+			array_push($conditions1, $appartenance["Appartenance"]["appartenance_id"]);
+		}
+		//On détache appartenance pour alléger la requete suivante
+		
+		$publieoffres=$this->Offre->PublieOffre->find('all',array('conditions'=>array('PublieOffre.appartenance_id'=>$conditions1),'recursive'=>0));
+
+		//On récupère toutes les offres, tous publieOffres confondus
+		$conditions2=array();
+		foreach	($publieoffres as $publieoffre)
+		{
+			array_push($conditions2,$publieoffre["PublieOffre"]["offre_id"]);
+		}
+
+
+			if(array_key_exists("Categories",$this->request->data))
+			{
+				$this->Paginator->settings = array('conditions' => array('Offre.offre_id'=> $conditions2,'titre LIKE'=>"%".$this->request->data["Nom"]."%",'categorie_id'=>$this->request->data["Categories"]),'recursive'=>0);
+			}
+			else
+			{
+				$this->Paginator->settings = array('conditions' => array('Offre.offre_id'=> $conditions2,'titre LIKE'=>"%".$this->request->data["Nom"]."%"));
+			}
+				
+			$this->set('offres',$this->Paginator->paginate('Offre',array(),array('Category.nom','titre')));
+			$this->set('data',$this->request->data);
+
+		}
+
+		$appartenances = $this->Offre->PublieOffre->Appartenance->find('list',array('recursive'=>1,'fields'=>array('Appartenance.communaute_id','Communaute.nom'),'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'))));
+		$categories = $this->Offre->Category->find('list',array('fields'=>'nom'));
+		$this->set(compact('appartenances', 'categories'));
+	}
 }
 
