@@ -11,8 +11,9 @@
 <header>
 		<div id="banniere">
 	<div id="logo">
-	<?php echo $this->Html->image("dessins/logo_toctroc.png", array('alt' => 'TocTroc Logo')); ?>
+	<?php echo $this->Html->link($this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')), array('controller'=>'appartenances','action'=>'index'),array('escape'=>false)); ?>
 	</div>
+	
 		<div class="carre_menu" id="menu1" href="emprunter.html">
             <div class="titre_carre_menu">Mur</div>
         </div>
@@ -22,9 +23,19 @@
         <div class="carre_menu" id="menu3" href="demander.html">
             <div class="titre_carre_menu">Demander</div>
         </div>
-        <div class="carre_menu" id="menu4">
+         <?php echo $this->Html->link('
+
+            <div class="carre_menu" id="menu4">
             <div class="titre_carre_menu">Mon Compte</div>
-        </div>
+            <div class="symbole_carre_menu">
+            </div>
+            </div>
+            </div>',
+          
+          array('controller' => 'users', 'action' => "monCompte"),
+          array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
+		);
+		?>
 
 	 
 	</div>
