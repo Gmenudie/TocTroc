@@ -64,7 +64,7 @@ class UsersController extends AppController {
 	public function add($id = null)
 	{
 
-		
+		App::uses('Folder', 'Utility');
 		
 		/* On envoie une variable à la vue s'il s'agit d'un ajout de membre (= s'il n'y a pas de paramètres $id) */
 		if(isset($id) == false)
@@ -114,7 +114,6 @@ class UsersController extends AppController {
 					/* On vérifie si le format du fichier est valide */
 					if(in_array($format, $formats))
 					{
-						
 						// /* On défini le nom du fichier PRENOM-NOM.FORMAT*/
 						// $nom = $this->data['User']['prenom'].'-'.$this->data['User']['nom'].'.'.$format;
 						
@@ -128,6 +127,12 @@ class UsersController extends AppController {
 							// $nom = 'profil-1-' . $nom;
 						//}
 						
+						/* On vérifie si le dossier pour stocker les images existe, sinon on le crée */
+						$dir = 'img/user/'.$id;
+						if(! file_exists($dir))
+						{
+							mkdir($dir,0777);
+						}
 						
 						/* On va maintenant entamer le processus de redimmensionnement de l'image */
 						if($format == 'jpg' || $format == 'jpeg')
@@ -344,17 +349,18 @@ class UsersController extends AppController {
 					$temporaryUser["User"]["role_id"]='3';
 				
 
-					if ($id = $this->User->save($temporaryUser))
+					if ($this->User->save($temporaryUser))
 					{   
 						/* On crée le dossier pour l'utilisateur */
-						new Folder('img/user/'.$id);
-					
+						$id = $this->User->id;
+						mkdir('img/user/'.$id,0777);
+						
 						if($goUpload==1)
 						{
 							$cheminFichier = 'img/user/'.$id.'/';
 							$this->User->saveField('image_profil',$format);
 							
-							/* On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\*/
+							/* On upload et on regarde si ça se passe bien */
 							if($format == 'jpg' || $format == 'jpeg')
 							{
 								if(imagejpeg($nouvelleImage, $cheminFichier.'profil.'.$format, 80) && imagejpeg($nouvelleMiniature, $cheminFichier.'miniature.'.$format, 80))
@@ -368,7 +374,7 @@ class UsersController extends AppController {
 							}
 							elseif($format == 'png')
 							{
-								if(imagepng($nouvelleImage, $cheminFichier.'profil.png', 80) && imagepng($nouvelleMiniature, $cheminFichier.'miniature.png', 80))
+								if(imagepng($nouvelleImage, $cheminFichier.'profil.png', 8) && imagepng($nouvelleMiniature, $cheminFichier.'miniature.png', 8))
 								{
 									$upload = 1;
 								}
@@ -394,7 +400,15 @@ class UsersController extends AppController {
 						unset($temporaryUser);
 						$this->Session->setFlash(__('Bienvenue sur TocTroc !'));
 						$this->Auth->login($this->data);
-						return $this->redirect( array('controller' => 'acceuils', 'action' => 'index'));
+						if ($this->Auth->login())
+						{
+							return $this->redirect($this->Auth->redirect());
+						}
+					}
+					else
+					{
+						$this->Session->setFlash('Il y a eu une erreur lors de l\'enregistrement', 'error');
+						$this->redirect($this->referer());
 					}
 				}
 				
@@ -413,12 +427,6 @@ class UsersController extends AppController {
 			$this->User->user_id;
 			$this->request->data = $this->User->findByUserId($id);
 		}
-		else
-		{
-			$this->Session->setFlash(('Erreur'));
-			$this->redirect($this->referer());
-		}
-
     }
 
 	
