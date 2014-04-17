@@ -24,7 +24,7 @@ class UsersController extends AppController {
 	    parent::beforeFilter();
 		$this->layout ='default';
 	    // Allow users to register and logout.
-	    $this->Auth->allow('add', 'logout');
+	    $this->Auth->allow();
 	}
 
 
@@ -281,7 +281,11 @@ class UsersController extends AppController {
 				// Il s'agit d'une modification , on vérifie si le mail n'est pas déjà utilisé s'il a été modifié
 				$currentuser=$this->User->findByUserId($id);
 				$newEmail = $this->request->data['User']['email'];
-
+				
+				if($upload == 1)
+				{
+					$currentuser['User']['image_profil'] = $format;
+				}
 				
 				if($currentuser['User']['email'] == $newEmail)
 				{
@@ -316,14 +320,6 @@ class UsersController extends AppController {
 					if($requete == 0)
 					{
 						/* L'email n'est pas déjà utilisé */
-						
-						// $temporaryUser = $this->User->findByUserId($id);
-						
-						// $temporaryUser['User']['nom'] = $this->request->data['User']['nom'];
-						// $temporaryUser['User']['prenom'] = $this->request->data['User']['prenom'];
-						// $temporaryUser['User']['email'] = $this->request->data['User']['email'];
-						// $temporaryUser['User']['telephone_1'] = $this->request->data['User']['telephone_1'];
-						// $temporaryUser['User']['telephone_2'] = $this->request->data['User']['telephone_2'];
 						
 						$this->request->data['User']['user_id']=$currentuser['User']['user_id'];
 						$this->request->data['User']['role_id']=$currentuser['User']['role_id'];	
@@ -361,12 +357,12 @@ class UsersController extends AppController {
 				if($requete == 0)
 				{
 					$this->User->create();
-					$temporaryUser2=array();
-					$temporaryUser2=$this->request->data;
-					$temporaryUser2["User"]["role_id"]=3;
-				
+					$temporaryUser=array();
+					$temporaryUser=$this->request->data;
+					$temporaryUser["User"]["role_id"]=3;
+					
 
-					if ($this->User->save($temporaryUser2))
+					if ($this->User->save($temporaryUser))
 					{   
 						/* On crée le dossier pour l'utilisateur */
 						$id = $this->User->id;
@@ -470,23 +466,27 @@ class UsersController extends AppController {
 	 public function changerMotDePasse()
 	 {
 		/* On regarde si le formulaire a été validé */
-		if(empty($this->request->data) == false)
+		if(!empty($this->request->data))
 		{
 			if($this->request->data['User']['password_1'] == $this->request->data['User']['password_2'])
 			{
-				$this->request->data['User']['id'] = $_SESSION['Auth']['User']['user_id'];
+				$temporaryuser = $this->User->findByUserId($this->Auth->user('user_id'));
+				$temporaryuser['User']['password'] = $this->request->data['User']['password_1'];
+				debug($temporaryuser);
 				
 				/* On vérifie la longueur du mot de passe */
 				if(strlen($this->request->data['User']['password_1']) >= 6)
 				{
 				
 					/* On essaye de sauvegarder l'utilisateur */
-					if($this->User->saveField('password',$this->request->data['User']['password_1']))
+					if($this->User->save($temporaryuser))
 					{
+						
 						$this->Session->setFlash('Votre mot de passe a bien été changé', 'success');
 					}
 					else
 					{
+
 						$this->Session->setFlash('Erreur lors de l\'enregistrement du mot de passe', 'error');
 					}
 				}
@@ -501,7 +501,7 @@ class UsersController extends AppController {
 				$this->Session->setFlash('Veuillez entrer deux fois le même mot de passe', 'error');
 			}
 			
-			$this->redirect($this->referer());
+			// $this->redirect($this->referer());
 		}
 	}
 
