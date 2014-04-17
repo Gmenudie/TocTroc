@@ -68,7 +68,7 @@ class UsersController extends AppController {
 		App::uses('Folder', 'Utility');
 		
 		/* On envoie une variable à la vue s'il s'agit d'un ajout de membre (= s'il n'y a pas de paramètres $id) */
-		if(isset($_SESSION['Auth']['User']['user_id']) == false)
+		if(null==$this->Auth->user('user_id'))
 		{
 			$this->layout='unauthentified';
 			$this->set('ajout', 1);
@@ -76,32 +76,32 @@ class UsersController extends AppController {
 		else
 		{
 			/* Il s'agit d'une modification*/
-			$id = $_SESSION['Auth']['User']['user_id'];
+			$id = $this->Auth->user('user_id');
 			$this->layout='default';
 		}
 		
 		/* On regarde si le formulaire a été validé */
-		if (empty($this->request->data) == false)
+		if (!empty($this->request->data))
 		{
-			/* On liste les formats de fichiers acceptés pour les photos de profil. */
+			// On liste les formats de fichiers acceptés pour les photos de profil.
 			$formats = array('jpg', 'jpeg', 'png', 'gif');
 			
-			/* On regarde si une photo de profil a été soumise, si oui on met tout en forme */
+			// On regarde si une photo de profil a été soumise, si oui on met tout en forme 
 			if ($this->request->data['User']['upload_profil']['name'] != null)
 			{
 				$go =0;
 				if(isset($this->request->data['User']['user_id']))
 				{
 					
-					/* Il s'agit d'une modification */
+					// Il s'agit d'une modification 
 					$photo = $this->User->findByUserId($id)['User']['image_profil'];
 					$newphoto = $this->request->data['User']['upload_profil']['name'];
 					
 					if($photo != $newphoto)
 					{
-						/* La photo de profil a changé, on modifie la base de données. (Si la photo de profil ne change pas, on ne fait rien) */
+						// La photo de profil a changé, on modifie la base de données. (Si la photo de profil ne change pas, on ne fait rien) 
 						$go = 1;
-						/* On crée dès maintenant le chemin vers là où sera stocké l'image */
+						// On crée dès maintenant le chemin vers là où sera stocké l'image 
 						$cheminFichier = 'img/user/'.$id.'/';
 					}
 				}
@@ -114,23 +114,23 @@ class UsersController extends AppController {
 				{
 					$format = strtolower(substr(strrchr($this->request->data['User']['upload_profil']['name'],'.'),1));
 						
-					/* On vérifie si le format du fichier est valide */
+					// On vérifie si le format du fichier est valide 
 					if(in_array($format, $formats))
 					{						
-						/* On vérifie si le dossier pour stocker les images existe, sinon on le crée */
+						// On vérifie si le dossier pour stocker les images existe, sinon on le crée 
 						$dir = 'img/user/'.$id;
 						if(! file_exists($dir))
 						{
 							mkdir($dir,0777);
 						}
 						
-						/* On va maintenant entamer le processus de redimmensionnement de l'image */
+						// On va maintenant entamer le processus de redimmensionnement de l'image 
 						if($format == 'jpg' || $format == 'jpeg')
 						{
 							$imageChoisie = imagecreatefromjpeg($this->request->data['User']['upload_profil']['tmp_name']);
 							$tailleImageChoisie = getimagesize($this->request->data['User']['upload_profil']['tmp_name']);
 							
-							/* On définit les nouvelles dimensions de l'image */
+							// On définit les nouvelles dimensions de l'image 
 							$nouvelleLargeur = 80;
 							$nouvelleLargeurMiniature = 40;
 							
@@ -140,18 +140,18 @@ class UsersController extends AppController {
 							$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
 							$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
 							
-							/* On crée l'image dans laquelle sera enregistrée l'image redimensionnée */
+							// On crée l'image dans laquelle sera enregistrée l'image redimensionnée 
 							$nouvelleImage = imagecreatetruecolor($nouvelleLargeur, $nouvelleHauteur);
 							$nouvelleMiniature = imagecreatetruecolor($nouvelleLargeurMiniature, $nouvelleHauteurMiniature);
 							
-							/* On redimensionne l'image */
+							// On redimensionne l'image 
 							imagecopyresampled($nouvelleImage, $imageChoisie, 0, 0, 0, 0, $nouvelleLargeur, $nouvelleHauteur, $tailleImageChoisie[0], $tailleImageChoisie[1]);
 							imagecopyresampled($nouvelleMiniature, $imageChoisie, 0, 0, 0, 0, $nouvelleLargeurMiniature, $nouvelleHauteurMiniature, $tailleImageChoisie[0], $tailleImageChoisie[1]);
 							
-							/* On supprime la copie locale de l'image */
+							// On supprime la copie locale de l'image 
 							imagedestroy($imageChoisie);
 							
-							/* On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\*/
+							// On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\
 							if(isset($this->request->data['User']['user_id']))
 							{
 								if(imagejpeg($nouvelleImage, $cheminFichier.'profil.'.$format, 80) && imagejpeg($nouvelleMiniature, $cheminFichier.'miniature.'.$format, 80))
@@ -174,7 +174,7 @@ class UsersController extends AppController {
 							$imageChoisie = imagecreatefrompng($this->request->data['User']['upload_profil']['tmp_name']);
 							$tailleImageChoisie = getimagesize($this->request->data['User']['upload_profil']['tmp_name']);
 							
-							/* On définit les nouvelles dimensions de l'image */
+							// On définit les nouvelles dimensions de l'image 
 							$nouvelleLargeur = 80;
 							$nouvelleLargeurMiniature = 40;
 							
@@ -184,18 +184,18 @@ class UsersController extends AppController {
 							$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
 							$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
 							
-							/* On crée l'image dans laquelle sera enregistrée l'image redimensionnée */
+							// On crée l'image dans laquelle sera enregistrée l'image redimensionnée 
 							$nouvelleImage = imagecreatetruecolor($nouvelleLargeur, $nouvelleHauteur);
 							$nouvelleMiniature = imagecreatetruecolor($nouvelleLargeurMiniature, $nouvelleHauteurMiniature);
 							
-							/* On redimensionne l'image */
+							// On redimensionne l'image 
 							imagecopyresampled($nouvelleImage, $imageChoisie, 0, 0, 0, 0, $nouvelleLargeur, $nouvelleHauteur, $tailleImageChoisie[0], $tailleImageChoisie[1]);
 							imagecopyresampled($nouvelleMiniature, $imageChoisie, 0, 0, 0, 0, $nouvelleLargeurMiniature, $nouvelleHauteurMiniature, $tailleImageChoisie[0], $tailleImageChoisie[1]);
 							
-							/* On supprime la copie locale de l'image */
+							// On supprime la copie locale de l'image 
 							imagedestroy($imageChoisie);
 							
-							/* On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\*/
+							// On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\
 							if(isset($this->request->data['User']['user_id']))
 							{
 								if(imagepng($nouvelleImage, $cheminFichier.'profil.png', 80) && imagepng($nouvelleMiniature, $cheminFichier.'miniature.png', 80))
@@ -218,7 +218,7 @@ class UsersController extends AppController {
 							$imageChoisie = imagecreatefromgif($this->request->data['User']['upload_profil']['tmp_name']);
 							$tailleImageChoisie = getimagesize($this->request->data['User']['upload_profil']['tmp_name']);
 							
-							/* On définit les nouvelles dimensions de l'image */
+							// On définit les nouvelles dimensions de l'image 
 							$nouvelleLargeur = 80;
 							$nouvelleLargeurMiniature = 40;
 							
@@ -228,25 +228,25 @@ class UsersController extends AppController {
 							$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
 							$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
 							
-							/* On crée l'image dans laquelle sera enregistrée l'image redimensionnée */
+							// On crée l'image dans laquelle sera enregistrée l'image redimensionnée 
 							$nouvelleImage = imagecreatetruecolor($nouvelleLargeur, $nouvelleHauteur);
 							$nouvelleMiniature = imagecreatetruecolor($nouvelleLargeurMiniature, $nouvelleHauteurMiniature);
 							
-							/* On joue avec l'alpha et l'omega pour garder la transparence des gifs */
+							// On joue avec l'alpha et l'omega pour garder la transparence des gifs 
 							imageAlphaBlending($nouvelleImage, false);
 							imageAlphaBlending($nouvelleMiniature, false);
 							imageSaveAlpha($nouvelleImage, true);
 							imageSaveAlpha($nouvelleMiniature, true);
 							
-							/* On redimensionne l'image */
+							// On redimensionne l'image 
 							imagecopyresampled($nouvelleImage, $imageChoisie, 0, 0, 0, 0, $nouvelleLargeur, $nouvelleHauteur, $tailleImageChoisie[0], $tailleImageChoisie[1]);
 							imagecopyresampled($nouvelleMiniature, $imageChoisie, 0, 0, 0, 0, $nouvelleLargeurMiniature, $nouvelleHauteurMiniature, $tailleImageChoisie[0], $tailleImageChoisie[1]);
 							
-							/* On supprime la copie locale de l'image */
+							// On supprime la copie locale de l'image 
 							imagedestroy($imageChoisie);
 							
-							/* On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\*/
-							if(isset($this->request->data['User']['user_id']))
+							// On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\
+							if(isset($id))
 							{
 								if(imagegif($nouvelleImage, $cheminFichier.'profil.gif', 80) && imagegif($nouvelleMiniature, $cheminFichier.'miniature.gif', 80))
 								{
@@ -278,49 +278,36 @@ class UsersController extends AppController {
 				
 			if(isset($id))
 			{
-				/* Il s'agit d'une modification , on vérifie si le mail n'est pas déjà utilisé s'il a été modifié*/
-				$email = $this->User->findByUserId($id)['User']['email'];
+				// Il s'agit d'une modification , on vérifie si le mail n'est pas déjà utilisé s'il a été modifié
+				$currentuser=$this->User->findByUserId($id);
 				$newEmail = $this->request->data['User']['email'];
+
 				
-				if($email == $newEmail)
+				if($currentuser['User']['email'] == $newEmail)
 				{
-					/* L'email n'a pas changé */
-					// $temporaryUser = array();
-					// $temporaryUser = $this->User->findByUserId($id);
+					/*L'email n'a pas changé */				
 					
-					// unset($temporaryUser['Adresse']);
-					// unset($temporaryUser['Role']);
-					// unset($temporaryUser['Appartenance']);
-					// unset($temporaryUser['Titre']);
+					$this->request->data['User']['user_id']=$currentuser['User']['user_id'];
+					$this->request->data['User']['role_id']=$currentuser['User']['role_id'];
 					
-					// $temporaryUser['User']['nom'] = $this->request->data['User']['nom'];
-					// $temporaryUser['User']['prenom'] = $this->request->data['User']['prenom'];
-					// $temporaryUser['User']['email'] = $this->request->data['User']['email'];
-					// $temporaryUser['User']['telephone_1'] = $this->request->data['User']['telephone_1'];
-					// $temporaryUser['User']['telephone_2'] = $this->request->data['User']['telephone_2'];
 					
-					$this->User->user_id = $id;
-					$this->User->save($this->request->data);
 					
-					if($upload==1)
-					{
-						// $temporaryUser['User']['image_profil'] = $this->request->data['User']['image_profil'];
+					if($this->User->save($this->request->data))
+					 {
+						unset($currentuser);
+						
+						$this->Session->setFlash('Vos données ont été modifiées', 'success');
+						$this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
 					}
-					
-					// if($this->User->save($temporaryUser))
-					// {
-						// unset($temporaryUser);
+					else
+					{
+						debug($currentuser);
+						debug($this->request->data);
+						$this->Session->setFlash('Erreur lors de l\'enregistrement mais tes arrivé jusque la', 'error');
 						
-						// $this->Session->setFlash('Vos données ont été modifiées', 'success');
-						// $this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
-					// }
-					// else
-					// {
-						// debug($temporaryUser);
-						// debug($this->request->data);
-						// $this->Session->setFlash('Erreur lors de l\'enregistrement', 'error');
-						
-					// }
+					}
+
+					$this->set('currentuser',$currentuser);
 				}
 				else
 				{
@@ -329,28 +316,32 @@ class UsersController extends AppController {
 					if($requete == 0)
 					{
 						/* L'email n'est pas déjà utilisé */
-						$temporaryUser = array();
-						$temporaryUser = $this->User->findByUserId($id)['User'];
 						
-						$temporaryUser['User']['nom'] = $this->request->data['User']['nom'];
-						$temporaryUser['User']['prenom'] = $this->request->data['User']['prenom'];
-						$temporaryUser['User']['email'] = $this->request->data['User']['email'];
-						$temporaryUser['User']['telephone_1'] = $this->request->data['User']['telephone_1'];
-						$temporaryUser['User']['telephone_2'] = $this->request->data['User']['telephone_2'];
+						// $temporaryUser = $this->User->findByUserId($id);
 						
-						if($upload==1)
+						// $temporaryUser['User']['nom'] = $this->request->data['User']['nom'];
+						// $temporaryUser['User']['prenom'] = $this->request->data['User']['prenom'];
+						// $temporaryUser['User']['email'] = $this->request->data['User']['email'];
+						// $temporaryUser['User']['telephone_1'] = $this->request->data['User']['telephone_1'];
+						// $temporaryUser['User']['telephone_2'] = $this->request->data['User']['telephone_2'];
+						
+						$this->request->data['User']['user_id']=$currentuser['User']['user_id'];
+						$this->request->data['User']['role_id']=$currentuser['User']['role_id'];	
+
+						
+						
+						if(!$this->User->save($this->request->data))
 						{
-							$temporaryUser['User']['image_profil'] = $this->request->data['User']['image_profil'];
+							debug($this->request->data);
 						}
+						else
+						{
 						
-						$this->User->save($temporaryUser);
-						
-						debug($temporaryUser);
-						
-						unset($temporaryUser);
-						
-						$this->Session->setFlash('Vos données ont été modifiées', 'success');
-						$this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
+							unset($this->request->data);
+							
+							$this->Session->setFlash('Vos données ont été modifiées', 'success');
+							$this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
+						}
 					}
 					else
 					{
@@ -370,16 +361,18 @@ class UsersController extends AppController {
 				if($requete == 0)
 				{
 					$this->User->create();
-					$temporaryUser=array();
-					$temporaryUser=$this->request->data;
-					$temporaryUser["User"]["role_id"]='3';
+					$temporaryUser2=array();
+					$temporaryUser2=$this->request->data;
+					$temporaryUser2["User"]["role_id"]=3;
 				
 
-					if ($this->User->save($temporaryUser))
+					if ($this->User->save($temporaryUser2))
 					{   
 						/* On crée le dossier pour l'utilisateur */
 						$id = $this->User->id;
 						mkdir('img/user/'.$id,0777);
+
+						
 						
 						if($goUpload==1)
 						{
@@ -447,7 +440,7 @@ class UsersController extends AppController {
 			}
 			
 		}
-		elseif($id != null)
+		elseif(isset($id)&&($id != null))
 		{
 			/* Formulaire vide, mais il y a un paramètre (c'est une modification, on charge ce qui est déjà écrit)*/
 			$this->User->user_id;

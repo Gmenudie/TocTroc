@@ -2,7 +2,7 @@
 
 <?php 
 	if(isset($user[0]['User']['image_profil'])) {
-		echo $this->Html->image('user/'.$user[0]['User']['user_id'].'/profil.'.$user[0]['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'));
+		echo $this->Html->image('../app/webroot/img/user/'.$user[0]['User']['user_id'].'/profil.'.$user[0]['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'));
 	}
 ?>
 	
