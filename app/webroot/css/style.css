@@ -25,6 +25,19 @@ height: 234px;
 background-image: url("../img/dessins/texture_header.png");
 }
 
+footer
+{
+height: 50px;
+background-image: url("../img/dessins/texture_header.png");
+width: 100%;
+position:fixed;
+bottom:0;
+
+text-align: center;
+color: white;
+font: bold;
+}
+
 #fond
 {
 width:100%;

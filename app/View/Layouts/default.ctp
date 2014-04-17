@@ -98,6 +98,11 @@
 	</div>
 </div>
 
+<footer>
+	Mur | Proposer | Demander | Mon Compte
+	<br/>
+	Signaler un abus | Contact | Mentions légales
+</footer>
 
    </body>
 </html>
