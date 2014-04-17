@@ -13,7 +13,7 @@
 	<div id="logo">
 	<?php echo $this->Html->link($this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')), array('controller'=>'appartenances','action'=>'index'),array('escape'=>false)); ?>
 	</div>
-			<?php
+	<?php
      echo $this->Html->link(
            '<div class="carre_menu" id="menu1">
             <div class="titre_carre_menu">Mur</div>

@@ -25,6 +25,19 @@ height: 234px;
 background-image: url("../img/dessins/texture_header.png");
 }
 
+footer
+{
+height: 50px;
+background-image: url("../img/dessins/texture_header.png");
+width: 100%;
+position:fixed;
+bottom:0;
+
+text-align: center;
+color: white;
+font: bold;
+}
+
 #fond
 {
 width:100%;
@@ -169,14 +182,23 @@ padding: 0px;
 }
 #barre_connexion #informations_connexion
 {
+	display: inline-block;
 	line-height:30px;
 }
 
 #barre_connexion #informations_connexion a
 {
+	display: inline-block;
 	color: white;
+	
 }
 
+#barre_connexion #informations_connexion img
+{
+	display: inline-block;
+	vertical-align:top;
+	margin: -7px;
+}
 
 #barre_connexion .input input, #barre_connexion input[type=submit]
 {	

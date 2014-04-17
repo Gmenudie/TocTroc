@@ -22,7 +22,7 @@ class UsersController extends AppController {
 	 
 	public function beforeFilter() {
 	    parent::beforeFilter();
-		$this->layout ='dans_communaute';
+		$this->layout ='default';
 	    // Allow users to register and logout.
 	    $this->Auth->allow('add', 'logout');
 	}
