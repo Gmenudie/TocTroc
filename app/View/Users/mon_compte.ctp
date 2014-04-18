@@ -1,60 +1,61 @@
+<?php echo $this->Html->css('style_compte'); ?>
+
 <h1>Mon Compte</h1>
 
-<?php 
-	if(isset($user[0]['User']['image_profil'])) {
-		echo $this->Html->image('../app/webroot/img/user/'.$user[0]['User']['user_id'].'/profil.'.$user[0]['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'));
-	}
-?>
-	
-<table class="compte-perso">
-	<tr>
-		<td>Nom</td>
-		<td><?php echo($user[0]['User']['prenom']); ?></td>
-	</tr
-	<tr>
-		<td>Pr&eacute;nom</td>
-		<td><?php echo($user[0]['User']['nom']); ?></td>
-	</tr>
-	<tr>
-		<td>e-mail</td>
-		<td><?php echo($user[0]['User']['email']); ?></td>
-	</tr>
-	<tr>
-		<td>T&eacute;l&eacute;phone 1</td>
-		<td><?php echo($user[0]['User']['telephone_1']); ?></td>
-	</tr>
-	<tr>
-		<td>T&eacute;l&eacute;phone 2</td>
-		<td><?php echo($user[0]['User']['telephone_2']); ?></td>
-	</tr>
-</table>
+<div class="carte_compte">
 
-<!-- <table class="compte-adresse">
-	<tr>
-		<td>Num&eacute;ro</td>
-		<td><?php echo($user[0]['Adresse']['numero']); ?></td>
-	</tr
-	<tr>
-		<td>Rue</td>
-		<td><?php echo($user[0]['Adresse']['rue']); ?></td>
-	</tr>
-	<tr>
-		<td>Code Postal</td>
-		<td><?php echo($user[0]['Adresse']['code_postal']); ?></td>
-	</tr>
-	<tr>
-		<td>Ville</td>
-		<td><?php echo($user[0]['Adresse']['ville']); ?></td>
-	</tr>
-	<tr>
-		<td>&Eacute;tage</td>
-		<td><?php echo($user[0]['Adresse']['etage']); ?></td>
-	</tr>
-	<tr>
-		<td>Num&eacute;ro appartement</td>
-		<td><?php echo($user[0]['Adresse']['numero_appartement']); ?></td>
-	</tr>
-</table> -->
+	<div class="colonne_gauche">
+	
+		<?php 
+		
+			if(isset($user[0]['User']['image_profil'])) {
+				echo $this->Html->image('user/'.$user[0]['User']['user_id'].'/profil.'.$user[0]['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'));
+				echo "<br/>";
+			}
+			else
+			{
+				echo $this->Html->image('dessins/profil.png', array('alt' => 'Image de profil', 'class' => 'compte-image'));
+				echo "<br/>";
+			}
+		echo $user[0]['User']['prenom']."<br/>";
+		echo($user[0]['User']['nom']);
+		
+		?>
+		
+	</div>
+	
+	<div class="colonne_droite">
+		
+		<div class="sous_titre_colonne_droite" style="margin-top:0px;">Mes informations de contact</div>
+		
+		<?php 
+		
+		echo $user[0]['User']['email']."<br/>";
+		echo $user[0]['User']['telephone_1']."<br/>";
+		echo $user[0]['User']['telephone_2']; 
+		
+		?>
+		
+		<div class="sous_titre_colonne_droite">Mon adresse</div>
+		
+		<?php 
+		
+		if(isset($user[0]['Adresse']['numero_appartement'])){echo "Appartement n°".$user[0]['Adresse']['numero_appartement'];}
+		if(isset($user[0]['Adresse']['etage'])){echo " (Etage ".$user[0]['Adresse']['etage'].")<br/>";}
+		if(isset($user[0]['Adresse']['numero'])){echo "n°".$user[0]['Adresse']['numero'].",<br/>";}
+		if(isset($user[0]['Adresse']['rue'])){echo "Rue ".$user[0]['Adresse']['rue']."<br/>";}
+		if(isset($user[0]['Adresse']['code_postal'])){echo $user[0]['Adresse']['code_postal']."<br/>";}
+		if(isset($user[0]['Adresse']['ville'])){echo $user[0]['Adresse']['ville'];}
+		
+		?>
+		
+		
+	</div>
+
+
+</div>
+
+
 <?php
 	$id = $user[0]['User']['user_id'];
 	echo $this->Html->link('
@@ -74,3 +75,21 @@
      );
 	 
 ?>
+
+	
+<script>
+
+	function ajuster_taille_colonnes_message()
+	{
+		var colonnes_gauche = document.getElementsByClassName("colonne_gauche");
+		var colonnes_droite = document.getElementsByClassName("colonne_droite");
+		for (var i=0 ; i<colonnes_gauche.length ; i++)
+		{
+			if(colonnes_gauche[i].offsetHeight<colonnes_droite[i].offsetHeight)
+			{
+				colonnes_gauche[i].style.height=colonnes_droite[i].offsetHeight-20+"px";
+			}
+		}
+	}ajuster_taille_colonnes_message();
+	
+</script>

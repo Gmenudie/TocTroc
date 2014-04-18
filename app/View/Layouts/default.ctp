@@ -79,7 +79,7 @@
 				}
 				else
 				{
-					echo $this->Html->image('dessins/image_profil.png');
+					echo $this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'));
 				}
 				?>
 			

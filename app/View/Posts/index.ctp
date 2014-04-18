@@ -40,7 +40,7 @@
 					}
 					else
 					{
-						echo "<div class='message_profil'><img src='../../app/webroot/img/dessins/image_profil.png'/><br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
+						echo "<div class='message_profil'><img src='../../app/webroot/img/dessins/miniature.png'/><br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
 					}
 					
 				echo "</div>";
@@ -74,7 +74,7 @@
 					}
 					else
 					{
-						echo "<div class='message_profil'><img src='../../app/webroot/img/dessins/image_profil.png'/><br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
+						echo "<div class='message_profil'><img src='../../app/webroot/img/dessins/miniature.png'/><br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
 					}							
 						echo "</div>";
 						

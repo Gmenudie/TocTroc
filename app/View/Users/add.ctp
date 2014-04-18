@@ -31,7 +31,8 @@
 	
 	if(isset($ajout))
 	{
-		echo $this->Form->input('password' , array('label' => '', 'placeholder'=>'Mot de passe'));
+		echo $this->Form->input('password_1' , array('label' => '', 'placeholder'=>'Mot de passe', 'type' => 'password'));
+		echo $this->Form->input('password_2' , array('label' => '', 'placeholder'=>'Retapez votre mot de passe', 'type' => 'password'));
 	}
 	
 	echo '<br/>';

@@ -10,6 +10,7 @@ class UsersController extends AppController {
 	 * 4. add()
 	 * 5. monCompte()
 	 * 6. changerMotDePasse()
+	 * 7. profil()
 	 *
 	 * Assez logiquement, ce controller gère l'authentification et l'inscription. Rien de bien sorcier.
 	 */
@@ -67,6 +68,8 @@ class UsersController extends AppController {
 	
 		App::uses('Folder', 'Utility');
 		
+		$erreur = 0;
+		
 		/* On envoie une variable à la vue s'il s'agit d'un ajout de membre (= s'il n'y a pas de paramètres $id) */
 		if(null==$this->Auth->user('user_id'))
 		{
@@ -83,14 +86,11 @@ class UsersController extends AppController {
 		/* On regarde si le formulaire a été validé */
 		if (!empty($this->request->data))
 		{
-			// On liste les formats de fichiers acceptés pour les photos de profil.
-			$formats = array('jpg', 'jpeg', 'png', 'gif');
-			
 			// On regarde si une photo de profil a été soumise, si oui on met tout en forme 
 			if ($this->request->data['User']['upload_profil']['name'] != null)
 			{
 				$go =0;
-				if(isset($this->request->data['User']['user_id']))
+				if(isset($id))
 				{
 					
 					// Il s'agit d'une modification 
@@ -112,6 +112,9 @@ class UsersController extends AppController {
 				
 				if($go == 1)
 				{
+					// On liste les formats de fichiers acceptés pour les photos de profil.
+					$formats = array('jpg', 'jpeg', 'png', 'gif');
+					
 					$format = strtolower(substr(strrchr($this->request->data['User']['upload_profil']['name'],'.'),1));
 						
 					// On vérifie si le format du fichier est valide 
@@ -131,14 +134,29 @@ class UsersController extends AppController {
 							$tailleImageChoisie = getimagesize($this->request->data['User']['upload_profil']['tmp_name']);
 							
 							// On définit les nouvelles dimensions de l'image 
-							$nouvelleLargeur = 80;
-							$nouvelleLargeurMiniature = 40;
-							
-							$reduction = ($nouvelleLargeur/$tailleImageChoisie[0]);
-							$reductionMiniature = ($nouvelleLargeurMiniature/$tailleImageChoisie[0]);
-							
-							$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
-							$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
+							if($tailleImageChoisie[0] >= $tailleImageChoisie[1])
+							{
+								$nouvelleLargeur = 80;
+								$nouvelleLargeurMiniature = 40;
+								
+								$reduction = ($nouvelleLargeur/$tailleImageChoisie[0]);
+								$reductionMiniature = ($nouvelleLargeurMiniature/$tailleImageChoisie[0]);
+								
+								$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
+								$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
+								
+							}
+							else
+							{
+								$nouvelleHauteur = 80;
+								$nouvelleHauteurMiniature = 40;
+								
+								$reduction = ($nouvelleHauteur/$tailleImageChoisie[1]);
+								$reductionMiniature = ($nouvelleHauteurMiniature/$tailleImageChoisie[1]);
+								
+								$nouvelleLargeur = ($tailleImageChoisie[0] * $reduction);
+								$nouvelleLargeurMiniature = ($tailleImageChoisie[0] * $reductionMiniature);
+							}
 							
 							// On crée l'image dans laquelle sera enregistrée l'image redimensionnée 
 							$nouvelleImage = imagecreatetruecolor($nouvelleLargeur, $nouvelleHauteur);
@@ -152,7 +170,7 @@ class UsersController extends AppController {
 							imagedestroy($imageChoisie);
 							
 							// On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\
-							if(isset($this->request->data['User']['user_id']))
+							if(isset($id))
 							{
 								if(imagejpeg($nouvelleImage, $cheminFichier.'profil.'.$format, 80) && imagejpeg($nouvelleMiniature, $cheminFichier.'miniature.'.$format, 80))
 								{
@@ -161,7 +179,7 @@ class UsersController extends AppController {
 								else
 								{
 									$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
-									$this->redirect($this->referer());
+									$erreur = 1;
 								}
 							}
 							else
@@ -175,14 +193,29 @@ class UsersController extends AppController {
 							$tailleImageChoisie = getimagesize($this->request->data['User']['upload_profil']['tmp_name']);
 							
 							// On définit les nouvelles dimensions de l'image 
-							$nouvelleLargeur = 80;
-							$nouvelleLargeurMiniature = 40;
-							
-							$reduction = ($nouvelleLargeur/$tailleImageChoisie[0]);
-							$reductionMiniature = ($nouvelleLargeurMiniature/$tailleImageChoisie[0]);
-							
-							$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
-							$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
+							if($tailleImageChoisie[0] >= $tailleImageChoisie[1])
+							{
+								$nouvelleLargeur = 80;
+								$nouvelleLargeurMiniature = 40;
+								
+								$reduction = ($nouvelleLargeur/$tailleImageChoisie[0]);
+								$reductionMiniature = ($nouvelleLargeurMiniature/$tailleImageChoisie[0]);
+								
+								$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
+								$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
+								
+							}
+							else
+							{
+								$nouvelleHauteur = 80;
+								$nouvelleHauteurMiniature = 40;
+								
+								$reduction = ($nouvelleHauteur/$tailleImageChoisie[1]);
+								$reductionMiniature = ($nouvelleHauteurMiniature/$tailleImageChoisie[1]);
+								
+								$nouvelleLargeur = ($tailleImageChoisie[0] * $reduction);
+								$nouvelleLargeurMiniature = ($tailleImageChoisie[0] * $reductionMiniature);
+							}
 							
 							// On crée l'image dans laquelle sera enregistrée l'image redimensionnée 
 							$nouvelleImage = imagecreatetruecolor($nouvelleLargeur, $nouvelleHauteur);
@@ -196,16 +229,16 @@ class UsersController extends AppController {
 							imagedestroy($imageChoisie);
 							
 							// On upload et on regarde si ça se passe bien /!\ L'upload n'est possible que pour un utilisateur existant à ce stade, pour une création c'est plus loin /!\
-							if(isset($this->request->data['User']['user_id']))
+							if(isset($id))
 							{
-								if(imagepng($nouvelleImage, $cheminFichier.'profil.png', 80) && imagepng($nouvelleMiniature, $cheminFichier.'miniature.png', 80))
+								if(imagepng($nouvelleImage, $cheminFichier.'profil.png', 8) && imagepng($nouvelleMiniature, $cheminFichier.'miniature.png', 8))
 								{
 									$upload = 1;
 								}
 								else
 								{
 									$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
-									$this->redirect($this->referer());
+									$erreur = 1;
 								}
 							}
 							else
@@ -219,14 +252,29 @@ class UsersController extends AppController {
 							$tailleImageChoisie = getimagesize($this->request->data['User']['upload_profil']['tmp_name']);
 							
 							// On définit les nouvelles dimensions de l'image 
-							$nouvelleLargeur = 80;
-							$nouvelleLargeurMiniature = 40;
-							
-							$reduction = ($nouvelleLargeur/$tailleImageChoisie[0]);
-							$reductionMiniature = ($nouvelleLargeurMiniature/$tailleImageChoisie[0]);
-							
-							$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
-							$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
+							if($tailleImageChoisie[0] >= $tailleImageChoisie[1])
+							{
+								$nouvelleLargeur = 80;
+								$nouvelleLargeurMiniature = 40;
+								
+								$reduction = ($nouvelleLargeur/$tailleImageChoisie[0]);
+								$reductionMiniature = ($nouvelleLargeurMiniature/$tailleImageChoisie[0]);
+								
+								$nouvelleHauteur = ($tailleImageChoisie[1] * $reduction);
+								$nouvelleHauteurMiniature = ($tailleImageChoisie[1] * $reductionMiniature);
+								
+							}
+							else
+							{
+								$nouvelleHauteur = 80;
+								$nouvelleHauteurMiniature = 40;
+								
+								$reduction = ($nouvelleHauteur/$tailleImageChoisie[1]);
+								$reductionMiniature = ($nouvelleHauteurMiniature/$tailleImageChoisie[1]);
+								
+								$nouvelleLargeur = ($tailleImageChoisie[0] * $reduction);
+								$nouvelleLargeurMiniature = ($tailleImageChoisie[0] * $reductionMiniature);
+							}
 							
 							// On crée l'image dans laquelle sera enregistrée l'image redimensionnée 
 							$nouvelleImage = imagecreatetruecolor($nouvelleLargeur, $nouvelleHauteur);
@@ -255,7 +303,7 @@ class UsersController extends AppController {
 								else
 								{
 									$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
-									$this->redirect($this->referer());
+									$erreur = 1;
 								}
 							}
 							else
@@ -267,7 +315,7 @@ class UsersController extends AppController {
 					else
 					{
 						$this->Session->setFlash('Le format du fichier n\'est pas valide','error');
-						$this->redirect($this->referer());
+						$erreur = 1;
 					}
 				}
 			}
@@ -276,7 +324,7 @@ class UsersController extends AppController {
 				$upload = 0;
 			}
 				
-			if(isset($id))
+			if(isset($id) && $erreur == 0)
 			{
 				// Il s'agit d'une modification , on vérifie si le mail n'est pas déjà utilisé s'il a été modifié
 				$currentuser=$this->User->findByUserId($id);
@@ -285,6 +333,7 @@ class UsersController extends AppController {
 				if($upload == 1)
 				{
 					$currentuser['User']['image_profil'] = $format;
+					$this->request->data['User']['image_profil'] = $currentuser['User']['image_profil'];
 				}
 				
 				if($currentuser['User']['email'] == $newEmail)
@@ -293,7 +342,6 @@ class UsersController extends AppController {
 					
 					$this->request->data['User']['user_id']=$currentuser['User']['user_id'];
 					$this->request->data['User']['role_id']=$currentuser['User']['role_id'];
-					
 					
 					
 					if($this->User->save($this->request->data))
@@ -343,98 +391,123 @@ class UsersController extends AppController {
 					{
 					/* L'email est déjà pris */
 					$this->Session->setFlash('Cet email est déjà utilisé, désolé', 'error');
-					$this->redirect($this->referer());
 					}
 				}
 			}
-			
 			else
 			{
-				/*Il s'agit d'un ajout, on vérifie si le mail n'est pas déjà utilisé */
-				$email = $this->request->data['User']['email'];
-				$requete = $this->User->find('count', array('conditions' => array('email' => $email)));
-				
-				if($requete == 0)
+				if($erreur == 0)
 				{
-					$this->User->create();
-					$temporaryUser=array();
-					$temporaryUser=$this->request->data;
-					$temporaryUser["User"]["role_id"]=3;
+					/*Il s'agit d'un ajout, on vérifie si le mail n'est pas déjà utilisé */
+					$email = $this->request->data['User']['email'];
+					$requete = $this->User->find('count', array('conditions' => array('email' => $email)));
 					
-
-					if ($this->User->save($temporaryUser))
-					{   
-						/* On crée le dossier pour l'utilisateur */
-						$id = $this->User->id;
-						mkdir('img/user/'.$id,0777);
-
-						
-						
-						if($goUpload==1)
+					/* On vérifie que les 2 mots de passes tapés sont les mêmes */
+					if($this->request->data['User']['password_1'] == $this->request->data['User']['password_2'])
+					{
+						/* On vérifie la longueur du mot de passe */
+						if(strlen($this->request->data['User']['password_1']) >= 6)
 						{
-							$cheminFichier = 'img/user/'.$id.'/';
-							$this->User->saveField('image_profil',$format);
-							
-							/* On upload et on regarde si ça se passe bien */
-							if($format == 'jpg' || $format == 'jpeg')
-							{
-								if(imagejpeg($nouvelleImage, $cheminFichier.'profil.'.$format, 80) && imagejpeg($nouvelleMiniature, $cheminFichier.'miniature.'.$format, 80))
-								{
-									$upload = 1;
-								}
-								else
-								{
-									$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
-								}
-							}
-							elseif($format == 'png')
-							{
-								if(imagepng($nouvelleImage, $cheminFichier.'profil.png', 8) && imagepng($nouvelleMiniature, $cheminFichier.'miniature.png', 8))
-								{
-									$upload = 1;
-								}
-								else
-								{
-									$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
-								}
-							}
-							elseif($format == 'gif')
-							{
-								if(imagegif($nouvelleImage, $cheminFichier.'profil.gif', 80) && imagegif($nouvelleMiniature, $cheminFichier.'miniature.gif', 80))
-								{
-									$upload = 1;
-								}
-								else
-								{
-									$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
-								}
-							}
-							
+							$password = 1;
 						}
-						
-						unset($temporaryUser);
-						$this->Session->setFlash(__('Bienvenue sur TocTroc !'));
-						$this->Auth->login($this->request->data);
-						if ($this->Auth->login())
+						else
 						{
-							return $this->redirect($this->Auth->redirect());
+							$this->Session->setFlash('Le mot de passe doit faire au minimum 6 caractères', 'error');
+							$password = 0;
 						}
 					}
 					else
 					{
-						$this->Session->setFlash('Il y a eu une erreur lors de l\'enregistrement', 'error');
-						$this->redirect($this->referer());
+						/* Pas 2 fois le même mot de passe */
+						$this->Session->setFlash('Veuillez entrer deux fois le même mot de passe', 'error');
+						$password = 0;
+					}
+					
+					if($requete == 0 && $password == 1)
+					{
+						$this->User->create();
+						$temporaryUser=array();
+						$temporaryUser=$this->request->data;
+						$temporaryUser["User"]["role_id"]=3;
+						$temporaryUser['User']['password'] = $this->request->data['User']['password_1'];
+						
+
+						if ($this->User->save($temporaryUser))
+						{   
+							/* On crée le dossier pour l'utilisateur */
+							$id = $this->User->id;
+							mkdir('img/user/'.$id,0777);
+
+							
+							
+							if($goUpload==1)
+							{
+								$cheminFichier = 'img/user/'.$id.'/';
+								$this->User->saveField('image_profil',$format);
+								
+								/* On upload et on regarde si ça se passe bien */
+								if($format == 'jpg' || $format == 'jpeg')
+								{
+									if(imagejpeg($nouvelleImage, $cheminFichier.'profil.'.$format, 80) && imagejpeg($nouvelleMiniature, $cheminFichier.'miniature.'.$format, 80))
+									{
+										$upload = 1;
+									}
+									else
+									{
+										$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
+									}
+								}
+								elseif($format == 'png')
+								{
+									if(imagepng($nouvelleImage, $cheminFichier.'profil.png', 8) && imagepng($nouvelleMiniature, $cheminFichier.'miniature.png', 8))
+									{
+										$upload = 1;
+									}
+									else
+									{
+										$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
+									}
+								}
+								elseif($format == 'gif')
+								{
+									if(imagegif($nouvelleImage, $cheminFichier.'profil.gif', 80) && imagegif($nouvelleMiniature, $cheminFichier.'miniature.gif', 80))
+									{
+										$upload = 1;
+									}
+									else
+									{
+										$this->Session->setFlash('Erreur lors de l\'upload de la photo de profil...','error');
+									}
+								}
+								
+							}
+							
+							unset($temporaryUser);
+							
+							$this->Session->setFlash(__('Bienvenue sur TocTroc !'));
+							
+							$this->Auth->login($this->request->data);
+							if ($this->Auth->login())
+							{
+								return $this->redirect($this->Auth->redirect());
+							}
+						}
+						else
+						{
+							$this->Session->setFlash('Il y a eu une erreur lors de l\'enregistrement', 'error');
+						}
+					}
+
+					else
+					{
+						if($requete != 0)
+						{
+							/* L'email est déjà pris */
+							$this->Session->setFlash('Cet email est déjà utilisé, désolé', 'error');
+						}
 					}
 				}
-				
-				else
-				{
-					/* L'email est déjà pris */
-					$this->Session->setFlash('Cet email est déjà utilisé, désolé', 'error');
-					$this->redirect($this->referer());
-				}
 			}
-			
 		}
 		elseif(isset($id)&&($id != null))
 		{
@@ -498,8 +571,6 @@ class UsersController extends AppController {
 				/* Pas 2 fois le même mot de passe */
 				$this->Session->setFlash('Veuillez entrer deux fois le même mot de passe', 'error');
 			}
-			
-			// $this->redirect($this->referer());
 		}
 	}
 
