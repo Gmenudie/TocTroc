@@ -470,19 +470,17 @@ class UsersController extends AppController {
 		{
 			if($this->request->data['User']['password_1'] == $this->request->data['User']['password_2'])
 			{
-				$temporaryuser = $this->User->findByUserId($this->Auth->user('user_id'));
-				$temporaryuser['User']['password'] = $this->request->data['User']['password_1'];
-				debug($temporaryuser);
 				
 				/* On vérifie la longueur du mot de passe */
 				if(strlen($this->request->data['User']['password_1']) >= 6)
 				{
+					$data = array('user_id' => $this->Auth->user('user_id'), 'password' => $this->request->data['User']['password_1']);
 				
 					/* On essaye de sauvegarder l'utilisateur */
-					if($this->User->save($temporaryuser))
+					if($this->User->save($data))
 					{
-						
 						$this->Session->setFlash('Votre mot de passe a bien été changé', 'success');
+						$this->redirect(array('controller' => 'users', 'action' => 'monCompte'));
 					}
 					else
 					{
