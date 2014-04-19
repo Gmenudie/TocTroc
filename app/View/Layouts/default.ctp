@@ -68,25 +68,26 @@
 	</div>
 	<div id="barre_connexion">
 		<div id="barre_connexion_contenu">
-			<div id="informations_connexion">
-			<?php echo('Bonjour '.AuthComponent::user('prenom').' '); ?>
+			<div id="informations_user">
+				<?php echo('Bonjour '.AuthComponent::user('prenom').' '); ?>
+				
+			</div>	
+					<?php
+					if(AuthComponent::user('image_profil') !== null)
+					{
+						echo $this->Html->image('user/'.AuthComponent::user('user_id').'/miniature.'.AuthComponent::user('image_profil'), array('alt' => 'Image de profil', 'class' => 'compte-image'));
+					}
+					else
+					{
+						echo $this->Html->image('dessins/image_profil_miniature.png');
+					}
+					?>
+				
 			
-			
+			<div id="logout">
 				<?php
-				if(AuthComponent::user('image_profil') !== null)
-				{
-					echo $this->Html->image('user/'.AuthComponent::user('user_id').'/miniature.'.AuthComponent::user('image_profil'), array('alt' => 'Image de profil', 'class' => 'compte-image'));
-				}
-				else
-				{
-					echo $this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'));
-				}
-				?>
-			
-			
-			<?php
-			echo $this->Html->link(_(' Se déconnecter'),array("controller"=>"users","action"=>"logout"));?>
-			
+				echo $this->Html->link(_(' Se déconnecter'),array("controller"=>"users","action"=>"logout"));?>
+			</div>
 		</div>
 	</div>
 </header>
