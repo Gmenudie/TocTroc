@@ -59,7 +59,7 @@
 	$id = $user[0]['User']['user_id'];
 	echo $this->Html->link('
 
-			<div>Modifier mes informations</div>',
+			<div>Modifier mes informations et/ou mon image</div>',
           
           array('controller' => 'Users', 'action' => 'add'),
           array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
