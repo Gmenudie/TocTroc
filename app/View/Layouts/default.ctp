@@ -46,7 +46,7 @@
              </div>
              </div>',
           
-          array('controller' => 'comingson', 'action' => "comingsoon"),
+          array('controller' => 'offres', 'action' => "search"),
           array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
      );
 

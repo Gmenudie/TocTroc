@@ -37,7 +37,7 @@
 			echo $this->Paginator->sort('created'); 	
 			echo __('Actions');
 	
-			foreach ($offre as $offre): 
+			foreach ($offres as $offre): 
 			
 			?>
 		
@@ -89,7 +89,7 @@
 		<?php endforeach;?>
 		
 		
-				echo $this->Paginator->counter(array('format' => __('Page {:page} sur {:pages}')));	?>	
+				<?php echo $this->Paginator->counter(array('format' => __('Page {:page} sur {:pages}')));	?>	
 				
 					<div class="paging">
 					

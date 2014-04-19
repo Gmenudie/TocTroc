@@ -54,7 +54,10 @@ class OffresController extends AppController {
 			array_push($conditions2,$publieoffre["PublieOffre"]["offre_id"]);
 		}
 
-		//On les envoie à la vue		
+		//On les envoie à la vue
+		$appartenances = $this->Offre->PublieOffre->Appartenance->find('list',array('recursive'=>1,'fields'=>'Communaute.nom','conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'))));
+		$categories = $this->Offre->Category->find('list',array('fields'=>'nom'));
+		$this->set(compact('appartenances', 'categories'));		
 		$this->Paginator->settings = array('conditions' => array('Offre.offre_id'=> $conditions2));
 		$this->set('offres',$this->Paginator->paginate('Offre',array(),array('Category.nom','titre','created')));
 	}
