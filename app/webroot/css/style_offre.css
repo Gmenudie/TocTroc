@@ -1,6 +1,6 @@
-#menu1
+#menu2
 {
-	background-image: url("../img/dessins/mur_j.png");
+	background-image: url("../img/dessins/proposer_j.png");
 	color: rgb(255,236,108);
 	height: 146px;
 	border: 1px solid rgb(255,236,108);
@@ -8,7 +8,7 @@
 }
 
 
-#poster_message
+#poster_offre
 {
 	display:inline-block;
 	vertical-align:top;
@@ -20,7 +20,7 @@
 	padding:0px;
 }
 
-#messages
+#offres
 {
 	display:inline-block;
 	vertical-align:top;
@@ -31,20 +31,8 @@
 	padding:0px;
 }
 
-	.message_ensemble
-	{
-		margin:0px;
-		margin-bottom:40px;
-		margin-top:10px;
-		padding:0px;
-		
-		text-align:left;
-		
-		font-size:15px;
-		
-	}
 
-		.message
+		.une_offre
 		{
 			width:680px;
 			
@@ -55,12 +43,12 @@
 			
 			background-color:rgba(30,30,30,0.05);
 		}
-					.message:hover
+					.une_offre:hover
 					{	
 						padding-left:0px;
 						border-left:solid rgb(98,160,77) 6px;
 					}
-			.message_ensemble .colonne_gauche
+			.une_offre .colonne_gauche
 			{
 				display:inline-block;
 				vertical-align:top;
@@ -74,7 +62,7 @@
 				
 				text-align:center;
 			}
-			.message_ensemble .colonne_droite
+			.une_offre.colonne_droite
 			{
 				display:inline-block;
 				vertical-align:top;
@@ -86,7 +74,7 @@
 				
 				text-align:justify;
 			}
-				.message_date, .commentaire_date
+				.une_offre_date
 				{
 					margin-bottom:10px;
 					
@@ -94,40 +82,15 @@
 				}
 			
 
-
-		.commentaire_message
-		{
-			width:640px;
 			
-			padding:0px;
-			padding-left:6px;
-			margin:0px;
-			margin-left:40px;
-			margin-bottom:20px;
 			
-			background-color:rgba(30,30,30,0.02);
-		}				
-		
-				.commentaire_message:hover
-				{	
-					padding-left:0px;
-					border-left:solid rgb(174,227,157) 6px;
+			
+			
+			
+		.sous_titre_colonne_droite
+				{
+					margin-top:15px;
+					margin-bottom:15px;
+					
+					font-size:20px;
 				}
-				
-			.commentaire_message .colonne_droite
-			{
-				max-width:430px;
-			}
-				
-		.formulaire_commentaire
-		{
-			width:646px;
-			
-			padding:0px;
-			margin:0px;
-			margin-left:40px;
-			margin-bottom:20px;
-			
-		}
-			
-

@@ -14,8 +14,7 @@
 			}
 			else
 			{
-				echo $this->Html->image('dessins/profil.png', array('alt' => 'Image de profil', 'class' => 'compte-image'));
-				echo "<br/>";
+				echo "<img src='../../app/webroot/img/dessins/image_profil.png'/><br/>";
 			}
 		echo $user[0]['User']['prenom']."<br/>";
 		echo($user[0]['User']['nom']);

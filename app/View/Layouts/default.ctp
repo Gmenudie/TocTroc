@@ -104,5 +104,14 @@
 	Signaler un abus | Contact | Mentions légales
 </footer>
 
+
+<script>
+	function ajuster_hauteur_pied() {
+		//on retire à la taille de l'écran toutes le tailles des header et padding
+		var taille_page = window.innerHeight - 330;
+		document.getElementById('page').style.minHeight = taille_page+"px";
+	}ajuster_hauteur_pied();
+</script>
+
    </body>
 </html>

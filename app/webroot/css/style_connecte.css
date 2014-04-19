@@ -27,3 +27,35 @@
 {
 	background-image: url("../img/dessins/molette_j.png");
 }
+
+#informations_user
+{
+	display: inline-block;
+	vertical-align: top;
+	line-height: 50px;
+}
+
+#barre_connexion_contenu img
+{
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 3px;
+	margin-left: 5px;
+}
+
+#logout
+{
+	float: right;
+	line-height: 50px;
+	margin-right: 7px;
+}
+
+#logout a
+{
+	color: white;
+}
+
+#barre_connexion #barre_connexion_contenu
+{
+	text-align: left;
+}

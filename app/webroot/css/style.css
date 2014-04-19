@@ -21,7 +21,6 @@ background-image: url("../img/dessins/texture_page.png");
 
 header
 {
-height: 234px;
 background-image: url("../img/dessins/texture_header.png");
 }
 
@@ -30,7 +29,7 @@ footer
 height: 50px;
 background-image: url("../img/dessins/texture_header.png");
 width: 100%;
-position:fixed;
+min-width: 1020px;
 bottom:0;
 
 text-align: center;
@@ -169,7 +168,7 @@ padding: 0px;
 	margin-left:0px;
 	margin-right:20px;
 }
-#barre_connexion .submit, #barre_connexion #informations_connexion
+#barre_connexion .submit
 {
 	display: inline-block;
 	
@@ -180,25 +179,7 @@ padding: 0px;
 	margin-left:0px;
 	margin-right:7px;
 }
-#barre_connexion #informations_connexion
-{
-	display: inline-block;
-	line-height:30px;
-}
 
-#barre_connexion #informations_connexion a
-{
-	display: inline-block;
-	color: white;
-	
-}
-
-#barre_connexion #informations_connexion img
-{
-	display: inline-block;
-	vertical-align:top;
-	margin: -7px;
-}
 
 #barre_connexion .input input, #barre_connexion input[type=submit]
 {	
