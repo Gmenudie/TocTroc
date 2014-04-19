@@ -36,11 +36,19 @@
 				
 					if(isset($post['Post']['User']['image_profil']))
 					{
-						echo "<div class='message_profil'>".$this->Html->image('user/'.$post['Post']['User']['user_id'].'/miniature.'.$post['Post']['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
+						?>
+						<div class='message_profil'>
+							<?php echo $this->Html->link($this->Html->image('user/'.$post['Post']['User']['user_id'].'/miniature.'.$post['Post']['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom'], array('controller'=>'users','action'=>'profil', $post['Post']['User']['user_id']),array('escape'=>false)); ?>
+						</div>
+						<?php
 					}
 					else
 					{
-						echo "<div class='message_profil'><img src='../../app/webroot/img/dessins/miniature.png'/><br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
+						?>
+						<div class='message_profil>
+							<?php echo $this->Html->link($this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom'], array('controller'=>'users','action'=>'profil', $post['Post']['User']['user_id']),array('escape'=>false)); ?>
+						</div>
+						<?php
 					}
 					
 				echo "</div>";
@@ -70,11 +78,19 @@
 					
 					if(isset($post['Post']['User']['image_profil']))
 					{
-						echo "<div class='message_profil'>".$this->Html->image('user/'.$post['Post']['User']['user_id'].'/miniature.'.$post['Post']['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
+						?>
+						<div class='message_profil'>
+						<?php echo $this->Html->link($this->Html->image('user/'.$post['Post']['User']['user_id'].'/miniature.'.$post['Post']['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom'], array('controller'=>'users','action'=>'profil', $post['Post']['User']['user_id']),array('escape'=>false)); ?>
+						</div>
+						<?php
 					}
 					else
 					{
-						echo "<div class='message_profil'><img src='../../app/webroot/img/dessins/miniature.png'/><br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
+						?>
+						<div class='message_profil>
+							<?php echo $this->Html->link($this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom'], array('controller'=>'users','action'=>'profil', $post['Post']['User']['user_id']),array('escape'=>false)); ?>
+						</div>
+						<?php
 					}							
 						echo "</div>";
 						

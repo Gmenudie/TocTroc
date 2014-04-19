@@ -10,7 +10,8 @@ class UsersController extends AppController {
 	 * 4. add()
 	 * 5. monCompte()
 	 * 6. changerMotDePasse()
-	 * 7. profil()
+	 * 7. modificationAdresse()
+	 * 8. profil()
 	 *
 	 * Assez logiquement, ce controller gère l'authentification et l'inscription. Rien de bien sorcier.
 	 */
@@ -574,4 +575,42 @@ class UsersController extends AppController {
 		}
 	}
 
+
+	/* ------------------------------------------
+	 * modificationAdresse
+	 * ------------------------------------------
+	 * Pour modifier son adresse dans son profil
+	 * ------------------------------------------ */
+	 
+	// public function modificationAdresse() {
+
+		// /* Il s'agit d'une modification*/
+		// $id = $this->Auth->user('user_id');
+		// $this->layout='default';
+		
+		// /* On regarde si le formulaire a été validé */
+		// if (!empty($this->request->data))
+		// {
+		
+		
+		
+	/* ------------------------------------------
+	 * profil
+	 * ------------------------------------------
+	 * Fonction pour afficher le profil
+	 * ------------------------------------------ */
+	 public function profil($id = null) {
+	 
+		 if($id = null)
+		 {
+			$this->Session->setFlash('Cet utilisateur n\'existe pas', 'error');
+			$this->redirect(referer());
+		}
+		else
+		{
+			$this->set('user', $this->User->find('first', array('conditions' => array('user_id' => $id), 'recursive'=> 1)));
+		}
+	}
+	
+	
 }

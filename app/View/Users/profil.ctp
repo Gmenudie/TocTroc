@@ -1,6 +1,6 @@
-<?php echo $this->Html->css('style_compte'); ?>
+<?php echo $this->Html->css('style_profil'); ?>
 
-<h1>Mon Compte</h1>
+<h1>Profil de <?php echo $user['User']['prenom'].' '.$user['User']['nom']?> </h1>
 
 <div class="carte_compte">
 
@@ -25,7 +25,7 @@
 	
 	<div class="colonne_droite">
 		
-		<div class="sous_titre_colonne_droite" style="margin-top:0px;">Mes informations de contact</div>
+		<div class="sous_titre_colonne_droite" style="margin-top:0px;">Ses informations de contact</div>
 		
 		<?php 
 		
@@ -35,7 +35,7 @@
 		
 		?>
 		
-		<div class="sous_titre_colonne_droite">Mon adresse</div>
+		<div class="sous_titre_colonne_droite">Son adresse</div>
 		
 		<?php 
 		
@@ -53,27 +53,6 @@
 
 
 </div>
-
-
-<?php
-	$id = $user[0]['User']['user_id'];
-	echo $this->Html->link('
-
-			<div>Modifier mes informations et/ou mon image</div>',
-          
-          array('controller' => 'Users', 'action' => 'add'),
-          array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
-     );
-	 
-	echo $this->Html->link('
-
-			<div>Modifier mon mot de passe</div>',
-          
-          array('controller' => 'Users', 'action' => 'changerMotDePasse'),
-          array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
-     );
-	 
-?>
 
 	
 <script>
