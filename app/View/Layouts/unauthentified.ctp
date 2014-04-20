@@ -12,20 +12,7 @@
 	<div id="logo">
 	<?php echo $this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')); ?>
 	</div>
-	<!--
-		<div class="carre_menu" id="menu1" href="emprunter.html">
-            <div class="titre_carre_menu">Mur</div>
-        </div>
-        <div class="carre_menu" id="menu2" href="proposer.html">
-            <div class="titre_carre_menu">Proposer</div>
-        </div>
-        <div class="carre_menu" id="menu3" href="demander.html">
-            <div class="titre_carre_menu">Demander</div>
-        </div>
-		<div class="carre_menu" id="menu4" href="moncompte.html">
-            <div class="titre_carre_menu">Mon Compte</div>
-        </div>
-		-->
+	
 	</div>
 	<div id="barre_connexion">
 		<div id="barre_connexion_contenu">

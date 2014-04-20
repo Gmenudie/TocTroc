@@ -2,9 +2,11 @@
 
 
 
-<h1><?php echo($nomCommunaute); ?> - Le Mur</h1>
+<h1><?php echo($nomCommunaute['Communaute']['nom']); ?> - Le Mur</h1>
 
 
+	<?php //L'admin ne poste pas de messages
+		  if($role==3 || $role==2): ?>
 
     <div id="poster_message">
 	
@@ -17,6 +19,7 @@
         ?>
 		
     </div>
+	<?php endif;?>
 	
 	
 	
@@ -45,7 +48,7 @@
 					else
 					{
 						?>
-						<div class='message_profil>
+						<div class='message_profil'>
 							<?php echo $this->Html->link($this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom'], array('controller'=>'users','action'=>'profil', $post['Post']['User']['user_id']),array('escape'=>false)); ?>
 						</div>
 						<?php
@@ -61,6 +64,13 @@
 				?>
 				
 			</div>
+
+			<?php //Un admin peut supprimer un post
+		  	if($role==1): ?>
+			<div class="adminaction">
+				<?php echo $this->Form->postLink(__('Supprimer'), array('action' => 'delete', $post['Post']['post_id']), null, __("Voulez-vous vraiment supprimer le post '%c?", $post['Post']['post_id'])); ?>
+			</div>
+			<?php endif; ?>
 			
 			
 			
@@ -76,19 +86,20 @@
 					
 						echo "<div class='colonne_gauche'>";
 					
-					if(isset($post['Post']['User']['image_profil']))
+					if(isset($com['User']['image_profil']))
 					{
 						?>
 						<div class='message_profil'>
-						<?php echo $this->Html->link($this->Html->image('user/'.$post['Post']['User']['user_id'].'/miniature.'.$post['Post']['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom'], array('controller'=>'users','action'=>'profil', $post['Post']['User']['user_id']),array('escape'=>false)); ?>
+						<?php echo $this->Html->link($this->Html->image('user/'.$com['User']['user_id'].'/miniature.'.$com['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image')).
+						"<br/>".$com['User']['prenom']."<br/>".$com['User']['nom'], array('controller'=>'users','action'=>'profil', $com['User']['user_id']),array('escape'=>false)); ?>
 						</div>
 						<?php
 					}
 					else
 					{
 						?>
-						<div class='message_profil>
-							<?php echo $this->Html->link($this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom'], array('controller'=>'users','action'=>'profil', $post['Post']['User']['user_id']),array('escape'=>false)); ?>
+						<div class='message_profil'>
+							<?php echo $this->Html->link($this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$com['User']['prenom']."<br/>".$com['User']['nom'], array('controller'=>'users','action'=>'profil', $com['User']['user_id']),array('escape'=>false)); ?>
 						</div>
 						<?php
 					}							
@@ -100,8 +111,17 @@
 							echo "<div class='commentaire_contenu'>".$com['contenu']."</div>"; 
 							
 						echo "</div>";
+
+						//Un admin peut supprimer un post
+					  	if($role==1): ?>
+
+						<div class="adminaction">
+							<?php echo $this->Form->postLink(__('Supprimer'), array('controller'=>'commentaires','action' => 'delete', $com['commentaire_id']), null, __("Voulez-vous vraiment supprimer le com '%c?", $com['commentaire_id'])); ?>
+						</div>
+
+						<?php endif; 
 					
-					echo "</div>";
+						echo "</div>";
 					
 				}
 				
@@ -110,21 +130,21 @@
 			
 			
 			<!--Formulaire pour ajouter un commentaire-->
+
+			<?php //L'admin ne poste pas de commentaire
+		  	if($role==3 || $role==2): ?>
 			
 			<div class="formulaire_commentaire">
-
-				<?php 
-				
+				<?php 				
 				echo $this->Form->create("Commentaire",array('url'=> array('controller'=>'commentaires','action'=>'add')));
-				
 				echo $this->Form->input('contenu', array('label' => '', 'placeholder'=>'Ecrire votre commentaire', 'rows'=>'2'));
 				echo $this->Form->hidden('appartenance_id',array('default'=>$post["Post"]["communaute_id"]));
 				echo $this->Form->hidden('post_id',array('default'=>$post["Post"]["post_id"]));        
-				echo $this->Form->end("Commenter");
-				
-				?>
-			
-			</div>       
+				echo $this->Form->end("Commenter");				
+				?>			
+			</div> 
+
+			<?php endif; ?>      
 			
 		
 		<?php endforeach;?>

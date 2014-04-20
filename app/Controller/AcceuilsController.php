@@ -21,11 +21,23 @@ class AcceuilsController extends AppController {
 	public function beforeFilter() {
 
 		$this->Auth->allow();
-        
+
+		// Si non authentifié on lui affiche l'acceuil classique, avec possibilité de se connecter        
         if ($this->Auth->user("user_id") === null){
         	$this->layout ='unauthentified';
         }
-        
+
+        // Si l'utilisateur est connecté, et qu'il s'agit d'un utilisateur normal, on le redirige vers ses communautés
+        else if ($this->Auth->user('role_id')==3)
+        {
+        	return $this->redirect(array('controller'=>'appartenances','action'=>'index'));
+        }
+
+        // S'il s'agit d'un administrateur, on le renvoie vers sa page principale
+        else if ($this->Auth->user('role_id')==1)
+        {
+        	return $this->redirect(array('controller'=>'communautes','action'=>'getall'));
+        }
     }
 
     /* ------------------------------------------
@@ -35,8 +47,8 @@ class AcceuilsController extends AppController {
 	 * Permet au visiteur de s'inscrire, ou de se connecter (il passe alors à AppartenancesController -> index())
 	 * ------------------------------------------ */
 
-	public function index() {		
-		
+	public function index() {	
+        
 	}
 
 

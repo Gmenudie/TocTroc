@@ -28,9 +28,11 @@ class CommunautesController extends AppController {
 	}
 
 		
-	public function getNom($id)
-	{
-		return($this->Communaute->findByCommunauteId($id)['Communaute']['nom']);
+	public function getall(){
+		
+
+		$this->Paginator->settings = array('recursive'=>0);
+		$this->set('communautes', $this->Paginator->paginate());
 	}
 
 }

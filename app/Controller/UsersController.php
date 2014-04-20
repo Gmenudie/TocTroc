@@ -16,19 +16,7 @@ class UsersController extends AppController {
 	 * Assez logiquement, ce controller gère l'authentification et l'inscription. Rien de bien sorcier.
 	 */
 
-	 /* ------------------------------------------
-	 * beforeFilter()
-	 * ------------------------------------------
-	 * Parce qu'un utilisateur non authentifié a quand même le droit de s'inscrire, se login ou se logout!
-	 * ------------------------------------------ */
-	 
-	public function beforeFilter() {
-	    parent::beforeFilter();
-		$this->layout ='default';
-	    // Allow users to register and logout.
-	    $this->Auth->allow();
-	}
-
+	
 
 	/* ------------------------------------------
 	 * login
@@ -610,6 +598,11 @@ class UsersController extends AppController {
 		{
 			$this->set('user', $this->User->find('first', array('conditions' => array('user_id' => $id), 'recursive'=> 1)));
 		}
+	}
+
+	public function getall(){
+		$this->User->recursive = 0;
+		$this->set('users', $this->Paginator->paginate());
 	}
 	
 	

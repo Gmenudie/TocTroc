@@ -47,13 +47,31 @@ class CommentairesController extends AppController {
 	    }
 
 		return $this->redirect( array('controller' => 'posts', 'action' => 'index', $appartenance["Appartenance"]["appartenance_id"]));
-
-
-
 	}
 
+	public function getall(){
+		
+		$this->Commentaire->Appartenance->unbindModel(
+        array('hasMany' => array('Commentaires','Posts','Annonces','PublieOffres','Demandes','Emprunts')));
+        $this->Commentaire->Post->unbindModel(
+        array('hasMany' => array('Commentaires'),
+        	  'belongsTo'=>array('Canal','Appartenace')));
 
-
-
-
+		$this->Paginator->settings = array('recursive'=>2,'fields' => array('Commentaire.commentaire_id','Commentaire.contenu','Commentaire.created','Commentaire.post_id','Post.contenu','Commentaire.appartenance_id'));
+		$this->set('commentaires', $this->Paginator->paginate());
 	}
+
+	public function delete($id = null) {
+		$this->Commentaire->id = $id;
+		if (!$this->Commentaire->exists()) {
+			throw new NotFoundException(__('Invalid commentaire'));
+		}
+		$this->request->onlyAllow('post', 'delete');
+		if ($this->Commentaire->delete()) {
+			$this->Session->setFlash(__('The commentaire has been deleted.'));
+		} else {
+			$this->Session->setFlash(__('The commentaire could not be deleted. Please, try again.'));
+		}
+		return $this->redirect($this->referer());
+	}
+}

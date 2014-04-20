@@ -50,7 +50,7 @@ class AppController extends Controller {
         ),
             
         'loginRedirect' => array(
-           'controller' => 'appartenances',
+           'controller' => 'acceuils',
             'action' => 'index'
         ),
             
@@ -63,18 +63,17 @@ class AppController extends Controller {
         );
 
 
-    public function isAuthorized($user) {
-        // Admin can access every action
-        if (isset($user['role']) && $user['role'] === 'admin') {
-            return true;
-        }
-
-        // Default deny
-        return false;
-    }
+    
 
     public function beforeFilter() {
         parent::beforeFilter();
+
+        // L'administrateur a un layout particulier
+        if($this->Auth->user('role_id')==1)
+        {
+            $this->layout='admin';
+        }
+
         // Autorise l'accès à toute les pages sans authentification, plus simple pour le moment!
         $this->Auth->allow();
     }
