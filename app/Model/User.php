@@ -150,6 +150,11 @@ class User extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
+		),
+		'AbusProfil'=> array(
+			'className'=>'AbusProfil',
+			'foreignKey'=>'user_id',
+			'dependent'=>false
 		)
 	);
 

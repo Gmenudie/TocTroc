@@ -88,7 +88,7 @@ class Appartenance extends AppModel {
 	);
 
 	public $hasMany = array(
-		'Commentaires' => array(
+		'Commentaire' => array(
 			'className' => 'Commentaire',
 			'foreignKey' => 'appartenance_id',
 			'dependent' => false,
@@ -101,7 +101,7 @@ class Appartenance extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Posts' => array(
+		'Post' => array(
 			'className' => 'Post',
 			'foreignKey' => 'appartenance_id',
 			'dependent' => false,
@@ -114,7 +114,7 @@ class Appartenance extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Annonces' => array(
+		'Annonce' => array(
 			'className' => 'Annonce',
 			'foreignKey' => 'appartenance_id',
 			'dependent' => false,
@@ -127,7 +127,7 @@ class Appartenance extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'PublieOffres' => array(
+		'PublieOffre' => array(
 			'className' => 'PublieOffre',
 			'foreignKey' => 'appartenance_id',
 			'dependent' => false,
@@ -140,7 +140,7 @@ class Appartenance extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Demandes' => array(
+		'Demande' => array(
 			'className' => 'Demande',
 			'foreignKey' => 'appartenance_id',
 			'dependent' => false,
@@ -153,7 +153,7 @@ class Appartenance extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Emprunts' => array(
+		'Emprunt' => array(
 			'className' => 'Emprunt',
 			'foreignKey' => 'appartenance_id',
 			'dependent' => false,

@@ -47,8 +47,7 @@ class AppController extends Controller {
         'authenticate' => array(
             'Form' => array(
                 'fields' => array('username' => 'email'))
-        ),
-            
+        ),            
         'loginRedirect' => array(
            'controller' => 'acceuils',
             'action' => 'index'
@@ -68,6 +67,12 @@ class AppController extends Controller {
     public function beforeFilter() {
         parent::beforeFilter();
 
+        // Un modérateur a un layout particulier
+        if($this->Auth->user('role_id')==2)
+        {
+            $this->layout='moderateur';
+        }
+
         // L'administrateur a un layout particulier
         if($this->Auth->user('role_id')==1)
         {
@@ -76,6 +81,8 @@ class AppController extends Controller {
 
         // Autorise l'accès à toute les pages sans authentification, plus simple pour le moment!
         $this->Auth->allow();
+
+
     }
 
 

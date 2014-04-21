@@ -11,7 +11,10 @@ class PostsController extends AppController {
 	 * Le controller du mur! Mon bébé :D
 	 */
 
-	 
+	public function beforeFilter(){
+	parent::beforeFilter();
+
+	} 
 	 
 
 	
@@ -66,7 +69,7 @@ class PostsController extends AppController {
 					// Pour chaque membre de la communauté, on récupère leurs posts/commentaires. On arrange tout ça dans une structure cohérente
 
 					
-					$postsintermediate=$this->Post->find('all',array('conditions'=>array('Post.appartenance_id'=>$personne["Appartenance"]["appartenance_id"]),'recursive'=>3));
+					$postsintermediate=$this->Post->find('all',array('conditions'=>array('Post.etat'=>1,'Post.appartenance_id'=>$personne["Appartenance"]["appartenance_id"]),'recursive'=>3));
 					foreach ($postsintermediate as $postsinter) {
 
 						$posts[$j]["Post"]["created"]=$postsinter["Post"]["created"];
@@ -80,17 +83,20 @@ class PostsController extends AppController {
 						$posts[$j]["Post"]["canal_id"]=$postsinter["Post"]["canal_id"];
 						
 
-						if(array_key_exists("Commentaires", $postsinter)){
-							foreach ($postsinter["Commentaires"] as $com) {
+						if(array_key_exists("Commentaire", $postsinter)){
+							foreach ($postsinter["Commentaire"] as $com) {
 
-								$posts[$j]["Commentaires"][$i]["created"]=$com["created"];								
-								$posts[$j]["Commentaires"][$i]["commentaire_id"]=$com["commentaire_id"];
-								$posts[$j]["Commentaires"][$i]["User"]["user_id"]=$com["Appartenance"]["User"]["user_id"];
-								$posts[$j]["Commentaires"][$i]["User"]["prenom"]=$com["Appartenance"]["User"]["prenom"];
-								$posts[$j]["Commentaires"][$i]["User"]["nom"]=$com["Appartenance"]["User"]["nom"];
-								$posts[$j]["Commentaires"][$i]["User"]["image_profil"]=$com["Appartenance"]["User"]["image_profil"];
-								$posts[$j]["Commentaires"][$i]["contenu"]=$com["contenu"];
-								$i=$i+1;
+								if($com['etat']==1)
+								{
+									$posts[$j]["Commentaires"][$i]["created"]=$com["created"];								
+									$posts[$j]["Commentaires"][$i]["commentaire_id"]=$com["commentaire_id"];
+									$posts[$j]["Commentaires"][$i]["User"]["user_id"]=$com["Appartenance"]["User"]["user_id"];
+									$posts[$j]["Commentaires"][$i]["User"]["prenom"]=$com["Appartenance"]["User"]["prenom"];
+									$posts[$j]["Commentaires"][$i]["User"]["nom"]=$com["Appartenance"]["User"]["nom"];
+									$posts[$j]["Commentaires"][$i]["User"]["image_profil"]=$com["Appartenance"]["User"]["image_profil"];
+									$posts[$j]["Commentaires"][$i]["contenu"]=$com["contenu"];
+									$i=$i+1;
+								}
 							}
 						}
 
@@ -160,7 +166,7 @@ class PostsController extends AppController {
 
 		if ($this->request->is('post')) {
 			$appartient=$this->Post->Appartenance->find('first',array('conditions'=>array("Appartenance.appartenance_id"=>$this->request->data["Post"]["appartenance_id"])));
-			if($appartient!=null && $appartient["Appartenance"]["user_id"]===$this->Auth->user('user_id'))
+			if($appartient!=null && $appartient["Appartenance"]["user_id"]==$this->Auth->user('user_id'))
 			{
 	            $this->Post->create();
 	            if ($this->Post->save($this->request->data)) 
@@ -172,6 +178,54 @@ class PostsController extends AppController {
 	        }
 
 	    }
+	}
+
+	public function addAbus($id=null){
+
+		//Vérification 
+		$this->Post->Appartenance->unbindModel(
+			array('hasMany' => array('Commentaires','Posts','Annonces','PublieOffres','Demandes','Emprunts'),
+        	 	 'belongsTo'=>array('Commentaire')));
+
+		$post=$this->Post->find('first',array('conditions'=>array('post_id'=>$id),'recursive'=>2));
+		$appartenance=$this->Post->Appartenance->find('first',array('conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'),'Appartenance.communaute_id'=>$post['Appartenance']['communaute_id'])));
+
+		//Une personne ne peut signaler qu'une fois le meme post comme étant abusif!
+		$nbAbus=$this->Post->AbusPost->find('count',array('conditions'=>array('AbusPost.appartenance_id'=>$appartenance['Appartenance']['appartenance_id'],'AbusPost.post_id'=>$id)));
+		
+		if($appartenance!=null && $nbAbus==0) //Utilisateur autorisé
+		{
+
+			if($this->request->is('post'))
+			{
+				$this->Post->AbusPost->create();
+				$addAbus=$this->request->data;
+				$addAbus["AbusPost"]["appartenance_id"]=$appartenance['Appartenance']['appartenance_id'];
+				if($this->Post->AbusPost->save($addAbus))
+				{
+					$this->Session->setFlash('Votre signalement a bien été pris en compte. Il sera transmis aux modérateurs');
+				}
+				else
+				{
+					$this->Session->setFlash("Désolé, un problème est survenu et votre signalement n'a pas pu être enregistré");
+				}
+				return $this->redirect(array('controller'=>'posts','action'=>'index',$appartenance['Appartenance']['appartenance_id']));
+				
+			}
+
+			// On prépare les informations pour les envoyer à la vue			
+			$this->set('post',$post);
+		}
+		else if ($nbAbus==0) //Pas autorisé (Post pas de ses communautés)
+		{
+			$this->Session->setFlash("Vous n'êtes pas autorisé");
+			return $this->redirect(array('controller'=>'acceuils','action'=>'index'));
+		}
+		else //Déjà signalé
+		{
+			$this->Session->setFlash("Vous avez déjà signalé ce message comme abusif");
+			return $this->redirect(array('controller'=>'posts','action'=>'index',$appartenance['Appartenance']['appartenance_id']));
+		}
 
 	}
 
@@ -200,5 +254,67 @@ class PostsController extends AppController {
 		}
 		return $this->redirect($this->referer());
 	}
+
+	public function retirerAbus($id=null)
+	{
+		$post=$this->Post->find('first',array('recursive'=>1,'conditions'=>array('post_id'=>$id)));
+		$appartenance=$this->Post->Appartenance->find('first',array('recursive'=>0,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'), 'Appartenance.communaute_id'=>$post['Appartenance']['communaute_id'], 'Appartenance.role'=>2)));
+
+		if(isset($appartenance)&&$appartenance!=null)
+		{
+			foreach($post['AbusPost'] as $abuspost)
+			{
+				if(!$this->Post->AbusPost->delete($abuspost))
+				{
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					return $this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('Abus retiré correctement');
+			return $this->redirect($this->referer());
+		}
+		else
+		{
+			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			return $this->redirect($this->referer());
+		}
+	}
 	
+
+	public function confirmerAbus($id=null)
+	{
+		$post=$this->Post->find('first',array('recursive'=>1,'conditions'=>array('post_id'=>$id)));
+		$appartenance=$this->Post->Appartenance->find('first',array('recursive'=>0,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'), 'Appartenance.communaute_id'=>$post['Appartenance']['communaute_id'], 'Appartenance.role'=>2)));
+
+		if(isset($appartenance)&&$appartenance!=null)
+		{
+			foreach($post['AbusPost'] as $abuspost)
+			{
+				if(!$this->Post->AbusPost->delete($abuspost))
+				{
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					return $this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('Abus retiré correctement');
+			$post['Post']['etat']=2;
+			if($this->Post->save($post))
+			{
+				$this->Session->setFlash('Abus confirmé, post retiré');
+				return $this->redirect($this->referer());
+			}
+			else
+			{
+				$this->Session->setFlash("Problème rencontré lors de la modification de l'etat");
+				return $this->redirect($this->referer());
+			}
+
+			return $this->redirect($this->referer());
+		}
+		else
+		{
+			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			return $this->redirect($this->referer());
+		}
+	}
 }

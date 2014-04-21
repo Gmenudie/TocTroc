@@ -57,4 +57,12 @@ class Commentaire extends AppModel {
 			'order' => ''
 		)
 	);
+
+	public $hasMany = array(
+		'AbusCommentaire'=> array(
+			'className'=>'AbusCommentaire',
+			'foreignKey'=>'commentaire_id',
+			'dependent'=>false
+		)
+	);
 }

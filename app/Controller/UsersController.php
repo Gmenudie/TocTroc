@@ -16,6 +16,11 @@ class UsersController extends AppController {
 	 * Assez logiquement, ce controller gère l'authentification et l'inscription. Rien de bien sorcier.
 	 */
 
+	public function beforeFilter(){
+	parent::beforeFilter();
+
+	}
+
 	
 
 	/* ------------------------------------------
@@ -589,20 +594,152 @@ class UsersController extends AppController {
 	 * ------------------------------------------ */
 	 public function profil($id = null) {
 	 
-		 if($id = null)
+		 if($id == null)
 		 {
 			$this->Session->setFlash('Cet utilisateur n\'existe pas', 'error');
 			$this->redirect(referer());
 		}
 		else
 		{
-			$this->set('user', $this->User->find('first', array('conditions' => array('user_id' => $id), 'recursive'=> 1)));
+			$this->set('user', $this->User->find('first', array('conditions' => array('User.user_id' => $id), 'recursive'=> 1)));
 		}
 	}
 
 	public function getall(){
 		$this->User->recursive = 0;
 		$this->set('users', $this->Paginator->paginate());
+	}
+
+	public function addAbus($id=null){
+
+		//Vérification 
+		$this->User->Appartenance->unbindModel(
+			array('hasMany' => array('Commentaires','Posts','Annonces','PublieOffres','Demandes','Emprunts'),
+        	 	 'belongsTo'=>array('Commentaire')));
+
+		$user=$this->User->find('first',array('conditions'=>array('user_id'=>$id),'recursive'=>1));
+
+		$communautes=array();
+
+		foreach($user['Appartenance'] as $appartenance)
+		{
+			array_push($communautes, $appartenance['communaute_id']);
+		}
+		$appartenance=$this->User->Appartenance->find('first',array('conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'),'Appartenance.communaute_id'=>$communautes)));
+
+		//Une personne ne peut signaler qu'une fois le meme user comme étant abusif!
+		$nbAbus=$this->User->AbusProfil->find('count',array('conditions'=>array('AbusProfil.appartenance_id'=>$appartenance['Appartenance']['appartenance_id'],'AbusProfil.user_id'=>$id)));
+		
+		if($appartenance!=null && $nbAbus==0) //Utilisateur autorisé
+		{
+
+			if($this->request->is('post'))
+			{
+				$this->User->AbusProfil->create();
+				$addAbus=$this->request->data;
+				$addAbus["AbusProfil"]["appartenance_id"]=$appartenance['Appartenance']['appartenance_id'];
+				if($this->User->AbusProfil->save($addAbus))
+				{
+					$this->Session->setFlash('Votre signalement a bien été pris en compte. Il sera transmis aux modérateurs');
+				}
+				else
+				{
+					$this->Session->setFlash("Désolé, un problème est survenu et votre signalement n'a pas pu être enregistré");
+				}
+				return $this->redirect(array('controller'=>'users','action'=>'profil',$user['User']['user_id']));
+				
+			}
+
+			// On prépare les informations pour les envoyer à la vue			
+			$this->set('user',$user);
+		}
+		else if ($nbAbus==0) //Pas autorisé (User pas de ses communautés)
+		{
+			$this->Session->setFlash("Vous n'êtes pas autorisé");
+			return $this->redirect(array('controller'=>'acceuils','action'=>'index'));
+		}
+		else //Déjà signalé
+		{
+			$this->Session->setFlash("Vous avez déjà signalé ce profil comme abusif");
+			return $this->redirect(array('controller'=>'users','action'=>'profil',$user['User']['user_id']));
+		}
+
+	}
+	public function retirerAbus($id=null)
+	{
+		$user=$this->User->find('first',array('recursive'=>1,'conditions'=>array('user_id'=>$id)));
+		$communaute_id=array();
+		
+		foreach ($user['Appartenance'] as $appartient) 
+		{
+			array_push($communaute_id, $appartient['communaute_id']);
+		}
+		$appartenance=$this->User->Appartenance->find('first',array('recursive'=>0,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'), 'Appartenance.communaute_id'=>$communaute_id, 'Appartenance.role'=>2)));
+
+		if(isset($appartenance)&&$appartenance!=null)
+		{
+			foreach($user['AbusProfil'] as $abususer)
+			{
+				if(!$this->User->AbusProfil->delete($abususer))
+				{
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					return $this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('Abus retiré correctement');
+			return $this->redirect($this->referer());
+		}
+		else
+		{
+			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			return $this->redirect($this->referer());
+		}
+	}
+	
+
+	public function confirmerAbus($id=null)
+	{
+		$user=$this->User->find('first',array('recursive'=>1,'conditions'=>array('user_id'=>$id)));
+		$communaute_id=array();
+		
+		foreach ($user['Appartenance'] as $appartient) 
+		{
+			array_push($communaute_id, $appartient['communaute_id']);
+		}
+		$appartenance=$this->User->Appartenance->find('first',array('recursive'=>0,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'), 'Appartenance.communaute_id'=>$communaute_id, 'Appartenance.role'=>2)));
+
+		if(isset($appartenance)&&$appartenance!=null)
+		{
+			foreach($user['AbusProfil'] as $abususer)
+			{
+				if(!$this->User->AbusProfil->delete($abususer))
+				{
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					return $this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('Abus retiré correctement');
+			$data=array();
+			$data['User']['etat']=2;
+			$data['User']['user_id']=$user['User']['user_id'];
+			if($this->User->save($data))
+			{
+				$this->Session->setFlash('Abus confirmé, profil retiré');
+				return $this->redirect($this->referer());
+			}
+			else
+			{
+				$this->Session->setFlash("Problème rencontré lors de la modification de l'etat");
+				return $this->redirect($this->referer());
+				debug($data);
+			}
+
+		}
+		else
+		{
+			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			return $this->redirect($this->referer());
+		}
 	}
 	
 	

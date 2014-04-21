@@ -77,7 +77,7 @@ class Post extends AppModel {
 		)
 	);
 	public $hasMany = array(
-		'Commentaires' => array(
+		'Commentaire' => array(
 			'className' => 'Commentaire',
 			'foreignKey' => 'post_id',
 			'dependent' => false,
@@ -89,7 +89,11 @@ class Post extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		)
+		),
+		'AbusPost'=> array(
+			'className'=>'AbusPost',
+			'foreignKey'=>'post_id',
+			'dependent'=>false)
 	);
 
 

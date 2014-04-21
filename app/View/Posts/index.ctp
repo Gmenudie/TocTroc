@@ -20,9 +20,7 @@
 		
     </div>
 	<?php endif;?>
-	
-	
-	
+		
 
 	<div id="messages">
 	
@@ -34,8 +32,9 @@
 			
 			<div class="message">
 			
-				<?php
-				echo "<div class='colonne_gauche'>";
+				<div class='colonne_gauche'>
+
+					<?php
 				
 					if(isset($post['Post']['User']['image_profil']))
 					{
@@ -52,16 +51,16 @@
 							<?php echo $this->Html->link($this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom'], array('controller'=>'users','action'=>'profil', $post['Post']['User']['user_id']),array('escape'=>false)); ?>
 						</div>
 						<?php
-					}
+					}?>
 					
-				echo "</div>";
-				echo "<div class='colonne_droite'>";
+				</div>
+				<div class='colonne_droite'>				
+					<div class='message_date'><?php echo $post['Post']['created']; ?></div>
+					<div class='message_signaler_abus'><?php echo $this->html->link('Signaler un abus', array('controller'=>'posts','action'=>'addAbus',$post['Post']['post_id'])); ?></div>
+					<div class='message_contenu'><?php echo $post['Post']['contenu']; ?></div>
+					
+				</div>
 				
-					echo "<div class='message_date'>".$post['Post']['created']."</div>";
-					echo "<div class='message_contenu'>".$post['Post']['contenu']."</div>"; 
-					
-				echo "</div>";
-				?>
 				
 			</div>
 
@@ -80,48 +79,57 @@
 			
 			if(array_key_exists("Commentaires", $post)){
 
-				foreach ($post["Commentaires"] as $com){
+				foreach ($post["Commentaires"] as $com){ ?>
 
-					echo "<div class='commentaire_message'>";
+					<div class='commentaire_message'>
 					
-						echo "<div class='colonne_gauche'>";
-					
-					if(isset($com['User']['image_profil']))
-					{
-						?>
-						<div class='message_profil'>
-						<?php echo $this->Html->link($this->Html->image('user/'.$com['User']['user_id'].'/miniature.'.$com['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image')).
-						"<br/>".$com['User']['prenom']."<br/>".$com['User']['nom'], array('controller'=>'users','action'=>'profil', $com['User']['user_id']),array('escape'=>false)); ?>
+						<div class='colonne_gauche'>
+
+						<?php						
+						if(isset($com['User']['image_profil']))
+						{
+							?>
+							<div class='message_profil'>
+								<?php echo $this->Html->link($this->Html->image(
+									'user/'.$com['User']['user_id'].'/miniature.'.$com['User']['image_profil'],	array(
+										'alt' => 'Image de profil', 
+										'class' => 'compte-image')).
+										"<br/>".$com['User']['prenom']."<br/>".$com['User']['nom'],
+										 array('controller'=>'users','action'=>'profil', $com['User']['user_id']),
+										 array('escape'=>false)); ?>
+							</div>
+							<?php
+						}
+						else
+						{
+							?>
+							<div class='message_profil'>
+								<?php echo $this->Html->link($this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$com['User']['prenom']."<br/>".$com['User']['nom'], array('controller'=>'users','action'=>'profil', $com['User']['user_id']),array('escape'=>false)); ?>
+							</div>
+							<?php
+						}	?>						
 						</div>
-						<?php
-					}
-					else
-					{
-						?>
-						<div class='message_profil'>
-							<?php echo $this->Html->link($this->Html->image('dessins/miniature.png', array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$com['User']['prenom']."<br/>".$com['User']['nom'], array('controller'=>'users','action'=>'profil', $com['User']['user_id']),array('escape'=>false)); ?>
-						</div>
-						<?php
-					}							
-						echo "</div>";
-						
-						echo "<div class='colonne_droite'>";
-				
-							echo "<div class='commentaire_date'>".$com['created']."</div>";
-							echo "<div class='commentaire_contenu'>".$com['contenu']."</div>"; 
 							
-						echo "</div>";
-
-						//Un admin peut supprimer un post
-					  	if($role==1): ?>
-
-						<div class="adminaction">
-							<?php echo $this->Form->postLink(__('Supprimer'), array('controller'=>'commentaires','action' => 'delete', $com['commentaire_id']), null, __("Voulez-vous vraiment supprimer le com '%c?", $com['commentaire_id'])); ?>
-						</div>
-
-						<?php endif; 
+							<div class='colonne_droite'>
 					
-						echo "</div>";
+								<div class='commentaire_date'><?php echo $com['created']; ?></div>
+								<div class='message_signaler_abus'><?php echo $this->html->link('Signaler un abus', array('controller'=>'commentaires','action'=>'addAbus',$com['commentaire_id'])); ?></div>
+								<div class='commentaire_contenu'><?php echo $com['contenu']; ?></div> 
+								
+							</div>
+
+							<?php //Un admin peut supprimer un post
+						  	if($role==1): 
+						  		?>
+
+							<div class="adminaction">
+								<?php echo $this->Form->postLink(__('Supprimer'), array('controller'=>'commentaires','action' => 'delete', $com['commentaire_id']), null, __("Voulez-vous vraiment supprimer le com '%c?", $com['commentaire_id'])); ?>
+							</div>
+
+							<?php endif; ?>
+					
+					</div>
+						<?php
 					
 				}
 				
@@ -153,8 +161,8 @@
 	
 	
 
-    <!--<?php echo $this->Html->link('Voir plus', array('controller'=>'posts','action'=>'index', $user, sizeof($posts)+10));?>
-    <?php unset($post); ?>-->
+    <?php echo $this->Html->link('Voir plus', array('controller'=>'posts','action'=>'index', $user, sizeof($posts)+10));?>
+    <?php unset($post); ?>
 	
 	
 	

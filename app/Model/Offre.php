@@ -65,7 +65,13 @@ class Offre extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 
-	));
+		),
+		'AbusOffre'=> array(
+			'className'=>'AbusOffre',
+			'foreignKey'=>'offre_id',
+			'dependent'=>false
+		)
+	);
 
 
 /**

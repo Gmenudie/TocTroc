@@ -38,6 +38,7 @@ else{
 		<?php endforeach; ?>
 		
 	<?php endif; ?>
+	<div class='offre_signaler_abus'><?php echo $this->html->link('Signaler un abus', array('controller'=>'offres','action'=>'addAbus',$offre[0]['Offre']['offre_id'])); ?></div>
 
 
 
@@ -53,6 +54,8 @@ else{
 	<div class="auteur">
 		<h3><?php echo ("Auteur: ".$auteur["prenom"]." ".$auteur["nom"]); ?></h3>
 	</div>
+
+	<div class='offre_signaler_abus'><?php echo $this->html->link('Signaler un abus', array('controller'=>'offres','action'=>'addAbus',$offre[0]['Offre']['offre_id'])); ?></div>
 
 	<?php } ?>
 

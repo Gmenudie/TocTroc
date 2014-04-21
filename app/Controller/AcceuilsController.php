@@ -20,6 +20,8 @@ class AcceuilsController extends AppController {
 	
 	public function beforeFilter() {
 
+		parent::beforeFilter();
+
 		$this->Auth->allow();
 
 		// Si non authentifié on lui affiche l'acceuil classique, avec possibilité de se connecter        
@@ -37,6 +39,12 @@ class AcceuilsController extends AppController {
         else if ($this->Auth->user('role_id')==1)
         {
         	return $this->redirect(array('controller'=>'communautes','action'=>'getall'));
+        }
+
+        //Si c'est un modérateur, on l'envoie par défaut sur sa page "Modérer"
+        else if ($this->Auth->user('role_id')==2)
+        {
+        	return $this->redirect(array('controller'=>'appartenances','action'=>'moderer'));
         }
     }
 

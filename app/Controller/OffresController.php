@@ -20,12 +20,13 @@ class OffresController extends AppController {
 	 * Remarque: controller en partie scaffoldé pour avoir le matériau de base, je ferai une meilleure doc quand il sera prêt!
 	 */
 
+	public function beforeFilter(){
+	parent::beforeFilter();
 
-/**
- * index method
- *
- * @return void
- */
+	}
+
+
+
  
  	/* ------------------------------------------
 	 * espacePerso
@@ -374,11 +375,11 @@ class OffresController extends AppController {
 
 			if(array_key_exists("Categories",$this->request->data))
 			{
-				$this->Paginator->settings = array('conditions' => array('Offre.offre_id'=> $conditions2,'titre LIKE'=>"%".$this->request->data["Nom"]."%",'categorie_id'=>$this->request->data["Categories"]),'recursive'=>0);
+				$this->Paginator->settings = array('conditions' => array('Offre.etat'=>1,'Offre.offre_id'=> $conditions2,'titre LIKE'=>"%".$this->request->data["Nom"]."%",'categorie_id'=>$this->request->data["Categories"]),'recursive'=>0);
 			}
 			else
 			{
-				$this->Paginator->settings = array('conditions' => array('Offre.offre_id'=> $conditions2,'titre LIKE'=>"%".$this->request->data["Nom"]."%"));
+				$this->Paginator->settings = array('conditions' => array('Offre.etat'=>1,'Offre.offre_id'=> $conditions2,'titre LIKE'=>"%".$this->request->data["Nom"]."%"));
 			}
 				
 			$this->set('offres',$this->Paginator->paginate('Offre',array(),array('Category.nom','titre')));
@@ -429,6 +430,148 @@ class OffresController extends AppController {
 		}
 		
 		$this->set('offres', $this->Paginator->paginate());
+	}
+
+	public function addAbus($id=null){
+
+		//Vérification 
+		$this->Offre->PublieOffre->Appartenance->unbindModel(
+			array('hasMany' => array('Commentaires','Posts','Annonces','PublieOffres','Demandes','Emprunts'),
+        	 	 'belongsTo'=>array('Communaute')));
+		$this->Offre->Category->unbindModel(
+			array('hasAndBelongsToMany'=>array('Annonce,Offre')));
+		$this->Offre->unbindModel(
+			array('hasMany'=>array('Demande','Emprunte','AbusOffre')));
+		$this->Offre->PublieOffre->unbindModel(
+			array('belongsTo'=>'Offre'));
+
+		$offre=$this->Offre->find('first',array('conditions'=>array('offre_id'=>$id),'recursive'=>3));
+
+		$communautes=array();
+
+		foreach($offre['PublieOffre'] as $publieOffre)
+		{
+			array_push($communautes, $publieOffre['Appartenance']['communaute_id']);
+		}
+
+
+
+		$appartenance=$this->Offre->PublieOffre->Appartenance->find('first',array('conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'),'Appartenance.communaute_id'=>$communautes)));
+
+		//Une personne ne peut signaler qu'une fois le meme offre comme étant abusif!
+		$nbAbus=$this->Offre->AbusOffre->find('count',array('conditions'=>array('AbusOffre.appartenance_id'=>$appartenance['Appartenance']['appartenance_id'],'AbusOffre.offre_id'=>$id)));
+		
+		if($appartenance!=null && $nbAbus==0) //Utilisateur autorisé
+		{
+
+			if($this->request->is('post'))
+			{
+				$this->Offre->AbusOffre->create();
+				$addAbus=$this->request->data;
+				$addAbus["AbusOffre"]["appartenance_id"]=$appartenance['Appartenance']['appartenance_id'];
+				if($this->Offre->AbusOffre->save($addAbus))
+				{
+					$this->Session->setFlash('Votre signalement a bien été pris en compte. Il sera transmis aux modérateurs');
+				}
+				else
+				{
+					$this->Session->setFlash("Désolé, un problème est survenu et votre signalement n'a pas pu être enregistré");
+				}
+				return $this->redirect(array('controller'=>'offres','action'=>'view',$offre['Offre']['offre_id']));
+				
+			}
+
+			// On prépare les informations pour les envoyer à la vue			
+			$this->set('offre',$offre);
+		}
+		else if ($nbAbus==0) //Pas autorisé (Offre pas de ses communautés)
+		{
+			$this->Session->setFlash("Vous n'êtes pas autorisé");
+			return $this->redirect(array('controller'=>'acceuils','action'=>'index'));
+		}
+		else //Déjà signalé
+		{
+			$this->Session->setFlash("Vous avez déjà signalé cette offre comme abusive!");
+			return $this->redirect(array('controller'=>'offres','action'=>'view',$offre['Offre']['offre_id']));
+		}
+
+	}
+
+	public function retirerAbus($id=null)
+	{
+		$offre=$this->Offre->find('first',array('recursive'=>2,'conditions'=>array('offre_id'=>$id)));
+
+		$communaute_id=array();
+
+		foreach($offre['PublieOffre'] as $puboffre)
+		{
+			array_push($communaute_id, $puboffre['Appartenance']['communaute_id']);
+		}
+		$appartenance=$this->Offre->PublieOffre->Appartenance->find('first',array('recursive'=>0,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'), 'Appartenance.communaute_id'=>$communaute_id, 'Appartenance.role'=>2)));
+		
+		if(isset($appartenance)&&$appartenance!=null)
+		{
+			foreach($offre['AbusOffre'] as $abusoffre)
+			{
+				
+				if(!$this->Offre->AbusOffre->delete($abusoffre['abusOffre_id']))
+				{
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					return $this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('Abus retiré correctement');
+			return $this->redirect($this->referer());
+		}
+		else
+		{
+			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			return $this->redirect($this->referer());
+		}
+	}
+	
+
+	public function confirmerAbus($id=null)
+	{
+		$offre=$this->Offre->find('first',array('recursive'=>2,'conditions'=>array('offre_id'=>$id)));
+		$communaute_id=array();
+
+		foreach($offre['PublieOffre'] as $puboffre)
+		{
+			array_push($communaute_id, $puboffre['Appartenance']['communaute_id']);
+		}
+		$appartenance=$this->Offre->PublieOffre->Appartenance->find('first',array('recursive'=>0,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'), 'Appartenance.communaute_id'=>$communaute_id, 'Appartenance.role'=>2)));
+
+		if(isset($appartenance)&&$appartenance!=null)
+		{
+			foreach($offre['AbusOffre'] as $abusoffre)
+			{
+				if(!$this->Offre->AbusOffre->delete($abusoffre['abusOffre_id']))
+				{
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					return $this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('Abus retiré correctement');
+			$offre['Offre']['etat']=2;
+			if($this->Offre->save($offre))
+			{
+				$this->Session->setFlash('Abus confirmé, offre retiré');
+				return $this->redirect($this->referer());
+			}
+			else
+			{
+				$this->Session->setFlash("Problème rencontré lors de la modification de l'etat");
+				return $this->redirect($this->referer());
+			}
+
+			return $this->redirect($this->referer());
+		}
+		else
+		{
+			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			return $this->redirect($this->referer());
+		}
 	}
 }
 

@@ -8,6 +8,11 @@ class CommentairesController extends AppController {
 	 *
 	 */
 
+	public function beforeFilter(){
+	parent::beforeFilter();
+
+	}
+
 	 
 	 /* ------------------------------------------
 	 * add
@@ -73,5 +78,119 @@ class CommentairesController extends AppController {
 			$this->Session->setFlash(__('The commentaire could not be deleted. Please, try again.'));
 		}
 		return $this->redirect($this->referer());
+	}
+
+	public function addAbus($id=null){
+
+		//Vérification 
+		$this->Commentaire->Appartenance->unbindModel(
+			array('hasMany' => array('Commentaires','Post','Annonces','PublieOffres','Demandes','Emprunts'),
+        	 	 'belongsTo'=>array('Commentaire')));
+		$this->Commentaire->unbindModel(
+			array('belongsTo'=>array('Post'),
+				'hasMany'=>array('AbusCommentaire')));
+
+		$commentaire=$this->Commentaire->find('first',array('conditions'=>array('commentaire_id'=>$id),'recursive'=>2));
+		$appartenance=$this->Commentaire->Appartenance->find('first',array('conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'),'Appartenance.communaute_id'=>$commentaire['Appartenance']['communaute_id'])));
+
+		//Une personne ne peut signaler qu'une fois le meme commentaire comme étant abusif!
+		$nbAbus=$this->Commentaire->AbusCommentaire->find('count',array('conditions'=>array('AbusCommentaire.appartenance_id'=>$appartenance['Appartenance']['appartenance_id'],'AbusCommentaire.commentaire_id'=>$id)));
+		
+		if($appartenance!=null && $nbAbus==0) //Utilisateur autorisé
+		{
+
+			if($this->request->is('post'))
+			{
+				$this->Commentaire->AbusCommentaire->create();
+				$addAbus=$this->request->data;
+				$addAbus["AbusCommentaire"]["appartenance_id"]=$appartenance['Appartenance']['appartenance_id'];
+				if($this->Commentaire->AbusCommentaire->save($addAbus))
+				{
+					$this->Session->setFlash('Votre signalement a bien été pris en compte. Il sera transmis aux modérateurs');
+				}
+				else
+				{
+					$this->Session->setFlash("Désolé, un problème est survenu et votre signalement n'a pas pu être enregistré");
+				}
+				return $this->redirect(array('controller'=>'posts','action'=>'index',$appartenance['Appartenance']['appartenance_id']));
+			}
+
+			// On prépare les informations pour les envoyer à la vue			
+			$this->set('commentaire',$commentaire);
+		}
+		else if ($nbAbus==0) //Pas autorisé (Commentaire pas de ses communautés)
+		{
+			$this->Session->setFlash("Vous n'êtes pas autorisé");
+			return $this->redirect(array('controller'=>'acceuils','action'=>'index'));
+		}
+		else //Déjà signalé
+		{
+			$this->Session->setFlash("Vous avez déjà signalé ce message comme abusif");
+			return $this->redirect(array('controller'=>'posts','action'=>'index',$appartenance['Appartenance']['appartenance_id']));
+		}
+
+	}
+
+	public function retirerAbus($id=null)
+	{
+		$commentaire=$this->Commentaire->find('first',array('recursive'=>1,'conditions'=>array('commentaire_id'=>$id)));
+		$appartenance=$this->Commentaire->Appartenance->find('first',array('recursive'=>0,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'), 'Appartenance.communaute_id'=>$commentaire['Appartenance']['communaute_id'], 'Appartenance.role'=>2)));
+
+		if(isset($appartenance)&&$appartenance!=null)
+		{
+			foreach($commentaire['AbusCommentaire'] as $abuscommentaire)
+			{
+				if(!$this->Commentaire->AbusCommentaire->delete($abuscommentaire))
+				{
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					return $this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('Abus retiré correctement');
+			return $this->redirect($this->referer());
+		}
+		else
+		{
+			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			return $this->redirect($this->referer());
+		}
+	}
+	
+
+	public function confirmerAbus($id=null)
+	{
+		$commentaire=$this->Commentaire->find('first',array('recursive'=>1,'conditions'=>array('commentaire_id'=>$id)));
+		$appartenance=$this->Commentaire->Appartenance->find('first',array('recursive'=>0,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'), 'Appartenance.communaute_id'=>$commentaire['Appartenance']['communaute_id'], 'Appartenance.role'=>2)));
+
+		if(isset($appartenance)&&$appartenance!=null)
+		{
+			foreach($commentaire['AbusCommentaire'] as $abuscommentaire)
+			{
+				if(!$this->Commentaire->AbusCommentaire->delete($abuscommentaire))
+				{
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					return $this->redirect($this->referer());
+				}
+			}
+			$this->Session->setFlash('Abus retiré correctement');
+			$commentaire['Commentaire']['etat']=2;
+			if($this->Commentaire->save($commentaire))
+			{
+				$this->Session->setFlash('Abus confirmé, commentaire retiré');
+				return $this->redirect($this->referer());
+			}
+			else
+			{
+				$this->Session->setFlash("Problème rencontré lors de la modification de l'etat");
+				return $this->redirect($this->referer());
+			}
+
+			return $this->redirect($this->referer());
+		}
+		else
+		{
+			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			return $this->redirect($this->referer());
+		}
 	}
 }

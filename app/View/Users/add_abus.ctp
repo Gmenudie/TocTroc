@@ -1,8 +1,10 @@
 <?php echo $this->Html->css('style_profil'); ?>
 
-<h1>Profil de <?php echo $user['User']['prenom'].' '.$user['User']['nom']?> </h1>
+<div>
+	<h2>Signaler un abus</h2>
 
-<div class='profil_signaler_abus'><?php echo $this->html->link('Signaler un abus', array('controller'=>'users','action'=>'addAbus',$user['User']['user_id'])); ?></div>
+	<p>Vous souhaitez signaler le profil suivant comme abusif:</p>
+
 
 <div class="carte_compte">
 
@@ -73,3 +75,17 @@
 	}ajuster_taille_colonnes_message();
 	
 </script>
+
+
+
+<div id="signaler_abus">
+
+	<p>Vous pouvez préciser en quoi vous trouvez ce profil abusif afin d'aider les modérateurs à agir:</p>
+	
+        <?php 
+        echo $this->Form->create("AbusProfil",array('url'=>array('controller'=>'users','action'=>'addAbus',$user['User']['user_id'])));
+        echo $this->Form->input('explication', array('label' => '', 'placeholder'=>"Explication de l'abus", 'rows'=>'10'));
+        echo $this->Form->hidden("user_id",array('default'=>$user['User']['user_id']));
+        echo $this->Form->end("Signaler abus");
+        ?>
+</div>
