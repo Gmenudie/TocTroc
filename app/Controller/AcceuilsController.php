@@ -24,6 +24,18 @@ class AcceuilsController extends AppController {
 
 		$this->Auth->allow();
 
+		
+    }
+
+    /* ------------------------------------------
+	 * index()
+	 * ------------------------------------------
+	 * affiche notre page d'acceuil.
+	 * Permet au visiteur de s'inscrire, ou de se connecter (il passe alors à AppartenancesController -> index())
+	 * ------------------------------------------ */
+
+	public function index() {	
+
 		// Si non authentifié on lui affiche l'acceuil classique, avec possibilité de se connecter        
         if ($this->Auth->user("user_id") === null){
         	$this->layout ='unauthentified';
@@ -46,20 +58,27 @@ class AcceuilsController extends AppController {
         {
         	return $this->redirect(array('controller'=>'appartenances','action'=>'moderer'));
         }
-    }
-
-    /* ------------------------------------------
-	 * index()
-	 * ------------------------------------------
-	 * affiche notre page d'acceuil.
-	 * Permet au visiteur de s'inscrire, ou de se connecter (il passe alors à AppartenancesController -> index())
-	 * ------------------------------------------ */
-
-	public function index() {	
         
 	}
 
 
-	
+	/* ------------------------------------------
+	 * nousAider()
+	 * ------------------------------------------
+	 * Affiche la page décrivant aux utilisateurs comment nous aider
+	 * 
+	 * ------------------------------------------ */
+
+	public function nousAider() {
+
+		if ($this->Auth->user('role_id')==2)
+		{
+			$this->layout ='moderateur';
+		}
+		else{
+			$this->layout ='default';
+		}
+
+	}
 
 }

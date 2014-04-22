@@ -75,6 +75,19 @@
           array('controller' => 'appartenances', 'action' => "moderer"),
           array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
      );
+
+            echo $this->Html->link('
+
+            <div class="carre_menu" id="menu4">
+            <div class="titre_carre_menu">Nous aider</div>
+            <div class="symbole_carre_menu">
+            </div>
+            </div>
+            </div>',
+          
+          array('controller' => 'acceuils', 'action' => "nousAider"),
+          array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
+     );
      ?>
 
 	 

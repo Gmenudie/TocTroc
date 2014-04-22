@@ -49,4 +49,54 @@
 						border-left:solid rgb(98,160,77) 6px;
 					}
 
-			
+					
+								
+					.un_resultat .colonne_gauche
+						{
+							display:inline-block;
+							vertical-align:top;
+							
+							width:150px;
+							
+							padding:10px;
+							margin:0px;
+							
+							background-color:rgba(30,30,30,0.05);
+							
+							text-align:center;
+						}
+				
+					.un_resultat.colonne_droite
+						{
+							display:inline-block;
+							vertical-align:top;
+							
+							max-width:470px;
+							
+							padding:10px;
+							margin:0px;
+							
+							text-align:justify;
+						}
+						
+							.un_resultat_date
+							{
+								margin-bottom:10px;
+								
+								font-size:13px;
+							}
+						
+
+						
+						
+						
+						
+						
+					.sous_titre_colonne_droite
+							{
+								margin-top:15px;
+								margin-bottom:15px;
+								
+								font-size:20px;
+							}
+						
