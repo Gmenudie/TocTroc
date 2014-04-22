@@ -1,12 +1,12 @@
 <?php echo $this->Html->css('style_posts'); ?>
 
-<div>
+
 	<h2>Signaler un abus</h2>
 
 	<p>Vous souhaitez signaler le commentaire suivant comme abusif:</p>
 
 
-<div class='commentaire_message'>
+<div class='commentaire_message' style="margin-left:auto;margin-right:auto;">
 					
 						<div class='colonne_gauche'>
 
@@ -35,12 +35,12 @@
 						}	?>						
 						</div>
 							
-							<div class='colonne_droite'>
+						<div class='colonne_droite'>
 					
-								<div class='commentaire_date'><?php echo $commentaire['Commentaire']['created']; ?></div>
-								<div class='commentaire_contenu'><?php echo $commentaire['Commentaire']['contenu']; ?></div> 
+							<div class='commentaire_date'><?php echo $commentaire['Commentaire']['created']; ?></div>
+							<div class='commentaire_contenu'><?php echo $commentaire['Commentaire']['contenu']; ?></div> 
 								
-							</div>
+						</div>
 
 												
 </div>
@@ -50,11 +50,13 @@
 <div id="signaler_abus">
 
 	<p>Vous pouvez préciser en quoi vous trouvez ce commentaire abusif afin d'aider les modérateurs à agir:</p>
-	
-        <?php 
-        echo $this->Form->create("AbusCommentaire",array('url'=>array('controller'=>'commentaires','action'=>'addAbus',$commentaire['Commentaire']['commentaire_id'])));
-        echo $this->Form->input('explication', array('label' => '', 'placeholder'=>"Explication de l'abus", 'rows'=>'10'));
-        echo $this->Form->hidden("commentaire_id",array('default'=>$commentaire['Commentaire']['commentaire_id']));
-        echo $this->Form->end("Signaler abus");
-        ?>
+		
+		<div  style="width: 400px; margin: auto;">
+			<?php 
+			echo $this->Form->create("AbusCommentaire",array('url'=>array('controller'=>'commentaires','action'=>'addAbus',$commentaire['Commentaire']['commentaire_id'])));
+			echo $this->Form->input('explication', array('label' => '', 'placeholder'=>"Explication de l'abus", 'rows'=>'10'));
+			echo $this->Form->hidden("commentaire_id",array('default'=>$commentaire['Commentaire']['commentaire_id']));
+			echo $this->Form->end("Signaler abus");
+			?>
+		</div>
 </div>

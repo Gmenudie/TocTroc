@@ -1,6 +1,6 @@
 <h1>Modification de mot de passe</h1>
 
-<div id="formChangerMotdePasse">
+<div id="formChangerMotdePasse" style="width: 400px; margin: auto;">
 <?php
 	echo $this->Form->create('User');
 	

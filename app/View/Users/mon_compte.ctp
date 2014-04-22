@@ -14,7 +14,7 @@
 			}
 			else
 			{
-				echo "<img src='../../app/webroot/img/dessins/image_profil.png'/><br/>";
+				echo "<img src='../../app/webroot/img/dessins/profil.png'/><br/>";
 			}
 		echo $user[0]['User']['prenom']."<br/>";
 		echo($user[0]['User']['nom']);

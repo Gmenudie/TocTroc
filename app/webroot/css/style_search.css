@@ -1,0 +1,52 @@
+#menu3
+{
+	background-image: url("../img/dessins/demander_j.png");
+	color: rgb(255,236,108);
+	height: 146px;
+	border: 1px solid rgb(255,236,108);
+	border-bottom: 5px solid rgb(255,236,108);
+}
+
+
+#chercher_offre
+{
+	display:inline-block;
+	vertical-align:top;
+	
+	width:250px;
+	
+	margin:0px;
+	margin-right:50px;
+	padding:0px;
+}
+
+#resultats
+{
+	display:inline-block;
+	vertical-align:top;
+	
+	width:680px;
+	
+	margin:0px;
+	padding:0px;
+}
+
+
+		.un_resultat
+		{
+			width:680px;
+			
+			padding:0px;
+			padding-left:6px;
+			margin:0px;
+			margin-bottom:20px;
+			
+			background-color:rgba(30,30,30,0.05);
+		}
+					.un_resultat:hover
+					{	
+						padding-left:0px;
+						border-left:solid rgb(98,160,77) 6px;
+					}
+
+			

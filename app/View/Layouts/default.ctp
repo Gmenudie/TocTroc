@@ -79,7 +79,7 @@
 					}
 					else
 					{
-						echo $this->Html->image('dessins/image_profil_miniature.png');
+						echo $this->Html->image('dessins/miniature.png');
 					}
 					?>
 				

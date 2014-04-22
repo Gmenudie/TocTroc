@@ -1,6 +1,6 @@
 <?php echo $this->Html->css('style_posts'); ?>
 
-<div>
+
 	<h2>Signaler un abus</h2>
 
 	<p>Vous souhaitez signaler le message suivant comme abusif:</p>
@@ -10,7 +10,7 @@
 		
 			<!--Message initial-->
 			
-			<div class="message">
+			<div class="message" style="margin-left:auto;margin-right:auto;">
 			
 				<div class='colonne_gauche'>
 
@@ -50,10 +50,12 @@
 
 	<p>Vous pouvez préciser en quoi vous trouvez ce message abusif afin d'aider les modérateurs à agir:</p>
 	
-        <?php 
-        echo $this->Form->create("AbusPost",array('url'=>array('controller'=>'posts','action'=>'addAbus',$post['Post']['post_id'])));
-        echo $this->Form->input('explication', array('label' => '', 'placeholder'=>"Explication de l'abus", 'rows'=>'10'));
-        echo $this->Form->hidden("post_id",array('default'=>$post['Post']['post_id']));
-        echo $this->Form->end("Signaler abus");
-        ?>
+		<div  style="width: 400px; margin: auto;">
+			<?php 
+			echo $this->Form->create("AbusPost",array('url'=>array('controller'=>'posts','action'=>'addAbus',$post['Post']['post_id'])));
+			echo $this->Form->input('explication', array('label' => '', 'placeholder'=>"Explication de l'abus", 'rows'=>'10'));
+			echo $this->Form->hidden("post_id",array('default'=>$post['Post']['post_id']));
+			echo $this->Form->end("Signaler abus");
+			?>
+		</div>
 </div>
