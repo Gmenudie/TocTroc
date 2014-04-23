@@ -28,6 +28,16 @@
 	background-image: url("../img/dessins/molette_j.png");
 }
 
+#menu5:hover
+{
+	background-image: url("../img/dessins/oeil_j.png");
+}
+
+#menu6:hover
+{
+	background-image: url("../img/dessins/main_j.png");
+}
+
 #informations_user
 {
 	display: inline-block;

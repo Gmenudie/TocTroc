@@ -11,15 +11,14 @@
 <header>
 		<div id="banniere">
 	<div id="logo">
-	<?php echo $this->Html->link($this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')), array('controller'=>'appartenances','action'=>'index'),array('escape'=>false)); ?>
+	<?php echo $this->Html->link($this->Html->image('dessins/logo_moderateur.png', array('alt' => 'TocTroc Logo')), array('controller'=>'appartenances','action'=>'index'),array('escape'=>false)); ?>
 	</div>
 	
 	<?php
      echo $this->Html->link(
            '<div class="carre_menu" id="menu1">
-            <div class="titre_carre_menu">Mur</div>
-            <div class="symbole_carre_menu">
-            </div>
+            <div class="titre_carre_menu">Mur
+			</div>
             </div>',
           
           array('controller' => 'appartenances', 'action' => "index"),
@@ -29,34 +28,29 @@
           echo $this->Html->link('
 
             <div class="carre_menu" id="menu2">
-            <div class="titre_carre_menu">Proposer</div>
-            <div class="symbole_carre_menu">
-            </div>
+            <div class="titre_carre_menu">Proposer
+			</div>
             </div>',
            
           array('controller' => 'offres', 'action' => "mesOffres"),
           array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
      );
 
-            echo $this->Html->link('
+               echo $this->Html->link('
 
              <div class="carre_menu" id="menu3">
-             <div class="titre_carre_menu">Demander</div>
-             <div class="symbole_carre_menu">
-             </div>
+             <div class="titre_carre_menu">Demander
+			 </div>
              </div>',
           
           array('controller' => 'offres', 'action' => "search"),
           array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
      );
-
             echo $this->Html->link('
 
             <div class="carre_menu" id="menu4">
-            <div class="titre_carre_menu">Mon Compte</div>
-            <div class="symbole_carre_menu">
-            </div>
-            </div>
+            <div class="titre_carre_menu">Mon Compte
+			</div>
             </div>',
           
           array('controller' => 'users', 'action' => "monCompte"),
@@ -65,11 +59,9 @@
 
             echo $this->Html->link('
 
-            <div class="carre_menu" id="menu4">
-            <div class="titre_carre_menu">Espace Moderateur</div>
-            <div class="symbole_carre_menu">
-            </div>
-            </div>
+            <div class="carre_menu" id="menu5">
+            <div class="titre_carre_menu">Espace Moderateur
+			</div>
             </div>',
           
           array('controller' => 'appartenances', 'action' => "moderer"),
@@ -78,10 +70,8 @@
 
             echo $this->Html->link('
 
-            <div class="carre_menu" id="menu4">
-            <div class="titre_carre_menu">Nous aider</div>
-            <div class="symbole_carre_menu">
-            </div>
+            <div class="carre_menu" id="menu6">
+            <div class="titre_carre_menu">Nous aider
             </div>
             </div>',
           
@@ -92,6 +82,7 @@
 
 	 
 	</div>
+	
 	<div id="barre_connexion">
 		<div id="barre_connexion_contenu">
 			<div id="informations_user">
@@ -105,7 +96,7 @@
 					}
 					else
 					{
-						echo $this->Html->image('dessins/image_profil_miniature.png');
+						echo $this->Html->image('dessins/miniature.png');
 					}
 					?>
 				

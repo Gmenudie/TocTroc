@@ -130,6 +130,26 @@ padding: 0px;
 	background-image: url("../img/dessins/molette.png");
 }
 
+#menu5
+{
+	background-image: url("../img/dessins/oeil.png");
+}
+
+#menu6
+{
+	background-image: url("../img/dessins/main.png");
+}
+
+#menu6:hover
+{
+	background-image: url("../img/dessins/main_j.png");
+	color: rgb(174,227,157);
+	height: 146px;
+	border: 1px solid rgb(174,227,157);
+	border-bottom: 5px solid rgb(174,227,157);
+	cursor: pointer;
+}
+
 
 #barre_connexion
 {
@@ -235,31 +255,4 @@ input[type=submit]
 		text-align:center;
 		
 		cursor: pointer;
-}
-
-
-/* Erreur générale (setFlash) */
-.error_flash {
-width: 840px;
--moz-box-shadow: 1px 1px 0px #CCCCCC;
--webkit-box-shadow: 1px 1px 0px #CCCCCC;
-box-shadow: 1px 1px 0px #CCCCCC;
-border : 1px solid #A40000;
-padding: 5px 10px 5px 30px;
-background: url(../img/admin/delete.png) no-repeat 5px center #FFDBDB;
-margin: 20px 0px;
-color: #BA1515;
-font-weight: bold;
-}
-.success_flash {
-width: 840px;
--moz-box-shadow: 1px 1px 0px #CCCCCC;
--webkit-box-shadow: 1px 1px 0px #CCCCCC;
-box-shadow: 1px 1px 0px #CCCCCC;
-border : 1px solid green;
-padding: 5px 10px 5px 30px;
-background: url(../img/admin/ok.png) no-repeat 5px center #E5FFEB;
-margin: 20px 0px;
-color: #1B892D;
-font-weight: bold;
 }
