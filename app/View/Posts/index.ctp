@@ -6,20 +6,23 @@
 
 
 	<?php //L'admin ne poste pas de messages
-		  if($role==3 || $role==2): ?>
+		if($role==3 || $role==2)
+		{?>
 
-    <div id="poster_message">
-	
-        <?php 
-        echo $this->Form->create("Post",array('url'=>array('controller'=>'posts','action'=>'add')));
-        echo $this->Form->input('contenu', array('label' => '', 'placeholder'=>'Entrez votre message', 'rows'=>'10'));
-        echo $this->Form->hidden("appartenance_id",array('default'=>$user));
-        echo $this->Form->hidden("canal_id",array('default'=>1));
-        echo $this->Form->end("Poster");
-        ?>
-		
-    </div>
-	<?php endif;?>
+			<div id="poster_message">
+			
+				<?php 
+				echo $this->Form->create("Post",array('url'=>array('controller'=>'posts','action'=>'add')));
+				echo $this->Form->input('contenu', array('label' => '', 'placeholder'=>'Entrez votre message', 'rows'=>'10'));
+				echo $this->Form->hidden("appartenance_id",array('default'=>$user));
+				echo $this->Form->hidden("canal_id",array('default'=>1));
+				echo $this->Form->end("Poster");
+				?>
+				
+			</div>
+		<?php
+		}
+		?>
 		
 
 	<div id="messages">
@@ -56,8 +59,8 @@
 				</div>
 				<div class='colonne_droite'>				
 					<div class='message_date'><?php echo $post['Post']['created']; ?></div>
-					<div class='message_signaler_abus'><?php echo $this->html->link('Signaler un abus', array('controller'=>'posts','action'=>'addAbus',$post['Post']['post_id'])); ?></div>
 					<div class='message_contenu'><?php echo $post['Post']['contenu']; ?></div>
+					<div class='message_signaler_abus'><?php echo $this->html->link('Signaler un abus', array('controller'=>'posts','action'=>'addAbus',$post['Post']['post_id'])); ?></div>
 					
 				</div>
 				
@@ -113,8 +116,8 @@
 							<div class='colonne_droite'>
 					
 								<div class='commentaire_date'><?php echo $com['created']; ?></div>
+								<div class='commentaire_contenu'><?php echo $com['contenu']; ?></div>
 								<div class='message_signaler_abus'><?php echo $this->html->link('Signaler un abus', array('controller'=>'commentaires','action'=>'addAbus',$com['commentaire_id'])); ?></div>
-								<div class='commentaire_contenu'><?php echo $com['contenu']; ?></div> 
 								
 							</div>
 

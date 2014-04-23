@@ -346,31 +346,33 @@ class OffresController extends AppController {
 
 	public function search(){
 
+		
+	
 		if ($this->request->is('post'))
 		{
 			//Vérifications
 			//A	 faire
 
 
-		// On récupère toutes les utilisateurs dans les communautés voulues par l'utilisateur
-		$conditions=array('Appartenance.communaute_id'=>$this->request->data["appartenance_id"]);
-		$appartenances=$this->Offre->PublieOffre->Appartenance->find('all',array('fields'=>'appartenance_id','conditions'=>$conditions,'recursive'=>0));
-		
-		// On récupère tous les publieOffre, toutes appartenances confondues
-		$conditions1=array();
-		foreach ($appartenances as $appartenance) {
-			array_push($conditions1, $appartenance["Appartenance"]["appartenance_id"]);
-		}
-		//On détache appartenance pour alléger la requete suivante
-		
-		$publieoffres=$this->Offre->PublieOffre->find('all',array('conditions'=>array('PublieOffre.appartenance_id'=>$conditions1),'recursive'=>0));
+			// On récupère toutes les utilisateurs dans les communautés voulues par l'utilisateur
+			$conditions=array('Appartenance.communaute_id'=>$this->request->data["appartenance_id"]);
+			$appartenances=$this->Offre->PublieOffre->Appartenance->find('all',array('fields'=>'appartenance_id','conditions'=>$conditions,'recursive'=>0));
+			
+			// On récupère tous les publieOffre, toutes appartenances confondues
+			$conditions1=array();
+			foreach ($appartenances as $appartenance) {
+				array_push($conditions1, $appartenance["Appartenance"]["appartenance_id"]);
+			}
+			//On détache appartenance pour alléger la requete suivante
+			
+			$publieoffres=$this->Offre->PublieOffre->find('all',array('conditions'=>array('PublieOffre.appartenance_id'=>$conditions1),'recursive'=>0));
 
-		//On récupère toutes les offres, tous publieOffres confondus
-		$conditions2=array();
-		foreach	($publieoffres as $publieoffre)
-		{
-			array_push($conditions2,$publieoffre["PublieOffre"]["offre_id"]);
-		}
+			//On récupère toutes les offres, tous publieOffres confondus
+			$conditions2=array();
+			foreach	($publieoffres as $publieoffre)
+			{
+				array_push($conditions2,$publieoffre["PublieOffre"]["offre_id"]);
+			}
 
 
 			if(array_key_exists("Categories",$this->request->data))
