@@ -20,10 +20,10 @@ class CommunautesController extends AppController {
 			if ($this->Communaute->saveAll($temporaryCommunaute)) {
 					
 				unset($temporaryCommunaute);
-				$this->Session->setFlash(__('Bienvenue sur TocTroc !'));
+				$this->Session->setFlash(__('La communauté a bien été rajoutée.'), 'success');
 				return $this->redirect( array('controller' => 'appartenances', 'action' => 'index'));
 			}
-			$this->Session->setFlash(__('Erreur'));
+			$this->Session->setFlash(__('Erreur lors de l\'enregistrement', 'error'));
 		}
 	}
 

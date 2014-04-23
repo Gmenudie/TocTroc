@@ -94,10 +94,10 @@ class AdressesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Adress->create();
 			if ($this->Adress->save($this->request->data)) {
-				$this->Session->setFlash(__('The adress has been saved.'));
+				$this->Session->setFlash(__('L\'adresse a été enregistrée', 'success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The adress could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('Erreur lors de l\'enregistrement', 'error'));
 			}
 		}
 	}
@@ -123,10 +123,10 @@ class AdressesController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Adress->save($this->request->data)) {
-				$this->Session->setFlash(__('The adress has been saved.'));
+				$this->Session->setFlash(__('L\'adresse a été enregistrée.', 'success'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The adress could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('Erreur lors de l\'enregistrement.', 'error'));
 			}
 		} else {
 			$options = array('conditions' => array('Adress.' . $this->Adress->primaryKey => $id));
@@ -156,9 +156,9 @@ class AdressesController extends AppController {
 		}
 		$this->request->onlyAllow('post', 'delete');
 		if ($this->Adress->delete()) {
-			$this->Session->setFlash(__('The adress has been deleted.'));
+			$this->Session->setFlash(__('L\'adresse a été supprimée', 'success'));
 		} else {
-			$this->Session->setFlash(__('The adress could not be deleted. Please, try again.'));
+			$this->Session->setFlash(__('Erreur lors de la suppression', 'error'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}

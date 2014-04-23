@@ -35,7 +35,7 @@ class UsersController extends AppController {
 	        if ($this->Auth->login()) {
 	            return $this->redirect($this->Auth->redirect());
 	        }
-	        $this->Session->setFlash(__('Identifiant ou mot de passe invalide'));
+	        $this->Session->setFlash(__('Identifiant ou mot de passe invalide'), 'error');
 	    }
 	}
 
@@ -478,7 +478,7 @@ class UsersController extends AppController {
 							
 							unset($temporaryUser);
 							
-							$this->Session->setFlash(__('Bienvenue sur TocTroc !'));
+							$this->Session->setFlash(__('Bienvenue sur TocTroc !'), 'success');
 							
 							$this->Auth->login($this->request->data);
 							if ($this->Auth->login())
@@ -640,11 +640,11 @@ class UsersController extends AppController {
 				$addAbus["AbusProfil"]["appartenance_id"]=$appartenance['Appartenance']['appartenance_id'];
 				if($this->User->AbusProfil->save($addAbus))
 				{
-					$this->Session->setFlash('Votre signalement a bien été pris en compte. Il sera transmis aux modérateurs');
+					$this->Session->setFlash('Votre signalement a bien été pris en compte. Il sera transmis aux modérateurs', 'success');
 				}
 				else
 				{
-					$this->Session->setFlash("Désolé, un problème est survenu et votre signalement n'a pas pu être enregistré");
+					$this->Session->setFlash("Désolé, un problème est survenu et votre signalement n'a pas pu être enregistré", 'error');
 				}
 				return $this->redirect(array('controller'=>'users','action'=>'profil',$user['User']['user_id']));
 				
@@ -655,12 +655,12 @@ class UsersController extends AppController {
 		}
 		else if ($nbAbus==0) //Pas autorisé (User pas de ses communautés)
 		{
-			$this->Session->setFlash("Vous n'êtes pas autorisé");
+			$this->Session->setFlash("Vous n'êtes pas autorisé à faire cette action", 'error');
 			return $this->redirect(array('controller'=>'acceuils','action'=>'index'));
 		}
 		else //Déjà signalé
 		{
-			$this->Session->setFlash("Vous avez déjà signalé ce profil comme abusif");
+			$this->Session->setFlash("Vous avez déjà signalé ce profil comme abusif", 'error');
 			return $this->redirect(array('controller'=>'users','action'=>'profil',$user['User']['user_id']));
 		}
 
@@ -682,16 +682,16 @@ class UsersController extends AppController {
 			{
 				if(!$this->User->AbusProfil->delete($abususer))
 				{
-					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus", 'error');
 					return $this->redirect($this->referer());
 				}
 			}
-			$this->Session->setFlash('Abus retiré correctement');
+			$this->Session->setFlash('Abus retiré correctement', 'success');
 			return $this->redirect($this->referer());
 		}
 		else
 		{
-			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			$this->Session->setFlash("Vous n'avez pas l'autorisation pour faire cette action", 'error');
 			return $this->redirect($this->referer());
 		}
 	}
@@ -714,22 +714,22 @@ class UsersController extends AppController {
 			{
 				if(!$this->User->AbusProfil->delete($abususer))
 				{
-					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus", 'error');
 					return $this->redirect($this->referer());
 				}
 			}
-			$this->Session->setFlash('Abus retiré correctement');
+			$this->Session->setFlash('Abus retiré correctement', 'success');
 			$data=array();
 			$data['User']['etat']=2;
 			$data['User']['user_id']=$user['User']['user_id'];
 			if($this->User->save($data))
 			{
-				$this->Session->setFlash('Abus confirmé, profil retiré');
+				$this->Session->setFlash('Abus confirmé, profil retiré', 'success');
 				return $this->redirect($this->referer());
 			}
 			else
 			{
-				$this->Session->setFlash("Problème rencontré lors de la modification de l'etat");
+				$this->Session->setFlash("Problème rencontré lors de la modification de l'etat", 'error');
 				return $this->redirect($this->referer());
 				debug($data);
 			}
@@ -737,7 +737,7 @@ class UsersController extends AppController {
 		}
 		else
 		{
-			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			$this->Session->setFlash("Vous n'avez pas l'autorisation pour faire cette action", 'error');
 			return $this->redirect($this->referer());
 		}
 	}
