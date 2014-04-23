@@ -43,10 +43,10 @@ class AppartenancesController extends AppController {
 
 	        if ($this->Appartenance->saveAssociated($temporaryAppartenance,array('deep'=>true))) {
 				unset($temporaryAppartenance);
-	            $this->Session->setFlash(__('Bienvenue sur TocTroc !'));
+	            $this->Session->setFlash(__('La communauté a bien été enregistrée.'), 'success');
 	            return $this->redirect( array('controller' => 'appartenances', 'action' => 'index'));
 	        }
-	        $this->Session->setFlash(__('Erreur'));
+	        $this->Session->setFlash(__('Erreur lors de l\'enregistrement.', 'error'));
 	        return $this->redirect( array('controller' => 'appartenances', 'action' => 'index'));
 	    }
 	}
