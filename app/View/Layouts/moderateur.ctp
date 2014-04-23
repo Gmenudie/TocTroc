@@ -11,7 +11,7 @@
 <header>
 		<div id="banniere">
 	<div id="logo">
-	<?php echo $this->Html->link($this->Html->image('dessins/logo_moderateur.png', array('alt' => 'TocTroc Logo')), array('controller'=>'appartenances','action'=>'index'),array('escape'=>false)); ?>
+	<?php echo $this->Html->link($this->Html->image('dessins/logo_toctroc.png', array('alt' => 'TocTroc Logo')), array('controller'=>'appartenances','action'=>'index'),array('escape'=>false)); ?>
 	</div>
 	
 	<?php
