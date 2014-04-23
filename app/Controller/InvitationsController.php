@@ -61,7 +61,7 @@ class InvitationsController extends AppController {
 					}
 					else
 					{
-						$this->session->setFlash("Vous n'êtes pas autorisé",'error');
+						$this->Session->setFlash("Vous n'êtes pas autorisé",'error');
 						return $this->redirect(array('controller'=>'acceuils',"action"=>"index"));
 					}
 				}

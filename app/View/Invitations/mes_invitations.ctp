@@ -16,7 +16,7 @@
 						}
 						else
 						{
-							echo "<img src='../../app/webroot/img/dessins/image_profil.png'/><br/>";
+							echo "<img src='../../app/webroot/img/dessins/profil.png'/><br/>";
 						}
 					echo $invitE['User']['prenom']."<br/>";
 					echo($invitE['User']['nom']);
@@ -49,16 +49,18 @@
 					if(isset($invitE['User']['Adresse']['ville'])){echo $invitE['User']['Adresse']['ville'];}
 					
 					?>					
+				
+
+					<div class="invitation">
+						<?php
+
+						echo ("Invité dans la communaut\eacute ".$invitE['Appartenance']['Communaute']['nom'].'. </br>');
+						echo $this->Form->postLink(__("  Retirer l'invitation"), array('controller'=>'invitations','action'=>'delete',$invitE["Invitation"]['invitation_id']),null,__("Etes-vous sur de vouloir supprimer cette invitation?"));
+
+						?>
+					</div>
+					
 				</div>
-
-				<div class="invitation">
-					<?php
-
-					echo ("Invité dans la communaut\eacute ".$invitE['Appartenance']['Communaute']['nom']);
-					echo $this->Form->postLink(__("Retirer l'invitation"), array('controller'=>'invitations','action'=>'delete',$invitE["Invitation"]['invitation_id']),null,__("Etes-vous sur de vouloir supprimer cette invitation?"));
-
-					?>
-
 
 			</div>
 		<?php endforeach; ?>
@@ -67,3 +69,19 @@
 		<p>Vous n'avez envoyé aucune invitation</p>
 	<?php endif; ?>
 		
+		
+<script>
+	function ajuster_taille_colonnes_message()
+	{
+		var colonnes_gauche = document.getElementsByClassName("colonne_gauche");
+		var colonnes_droite = document.getElementsByClassName("colonne_droite");
+		for (var i=0 ; i<colonnes_gauche.length ; i++)
+		{
+			if(colonnes_gauche[i].offsetHeight<colonnes_droite[i].offsetHeight)
+			{
+				colonnes_gauche[i].style.height=colonnes_droite[i].offsetHeight-20+"px";
+			}
+		}
+	}ajuster_taille_colonnes_message();
+	
+</script>

@@ -4,6 +4,7 @@
        <meta charset="utf-8" />
    <?php echo $this->Html->css('style'); ?>
    <?php echo $this->Html->css('style_connecte'); ?>
+   <link rel="icon" href="app/webroot/img/dessins/favicon.ico" />
        <title>TocTroc</title>
    </head>
 
@@ -17,8 +18,7 @@
 	<?php
      echo $this->Html->link(
            '<div class="carre_menu" id="menu1">
-            <div class="titre_carre_menu">Mur</div>
-            <div class="symbole_carre_menu">
+            <div class="titre_carre_menu">Mur
             </div>
             </div>',
           
@@ -29,8 +29,7 @@
           echo $this->Html->link('
 
             <div class="carre_menu" id="menu2">
-            <div class="titre_carre_menu">Proposer</div>
-            <div class="symbole_carre_menu">
+            <div class="titre_carre_menu">Proposer
             </div>
             </div>',
            
@@ -41,8 +40,7 @@
                echo $this->Html->link('
 
              <div class="carre_menu" id="menu3">
-             <div class="titre_carre_menu">Demander</div>
-             <div class="symbole_carre_menu">
+             <div class="titre_carre_menu">Demander
              </div>
              </div>',
           
@@ -53,9 +51,7 @@
                     echo $this->Html->link('
 
             <div class="carre_menu" id="menu4">
-            <div class="titre_carre_menu">Mon Compte</div>
-            <div class="symbole_carre_menu">
-            </div>
+            <div class="titre_carre_menu">Mon Compte
             </div>
             </div>',
           
@@ -65,10 +61,8 @@
 
                     echo $this->Html->link('
 
-            <div class="carre_menu" id="menu4">
-            <div class="titre_carre_menu">Nous aider</div>
-            <div class="symbole_carre_menu">
-            </div>
+            <div class="carre_menu" id="menu6">
+            <div class="titre_carre_menu">Nous aider
             </div>
             </div>',
           

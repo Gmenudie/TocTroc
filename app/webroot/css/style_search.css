@@ -20,6 +20,11 @@
 	padding:0px;
 }
 
+		#chercher_offre .checkbox
+		{
+			width: 5px;
+		}
+
 #resultats
 {
 	display:inline-block;

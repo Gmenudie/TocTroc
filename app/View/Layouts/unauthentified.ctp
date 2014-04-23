@@ -3,6 +3,7 @@
    <head>
        <meta charset="utf-8" />
    <?php echo $this->Html->css('style'); ?>
+   <link rel="icon" href="app/webroot/img/dessins/favicon.ico" />
        <title>TocTroc</title>
    </head>
 

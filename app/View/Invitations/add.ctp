@@ -72,14 +72,16 @@
 			</div>
 		</div>
 
-		<?php
-		//Et on propose de l'inviter
-		echo('Inviter cet utilisateur');
-		echo $this->Form->create('Invitation');
-		echo $this->Form->select('appartenance_id', $appartenances, array('label'=>"Dans quelle communauté voulez-vous l'inviter?"));
-		echo $this->Form->hidden('email', array('default'=>$user['User']['email']));
-		echo $this->Form->end("Inviter");			
-		?>
+		<div style="width: 400px; margin:auto;">
+			<?php
+			//Et on propose de l'inviter
+			echo('Inviter cet utilisateur');
+			echo $this->Form->create('Invitation');
+			echo $this->Form->select('appartenance_id', $appartenances, array('label'=>"Dans quelle communauté voulez-vous l'inviter?"));
+			echo $this->Form->hidden('email', array('default'=>$user['User']['email']));
+			echo $this->Form->end("Inviter");			
+			?>
+		</div>
 
 	<?php else: ?>
 		<p>Désolé, nous n'avons pas pu trouver cet utilisateur. Essayez avec un autre email.</p>

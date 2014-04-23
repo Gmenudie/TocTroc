@@ -1,3 +1,5 @@
+  <?php echo $this->Html->css('style_aider'); ?>
+
 <h1>Nous aider</h1>
 
 <br/>

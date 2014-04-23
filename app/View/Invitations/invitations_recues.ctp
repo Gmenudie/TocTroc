@@ -49,17 +49,19 @@
 					if(isset($invitR['Appartenance']['User']['Adresse']['ville'])){echo $invitR['Appartenance']['User']['Adresse']['ville'];}
 					
 					?>					
+				
+
+					<div class="invitation">
+						<?php
+
+						echo ("Vous a invité dans sa communauté ".$invitR['Appartenance']['Communaute']['nom'].'. </br>');
+						echo $this->Form->postLink(__(" Refuser l'invitation "), array('controller'=>'invitations','action'=>'delete',$invitR["Invitation"]['invitation_id']),null,__("Etes-vous sur de vouloir supprimer cette invitation?"));
+						echo $this->Form->postLink(__(" Accepter l'invitation"), array('controller'=>'invitations','action'=>'accepter',$invitR["Invitation"]['invitation_id']));
+
+						?>
+					</div>
+					
 				</div>
-
-				<div class="invitation">
-					<?php
-
-					echo ("Vous a invité dans sa communauté ".$invitR['Appartenance']['Communaute']['nom']);
-					echo $this->Form->postLink(__("Refuser l'invitation"), array('controller'=>'invitations','action'=>'delete',$invitR["Invitation"]['invitation_id']),null,__("Etes-vous sur de vouloir supprimer cette invitation?"));
-					echo $this->Form->postLink(__("Accepter l'invitation"), array('controller'=>'invitations','action'=>'accepter',$invitR["Invitation"]['invitation_id']),null,__("Etes-vous sur de vouloir supprimer cette invitation?"));
-
-					?>
-
 
 			</div>
 		<?php endforeach; ?>
@@ -68,3 +70,19 @@
 		<p>Vous n'avez reçu aucune invitation</p>
 	<?php endif; ?>
 		
+		
+<script>
+	function ajuster_taille_colonnes_message()
+	{
+		var colonnes_gauche = document.getElementsByClassName("colonne_gauche");
+		var colonnes_droite = document.getElementsByClassName("colonne_droite");
+		for (var i=0 ; i<colonnes_gauche.length ; i++)
+		{
+			if(colonnes_gauche[i].offsetHeight<colonnes_droite[i].offsetHeight)
+			{
+				colonnes_gauche[i].style.height=colonnes_droite[i].offsetHeight-20+"px";
+			}
+		}
+	}ajuster_taille_colonnes_message();
+	
+</script>

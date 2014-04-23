@@ -4,6 +4,7 @@
        <meta charset="utf-8" />
    <?php echo $this->Html->css('style'); ?>
    <?php echo $this->Html->css('style_connecte'); ?>
+   <link rel="icon" href="app/webroot/img/dessins/favicon.ico" />
        <title>TocTroc</title>
    </head>
 
