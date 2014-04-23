@@ -165,6 +165,10 @@ class Appartenance extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		)
+		),
+		'Invitation'=>array(
+			'className'=>'Invitation',
+			'foreignKey'=>'appartenance_id',
+			'dependent'=>false)
 	);
 }

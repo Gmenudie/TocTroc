@@ -18,8 +18,15 @@ function afficher_creer(element)
 
 <h1>Vos communautés</h1>
 
-    
-
+		<?php if (isset($invitationsRecues) && $invitationsRecues!=0): ?>
+		<div class="invitationsRecues">
+			<?php
+				echo('Vous avez reçu '.$invitationsRecues.' invitations!');
+				echo $this->Html->link('Voir les invitations', array('controller'=>'invitations','action'=>'invitationsRecues'));
+			?>
+		</div>
+		<?php endif; ?>
+		
 
 
     <?php if ($appartenances != NULL){?>
@@ -45,8 +52,18 @@ function afficher_creer(element)
 		 
 		</div>
 		
-        <?php endforeach;
-    }
+        <?php endforeach; ?>
+
+        <div id="inviter" >
+    	<?php echo $this->Html->link('Inviter un ami', array('controller'=>'invitations', 'action'=>'add')); ?>
+    	<?php 	if (isset ($invitationsEnvoyees) && $invitationsEnvoyees!=0):    			
+    				echo('Vous avez envoyé '.$invitationsEnvoyees.' invitations');
+    				echo $this->Html->link('G\$eacuterer mes invitations',array('controller'=>'invitations','action'=>'mesInvitations'));
+    			endif;
+    	?>
+
+    	</div>
+    <?php }
 
         else echo "Vous n'avez pas encore de communauté";
     ?>
@@ -63,14 +80,13 @@ function afficher_creer(element)
 				echo $this->Form->input('Adress.rue' , array('label' => '', 'placeholder'=>'Voie'));
 				echo $this->Form->input('Adress.code_postal' , array('label' => '', 'placeholder'=>'Code Postal'));
 				echo $this->Form->input('Adress.ville' , array('label' => '', 'placeholder'=>'Ville'));
-				echo $this->Form->input('Communaute.description' , array('label' => '', 'placeholder'=>'Description'));
-				
+				echo $this->Form->input('Communaute.description' , array('label' => '', 'placeholder'=>'Description'));				
 				echo $this->Form->end("Créer");
 			?>
 		</div>
 	</div>
 
-    
+
 
 
     <?php unset($appartenances); ?>

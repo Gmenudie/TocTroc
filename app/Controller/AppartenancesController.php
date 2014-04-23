@@ -8,8 +8,21 @@ class AppartenancesController extends AppController {
 	}
 
 	public function index(){
-		$this->set('appartenances',$this->Appartenance->find('all', array('conditions' => array('Appartenance.user_id' => $this->Auth->User("user_id")), 'recursive'=> 2)));
+		//On récupère les appartenances de l'utilisateur
+		$appartenances=$this->Appartenance->find('all', array('conditions' => array('Appartenance.user_id' => $this->Auth->User("user_id")), 'recursive'=> 2));
+		//On les affiche
+		$this->set('appartenances', $appartenances);
 
+		//On regarde si l'utilisateur a envoyé des invitations
+		$appartenance_id=array();
+		foreach($appartenances as $appartenance)
+		{
+			array_push($appartenance_id, $appartenance['Appartenance']['appartenance_id']);
+		}		
+		$this->set('invitationsEnvoyees', $this->Appartenance->Invitation->find('count', array('conditions'=>array('Invitation.appartenance_id'=>$appartenance_id))));
+
+		//Idem avec les invitations reçues
+		$this->set('invitationsRecues',$this->Appartenance->Invitation->find('count', array('conditions'=>array('Invitation.user_id'=>$this->Auth->user('user_id')))));
 	}
 
 	public function add() {
@@ -45,7 +58,6 @@ class AppartenancesController extends AppController {
 		$this->Appartenance->unbindModel(
 			array('hasMany' => array('Commentaire','Post','Annonce','PublieOffre','Demande','Emprunt'),
         	 	 'belongsTo'=>array('User')));
-
 		//On regarde les communautés pour lesquelles il est modérateur
 		$peutmoderer=$this->Appartenance->find('all',array('recursive'=>1,'conditions'=>array('Appartenance.user_id'=>$this->Auth->user('user_id'),'Appartenance.role'=>2)));
 		$communautes=array();

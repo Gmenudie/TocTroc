@@ -155,7 +155,11 @@ class User extends AppModel {
 			'className'=>'AbusProfil',
 			'foreignKey'=>'user_id',
 			'dependent'=>false
-		)
+		),
+		'Invitation'=>array(
+			'className'=>'Invitation',
+			'foreignKey'=>'user_id',
+			'dependent'=>false)
 	);
 
 
