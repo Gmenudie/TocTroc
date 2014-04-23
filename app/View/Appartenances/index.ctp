@@ -58,7 +58,7 @@ function afficher_creer(element)
     	<?php echo $this->Html->link('Inviter un ami', array('controller'=>'invitations', 'action'=>'add')); ?>
     	<?php 	if (isset ($invitationsEnvoyees) && $invitationsEnvoyees!=0):    			
     				echo('Vous avez envoyé '.$invitationsEnvoyees.' invitations');
-    				echo $this->Html->link('G\$eacuterer mes invitations',array('controller'=>'invitations','action'=>'mesInvitations'));
+    				echo $this->Html->link('Gérer mes invitations',array('controller'=>'invitations','action'=>'mesInvitations'));
     			endif;
     	?>
 

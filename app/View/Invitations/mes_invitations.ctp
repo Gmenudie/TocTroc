@@ -61,7 +61,7 @@
 
 
 			</div>
-		<? endforeach; ?>
+		<?php endforeach; ?>
 
 	<?php else: ?>
 		<p>Vous n'avez envoyé aucune invitation</p>

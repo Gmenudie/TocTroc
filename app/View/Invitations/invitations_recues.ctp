@@ -16,7 +16,7 @@
 						}
 						else
 						{
-							echo "<img src='../../app/webroot/img/dessins/image_profil.png'/><br/>";
+							echo "<img src='../../app/webroot/img/dessins/profil.png'/><br/>";
 						}
 					echo $invitR['Appartenance']['User']['prenom']."<br/>";
 					echo($invitR['Appartenance']['User']['nom']);
@@ -62,7 +62,7 @@
 
 
 			</div>
-		<? endforeach; ?>
+		<?php endforeach; ?>
 
 	<?php else: ?>
 		<p>Vous n'avez reçu aucune invitation</p>

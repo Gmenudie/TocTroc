@@ -105,6 +105,11 @@
 	</div>
 </header>
 
+<?php
+	/* Messages flash (envoyés avec $this->Session->setFlash()) */
+	echo $this->Session->flash();
+	?>
+
 <div id="fond">
 	<div id="page">
 	<?php echo $this->fetch('content'); ?>

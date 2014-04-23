@@ -1,10 +1,5 @@
 <?php echo $this->Html->css('style_posts'); ?>
 
-<?php
-	/* Messages flash (envoyés avec $this->Session->setFlash()) */
-	echo $this->Session->flash();
-	?>
-
 
 <h1><?php echo($nomCommunaute['Communaute']['nom']); ?> - Le Mur</h1>
 
