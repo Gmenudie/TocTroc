@@ -21,7 +21,7 @@
 			<?php 
 				echo $this->Form->input('email', array('label'=>'', 'placeholder'=>'Email'));
 				echo $this->Form->input('password', array('label'=>'', 'placeholder'=>'Mot de passe'));
-				echo $this->Form->end(__('Mes communautés')); 
+				echo $this->Form->end(__('Se connecter')); 
 			?>
 		</div>
 	</div>
