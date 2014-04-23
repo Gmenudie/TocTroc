@@ -177,11 +177,11 @@ class OffresController extends AppController {
 						$publieoffre["PublieOffre"]["offre_id"]=$this->Offre->id;
 						if($this->Offre->PublieOffre->save($publieoffre))
 						{
-							$this->Session->setFlash(__("Votre offre a bien été enregistrée"));
+							$this->Session->setFlash(__("Votre offre a bien été enregistrée"), 'success');
 						}
 						else
 						{
-							$this->Session->setFlash("Ca n'a pas marché ...");
+							$this->Session->setFlash("Erreur lors de l'enregistrement", 'error');
 						}
 					}
 					
@@ -189,7 +189,7 @@ class OffresController extends AppController {
 				} 
 				else 
 				{
-					$this->Session->setFlash(__('The offre could not be saved. Please, try again.'));
+					$this->Session->setFlash(__('L\'offre n\'a pas pu être enregistrée. Veuillez réessayer.', 'error'));
 				}
 			}
 		}
@@ -270,11 +270,11 @@ class OffresController extends AppController {
 							$publieoffre["PublieOffre"]["offre_id"]=$this->Offre->id;
 							if($this->Offre->PublieOffre->save($publieoffre))
 							{
-								$this->Session->setFlash(__("Votre offre a bien été enregistrée"));
+								$this->Session->setFlash(__("Votre offre a bien été enregistrée", 'success'));
 							}
 							else
 							{
-								$this->Session->setFlash("Ca n'a pas marché ...");
+								$this->Session->setFlash("Erreur lors de l'enregistrement", 'error');
 							}
 						}
 						
@@ -282,7 +282,7 @@ class OffresController extends AppController {
 					} 
 					else 
 					{
-						$this->Session->setFlash(__('The offre could not be saved. Please, try again.'));
+						$this->Session->setFlash(__('L\'offre n\'a pas pu être enregistrée. Veuillez réessayer.', 'error'));
 					}
 				}
 				else
@@ -337,9 +337,9 @@ class OffresController extends AppController {
 		}
 		$this->request->onlyAllow('post', 'delete');
 		if ($this->Offre->delete()) {
-			$this->Session->setFlash(__('The offre has been deleted.'));
+			$this->Session->setFlash(__('L\'offre a été supprimée', 'success'));
 		} else {
-			$this->Session->setFlash(__('The offre could not be deleted. Please, try again.'));
+			$this->Session->setFlash(__('Erreur lors de la suppression', 'error'));
 		}
 		return $this->redirect(array('action' => 'mesOffres'));
 	}
@@ -473,11 +473,11 @@ class OffresController extends AppController {
 				$addAbus["AbusOffre"]["appartenance_id"]=$appartenance['Appartenance']['appartenance_id'];
 				if($this->Offre->AbusOffre->save($addAbus))
 				{
-					$this->Session->setFlash('Votre signalement a bien été pris en compte. Il sera transmis aux modérateurs');
+					$this->Session->setFlash('Votre signalement a bien été pris en compte. Il sera transmis aux modérateurs', 'success');
 				}
 				else
 				{
-					$this->Session->setFlash("Désolé, un problème est survenu et votre signalement n'a pas pu être enregistré");
+					$this->Session->setFlash("Désolé, un problème est survenu et votre signalement n'a pas pu être enregistré", 'error');
 				}
 				return $this->redirect(array('controller'=>'offres','action'=>'view',$offre['Offre']['offre_id']));
 				
@@ -488,12 +488,12 @@ class OffresController extends AppController {
 		}
 		else if ($nbAbus==0) //Pas autorisé (Offre pas de ses communautés)
 		{
-			$this->Session->setFlash("Vous n'êtes pas autorisé");
+			$this->Session->setFlash("Vous n'êtes pas autorisé à faire cette action", 'error');
 			return $this->redirect(array('controller'=>'acceuils','action'=>'index'));
 		}
 		else //Déjà signalé
 		{
-			$this->Session->setFlash("Vous avez déjà signalé cette offre comme abusive!");
+			$this->Session->setFlash("Vous avez déjà signalé cette offre comme abusive !", 'error');
 			return $this->redirect(array('controller'=>'offres','action'=>'view',$offre['Offre']['offre_id']));
 		}
 
@@ -518,16 +518,16 @@ class OffresController extends AppController {
 				
 				if(!$this->Offre->AbusOffre->delete($abusoffre['abusOffre_id']))
 				{
-					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus", 'error');
 					return $this->redirect($this->referer());
 				}
 			}
-			$this->Session->setFlash('Abus retiré correctement');
+			$this->Session->setFlash('Abus retiré correctement', 'success');
 			return $this->redirect($this->referer());
 		}
 		else
 		{
-			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			$this->Session->setFlash("Vous n'avez pas l'autorisation pour faire cette action", 'error');
 			return $this->redirect($this->referer());
 		}
 	}
@@ -550,20 +550,20 @@ class OffresController extends AppController {
 			{
 				if(!$this->Offre->AbusOffre->delete($abusoffre['abusOffre_id']))
 				{
-					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus");
+					$this->Session->setFlash("Problème rencontré lors de la suppression d'un abus", 'error');
 					return $this->redirect($this->referer());
 				}
 			}
-			$this->Session->setFlash('Abus retiré correctement');
+			$this->Session->setFlash('Abus retiré correctement', 'success');
 			$offre['Offre']['etat']=2;
 			if($this->Offre->save($offre))
 			{
-				$this->Session->setFlash('Abus confirmé, offre retiré');
+				$this->Session->setFlash('Abus confirmé, offre retiré', 'success');
 				return $this->redirect($this->referer());
 			}
 			else
 			{
-				$this->Session->setFlash("Problème rencontré lors de la modification de l'etat");
+				$this->Session->setFlash("Problème rencontré lors de la modification de l'etat", 'error');
 				return $this->redirect($this->referer());
 			}
 
@@ -571,7 +571,7 @@ class OffresController extends AppController {
 		}
 		else
 		{
-			$this->Session->setFlash("Vous n'avez pas l'autorisation");
+			$this->Session->setFlash("Vous n'avez pas l'autorisation pour faire cette action", 'error');
 			return $this->redirect($this->referer());
 		}
 	}
