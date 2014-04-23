@@ -173,8 +173,7 @@ class InvitationsController extends AppController {
 					{
 						$this->Session->setFlash("Erreur lors de la suppression",'error');
 						return $this->redirect($this->referer());
-					}			
-
+					}
 				}
 				else
 				{

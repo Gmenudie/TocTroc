@@ -36,6 +36,10 @@ class AppartenancesController extends AppController {
 	        $temporaryAppartenance["Appartenance"]["valide"]='1';
 	        $temporaryAppartenance["Appartenance"]["role"]='2';
 	        $temporaryAppartenance["Appartenance"]["user_id"]=$this->Auth->user("user_id");
+	        $data=array();
+	        $data['User']['User_id']=$this->Auth->user('user_id');
+	        $data['User']['role']='2';
+	        $this->Appartenance->User->save($data);
 
 	        if ($this->Appartenance->saveAssociated($temporaryAppartenance,array('deep'=>true))) {
 				unset($temporaryAppartenance);

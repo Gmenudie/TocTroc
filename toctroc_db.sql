@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 21, 2014 at 04:07 
+-- Generation Time: Apr 23, 2014 at 04:28 
 -- Server version: 5.6.16
 -- PHP Version: 5.5.9
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `abusCommentaire` (
   PRIMARY KEY (`abusCommentaire_id`),
   KEY `commentaire_abusCommentaire_fk` (`commentaire_id`),
   KEY `appartenance_abusCommentaire_fk` (`appartenance_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -50,7 +50,14 @@ CREATE TABLE IF NOT EXISTS `abusOffre` (
   PRIMARY KEY (`abusOffre_id`),
   KEY `offre_abusOffre_fk` (`offre_id`),
   KEY `appartenance_abusOffre_fk` (`appartenance_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `abusOffre`
+--
+
+INSERT INTO `abusOffre` (`abusOffre_id`, `offre_id`, `appartenance_id`, `explication`) VALUES
+(1, 24, 2, 'Non pas fros !');
 
 -- --------------------------------------------------------
 
@@ -66,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `abusPost` (
   PRIMARY KEY (`abusPost_id`),
   KEY `post_abusPost_fk` (`post_id`),
   KEY `appartenance_abusPost_fk` (`appartenance_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -82,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `abusProfil` (
   PRIMARY KEY (`abusProfil_id`),
   KEY `profil_abusProfil_fk` (`user_id`),
   KEY `appartenance_abusProfil_fk` (`appartenance_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -161,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `appartenances` (
   PRIMARY KEY (`appartenance_id`),
   KEY `communaute_appartient_fk` (`communaute_id`),
   KEY `user_appartient_fk` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `appartenances`
@@ -174,7 +181,8 @@ INSERT INTO `appartenances` (`appartenance_id`, `communaute_id`, `user_id`, `val
 (6, 29, 7, 1, 2),
 (7, 30, 4, 1, 2),
 (8, 31, 4, 1, 2),
-(9, 32, 4, 1, 2);
+(9, 32, 4, 1, 2),
+(13, 27, 22, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -234,7 +242,9 @@ CREATE TABLE IF NOT EXISTS `categories_offres` (
 --
 
 INSERT INTO `categories_offres` (`offre_id`, `categorie_id`) VALUES
-(23, 2);
+(24, 1),
+(23, 2),
+(24, 2);
 
 -- --------------------------------------------------------
 
@@ -249,6 +259,7 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   `appartenance_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   `etat` int(11) DEFAULT '1',
+  `modified` datetime NOT NULL,
   PRIMARY KEY (`commentaire_id`),
   KEY `appartenances_commentaires_fk` (`appartenance_id`),
   KEY `posts_commentaires_fk` (`post_id`)
@@ -258,15 +269,15 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
 -- Dumping data for table `commentaires`
 --
 
-INSERT INTO `commentaires` (`commentaire_id`, `contenu`, `created`, `appartenance_id`, `post_id`, `etat`) VALUES
-(1, 'Si les commentaires marchent, c''est clairement parce que Geoffray Menudier est une torche !', '2014-04-03 08:00:00', 2, 5, 1),
-(2, 'Oui la je dois bien dire que j''ai fait fort', '2014-04-04 00:00:00', 2, 5, 1),
-(3, 'Ok, Geoffray est clairement une torche', '2014-04-03 11:19:17', 5, 5, 1),
-(4, 'Je peux même écrire un commentaire sur le site !', '2014-04-04 06:00:00', 2, 5, 1),
-(5, 'Incroyable! En plus je peux le commenter en live !', '2014-04-04 16:47:45', 2, 6, 1),
-(6, 'Je suis en train de résoudre un bug', '2014-04-04 16:50:13', 2, 6, 1),
-(8, 'Sympa le post !', '2014-04-16 16:50:13', 2, 8, 1),
-(9, 'Elle a pas de photo !', '2014-04-20 16:25:55', 2, 4, 2);
+INSERT INTO `commentaires` (`commentaire_id`, `contenu`, `created`, `appartenance_id`, `post_id`, `etat`, `modified`) VALUES
+(1, 'Si les commentaires marchent, c''est clairement parce que Geoffray Menudier est une torche !', '2014-04-03 08:00:00', 2, 5, 2, '0000-00-00 00:00:00'),
+(2, 'Oui la je dois bien dire que j''ai fait fort', '2014-04-04 00:00:00', 2, 5, 1, '0000-00-00 00:00:00'),
+(3, 'Ok, Geoffray est clairement une torche', '2014-04-03 11:19:17', 5, 5, 1, '0000-00-00 00:00:00'),
+(4, 'Je peux même écrire un commentaire sur le site !', '2014-04-04 06:00:00', 2, 5, 1, '0000-00-00 00:00:00'),
+(5, 'Incroyable! En plus je peux le commenter en live !', '2014-04-04 16:47:45', 2, 6, 1, '0000-00-00 00:00:00'),
+(6, 'Je suis en train de résoudre un bug', '2014-04-04 16:50:13', 2, 6, 1, '0000-00-00 00:00:00'),
+(8, 'Sympa le post !', '2014-04-16 16:50:13', 2, 8, 1, '0000-00-00 00:00:00'),
+(9, 'Elle a pas de photo !', '2014-04-20 16:25:55', 2, 4, 2, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -339,6 +350,30 @@ CREATE TABLE IF NOT EXISTS `emprunts` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `invitations`
+--
+
+CREATE TABLE IF NOT EXISTS `invitations` (
+  `invitation_id` int(11) NOT NULL AUTO_INCREMENT,
+  `appartenance_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`invitation_id`),
+  KEY `appartenance_invitation_fk` (`appartenance_id`),
+  KEY `user_invitation_fk` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `invitations`
+--
+
+INSERT INTO `invitations` (`invitation_id`, `appartenance_id`, `user_id`, `created`, `modified`) VALUES
+(2, 2, 5, '2014-04-23 15:49:04', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `offres`
 --
 
@@ -349,15 +384,17 @@ CREATE TABLE IF NOT EXISTS `offres` (
   `image` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   `etat` int(11) NOT NULL DEFAULT '1',
   `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
   PRIMARY KEY (`offre_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `offres`
 --
 
-INSERT INTO `offres` (`offre_id`, `titre`, `description`, `image`, `etat`, `created`) VALUES
-(23, 'qqqqqq', 'zadzd', NULL, 2, '2014-04-14 17:22:15');
+INSERT INTO `offres` (`offre_id`, `titre`, `description`, `image`, `etat`, `created`, `modified`) VALUES
+(23, 'qqqqqq', 'zadzd', NULL, 2, '2014-04-14 17:22:15', '0000-00-00 00:00:00'),
+(24, 'Ouech', 'Gros', NULL, 1, '2014-04-22 22:48:43', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -373,6 +410,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `canal_id` int(11) NOT NULL,
   `appartenance_id` int(11) NOT NULL,
   `etat` int(11) DEFAULT '1',
+  `modified` datetime NOT NULL,
   PRIMARY KEY (`post_id`),
   KEY `canal_post_fk` (`canal_id`),
   KEY `appartanances_posts_fk` (`appartenance_id`)
@@ -382,12 +420,12 @@ CREATE TABLE IF NOT EXISTS `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`post_id`, `contenu`, `document_joint`, `created`, `canal_id`, `appartenance_id`, `etat`) VALUES
-(3, 'Post de geoffray', NULL, '2014-04-03 00:00:00', 1, 2, 1),
-(4, 'post de Bob', NULL, '2014-04-05 00:00:00', 1, 5, 1),
-(5, 'testest', NULL, '2014-04-05 11:14:15', 1, 2, 1),
-(6, 'Premier post via le site !', NULL, '2014-04-04 16:47:10', 1, 2, 1),
-(8, 'Sympa le design!', NULL, '2014-04-16 16:50:04', 1, 2, 2);
+INSERT INTO `posts` (`post_id`, `contenu`, `document_joint`, `created`, `canal_id`, `appartenance_id`, `etat`, `modified`) VALUES
+(3, 'Post de geoffray', NULL, '2014-04-03 00:00:00', 1, 2, 1, '0000-00-00 00:00:00'),
+(4, 'post de Bob', NULL, '2014-04-05 00:00:00', 1, 5, 1, '0000-00-00 00:00:00'),
+(5, 'testest', NULL, '2014-04-05 11:14:15', 1, 2, 1, '0000-00-00 00:00:00'),
+(6, 'Premier post via le site !', NULL, '2014-04-04 16:47:10', 1, 2, 1, '0000-00-00 00:00:00'),
+(8, 'Sympa le design!', NULL, '2014-04-16 16:50:04', 1, 2, 2, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -402,7 +440,7 @@ CREATE TABLE IF NOT EXISTS `publieOffre` (
   PRIMARY KEY (`publieOffre_id`),
   KEY `appartient_publie_offre_fk` (`appartenance_id`),
   KEY `offre_publie_offre_fk` (`offre_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=70 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=73 ;
 
 --
 -- Dumping data for table `publieOffre`
@@ -411,7 +449,10 @@ CREATE TABLE IF NOT EXISTS `publieOffre` (
 INSERT INTO `publieOffre` (`publieOffre_id`, `appartenance_id`, `offre_id`) VALUES
 (67, 2, 23),
 (68, 7, 23),
-(69, 9, 23);
+(69, 9, 23),
+(70, 2, 24),
+(71, 7, 24),
+(72, 8, 24);
 
 -- --------------------------------------------------------
 
@@ -467,25 +508,27 @@ CREATE TABLE IF NOT EXISTS `users` (
   `adresse_id` int(11) DEFAULT NULL,
   `role_id` int(11) NOT NULL,
   `etat` int(11) NOT NULL DEFAULT '1',
+  `modified` datetime NOT NULL,
   PRIMARY KEY (`user_id`),
   KEY `profil_user_fk` (`role_id`),
   KEY `adresse_user_fk` (`adresse_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `prenom`, `nom`, `email`, `password`, `image_profil`, `telephone_2`, `telephone_1`, `telephone_3`, `created`, `adresse_id`, `role_id`, `etat`) VALUES
-(4, 'Geoffray', 'Menudier', 'menu@hotmail.fr', '451dd656bc353a7e36ef6df5b63751c0865dc945', 'png', NULL, 2147483647, NULL, '0000-00-00 00:00:00', NULL, 2, 1),
-(5, 'Bob', 'Joséphine', 'bob@hmiail.com', '211fb15019df6a5b278499f83ea70e37a04bf1ee', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3, 2),
-(6, 'Victor', 'Enaud', 'vic@enaud.fr', 'db5718c4f3e3dcdc184bd06a9803eb6f18c4daa9', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3, 1),
-(7, 'admin', 'admin', 'admin@admin.com', '0fb23eb0a9cf948e43b3c59c3ac04746aee05522', NULL, NULL, NULL, NULL, '2014-04-07 19:10:02', NULL, 1, 1),
-(8, 'Geoffray', 'Menudier', 'men@hotmail.fr', 'e24d689baf184c7a86c054f7bf1b04753af2646c', NULL, NULL, 601498516, NULL, '2014-04-17 14:59:42', NULL, 3, 1),
-(14, 'John', 'John', 'john@hotmail.fr', 'e0ae0121a705af295f7fc9bb1415f1280883a48a', NULL, NULL, 233543135, NULL, '2014-04-17 15:27:54', NULL, 3, 1),
-(18, 'John2', 'John2', 'john2@hotmail.fr', 'e238534e746be46b3776d2e52f7bdd0c95c70b97', NULL, NULL, 601498516, NULL, '2014-04-17 15:34:45', NULL, 3, 1),
-(19, 'John2', 'John3', 'john3@hotmail.fr', '87bc5b5c3af7d981d5c06573feab467ea3be8c00', NULL, NULL, 601498516, NULL, '2014-04-17 15:36:12', NULL, 3, 1),
-(21, 'Gerard3', 'Gerard2', 'gerard@gmail.com', 'b7348f169a242781ff07642ce10b8490bcf8140d', NULL, NULL, 3546465, NULL, '2014-04-17 15:37:55', NULL, 3, 1);
+INSERT INTO `users` (`user_id`, `prenom`, `nom`, `email`, `password`, `image_profil`, `telephone_2`, `telephone_1`, `telephone_3`, `created`, `adresse_id`, `role_id`, `etat`, `modified`) VALUES
+(4, 'Geoffray', 'Menudier', 'menu@hotmail.fr', '451dd656bc353a7e36ef6df5b63751c0865dc945', 'png', NULL, 2147483647, NULL, '0000-00-00 00:00:00', NULL, 2, 1, '0000-00-00 00:00:00'),
+(5, 'Bob', 'Joséphine', 'bob@hmiail.com', '211fb15019df6a5b278499f83ea70e37a04bf1ee', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3, 2, '0000-00-00 00:00:00'),
+(6, 'Victor', 'Enaud', 'vic@enaud.fr', 'db5718c4f3e3dcdc184bd06a9803eb6f18c4daa9', NULL, NULL, NULL, NULL, '0000-00-00 00:00:00', NULL, 3, 1, '0000-00-00 00:00:00'),
+(7, 'admin', 'admin', 'admin@admin.com', '0fb23eb0a9cf948e43b3c59c3ac04746aee05522', NULL, NULL, NULL, NULL, '2014-04-07 19:10:02', NULL, 1, 1, '0000-00-00 00:00:00'),
+(8, 'Geoffray', 'Menudier', 'men@hotmail.fr', 'e24d689baf184c7a86c054f7bf1b04753af2646c', NULL, NULL, 601498516, NULL, '2014-04-17 14:59:42', NULL, 3, 1, '0000-00-00 00:00:00'),
+(14, 'John', 'John', 'john@hotmail.fr', 'e0ae0121a705af295f7fc9bb1415f1280883a48a', NULL, NULL, 233543135, NULL, '2014-04-17 15:27:54', NULL, 3, 1, '0000-00-00 00:00:00'),
+(18, 'John2', 'John2', 'john2@hotmail.fr', 'e238534e746be46b3776d2e52f7bdd0c95c70b97', NULL, NULL, 601498516, NULL, '2014-04-17 15:34:45', NULL, 3, 1, '0000-00-00 00:00:00'),
+(19, 'John2', 'John3', 'john3@hotmail.fr', '87bc5b5c3af7d981d5c06573feab467ea3be8c00', NULL, NULL, 601498516, NULL, '2014-04-17 15:36:12', NULL, 3, 1, '0000-00-00 00:00:00'),
+(21, 'Gerard3', 'Gerard2', 'gerard@gmail.com', 'b7348f169a242781ff07642ce10b8490bcf8140d', NULL, NULL, 3546465, NULL, '2014-04-17 15:37:55', NULL, 3, 1, '0000-00-00 00:00:00'),
+(22, 'bob', 'bob', 'bob@gmail.com', 'c010ae0c984b8816eb288c1b5d37cb252c640535', NULL, 0, 0, NULL, '2014-04-23 15:50:52', NULL, 3, 1, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -585,6 +628,13 @@ ALTER TABLE `demandes`
 ALTER TABLE `emprunts`
   ADD CONSTRAINT `appartient_emprunt_fk` FOREIGN KEY (`appartenance_id`) REFERENCES `appartenances` (`appartenance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `offre_emprunt_fk` FOREIGN KEY (`offre_id`) REFERENCES `offres` (`offre_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `invitations`
+--
+ALTER TABLE `invitations`
+  ADD CONSTRAINT `appartenance_invitation_fk` FOREIGN KEY (`appartenance_id`) REFERENCES `appartenances` (`appartenance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `user_invitation_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `posts`
