@@ -48,13 +48,13 @@
 				<?php
 				echo "<div class='colonne_gauche'>";
 				
-					if(isset($post['Post']['User']['image_profil']))
+					if(isset($user['User']['image_profil']))
 					{
-						echo "<div class='message_profil'>".$this->Html->image('user/'.$post['Post']['User']['user_id'].'/miniature.'.$post['Post']['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
+						echo "<div class='message_profil'>".$this->Html->image('user/'.$user['User']['user_id'].'/miniature.'.$user['User']['image_profil'], array('alt' => 'Image de profil', 'class' => 'compte-image'))."<br/>".$user['User']['prenom']."<br/>".$user['User']['nom']."</div>";
 					}
 					else
 					{
-						echo "<div class='message_profil'><img src='../../app/webroot/img/dessins/image_profil.png'/><br/>".$post['Post']['User']['prenom']."<br/>".$post['Post']['User']['nom']."</div>";
+						echo "<div class='message_profil'>".$this->Html->image('dessins/image_profil.png', array('alt' => 'Image de profil', 'class' => 'compte-image')) . "<br/>" . $user['User']['prenom']."<br/>".$user['User']['nom']."</div>";
 					}
 					
 				echo "</div>";

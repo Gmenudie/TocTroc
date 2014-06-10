@@ -61,6 +61,9 @@ class OffresController extends AppController {
 		$this->set(compact('appartenances', 'categories'));		
 		$this->Paginator->settings = array('conditions' => array('Offre.offre_id'=> $conditions2));
 		$this->set('offres',$this->Paginator->paginate('Offre',array(),array('Category.nom','titre','created')));
+		
+		// On envoie à la vue les informations sur l'utilisateur
+		$this->set('user',$this->Offre->PublieOffre->Appartenance->User->find('first', array('conditions' => array('user_id' => $this->Auth->User('user_id')), 'fields'=>array('user_id','prenom','nom','image_profil'), 'recursive'=> -1)));
 	}
 
 /**
