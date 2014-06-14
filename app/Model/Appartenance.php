@@ -171,4 +171,25 @@ class Appartenance extends AppModel {
 			'foreignKey'=>'appartenance_id',
 			'dependent'=>false)
 	);
+
+	public function get_communautes($user_id) {
+
+		$db = $this->getDataSource();
+		$appartenances=$db->fetchAll(
+			    'SELECT Appartenance.appartenance_id, Communaute.nom, Communaute.description 
+			    FROM appartenances Appartenance INNER JOIN communautes Communaute ON Appartenance.communaute_id=Communaute.communaute_id 
+			    WHERE Appartenance.user_id=?',
+			    array($user_id)
+			);
+
+		return $appartenances ;
+	}
+
+	public function find_for_select($user_id){
+		$appartenances=$this->find('list',array(			
+			'fields'=>array('Appartenance.communaute_id','Communaute.nom'),
+			'joins'=>array('JOIN communautes as Communaute ON Communaute.communaute_id=Appartenance.communaute_id'),
+			'conditions'=>array('Appartenance.user_id'=>$user_id)));
+		return $appartenances;
+	}
 }

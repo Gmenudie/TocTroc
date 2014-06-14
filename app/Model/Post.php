@@ -95,7 +95,4 @@ class Post extends AppModel {
 			'foreignKey'=>'post_id',
 			'dependent'=>false)
 	);
-
-
-
 }

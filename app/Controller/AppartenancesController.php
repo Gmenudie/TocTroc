@@ -8,10 +8,9 @@ class AppartenancesController extends AppController {
 	}
 
 	public function index(){
-		//On récupère les appartenances de l'utilisateur
-		$appartenances=$this->Appartenance->find('all', array('conditions' => array('Appartenance.user_id' => $this->Auth->User("user_id")), 'recursive'=> 2));
-		//On les affiche
-		$this->set('appartenances', $appartenances);
+		//On récupère les communautés de l'utilisateur
+		$appartenances=$this->Appartenance->get_communautes($this->Auth->user("user_id"));	
+		$this->set('appartenances', $appartenances );
 
 		//On regarde si l'utilisateur a envoyé des invitations
 		$appartenance_id=array();

@@ -33,7 +33,7 @@
             </div>
             </div>',
            
-          array('controller' => 'offres', 'action' => "mesOffres"),
+          array('controller' => 'offres', 'action' => "userOffres", AuthComponent::user('user_id')),
           array('escape' => false) // Ceci pour indiquer de ne pas échapper les caractères HTML du lien vu qu'ici tu as des balises
      );
 
